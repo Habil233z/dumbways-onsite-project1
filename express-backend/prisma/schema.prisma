@@ -27,6 +27,9 @@ model Users{
   threads Threads[] @relation("UserThreadsUpdated")
   likes_id Likes[] @relation("UsersToLikesId")
   likes_name Likes[] @relation("UsersToLikesCreatedName")
+  replier Replies[] @relation("UsersReplies")
+  repliesName Replies[] @relation("ReplierName")
+  updaterName Replies[] @relation("UpdaterName")
 }
 
 model Following{
@@ -50,6 +53,7 @@ model Threads{
   thread_updated Users @relation("UserThreadsUpdated", fields: [updated_by], references: [full_name])
   updated_by String
   likes Likes[] @relation("ThreadsToLikesId")
+  replies Replies[] @relation("ThreadReplied")
 }
 
 model Likes{
@@ -61,4 +65,20 @@ model Likes{
   created_at DateTime @default(now())
   likes_created Users @relation("UsersToLikesCreatedName", fields: [ created_by], references: [full_name])
   created_by String
+}
+
+model Replies{
+  id Int @id @default(autoincrement())
+  replier Users @relation("UsersReplies", fields: [user_id], references: [id])
+  user_id Int
+  threadReplied Threads @relation("ThreadReplied", fields: [thread_id], references: [id])
+  thread_id Int
+  image String
+  content String
+  created_at DateTime @default(now())
+  replierName Users @relation("ReplierName", fields: [created_by], references: [full_name])
+  created_by String
+  updated_at DateTime
+  updaterName Users @relation("UpdaterName", fields: [updated_by], references: [full_name])
+  updated_by String
 }
