@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Users{
+  id Int @id @default(autoincrement())
+  username String
+  full_name String @unique
+  email String
+  password String
+  photo_profile String
+  bio String
+  created_at DateTime @default(now())
+  updated_at DateTime
+  following Following[] @relation("userFollowing")
+  follower Following[] @relation("userFollower")
+  threads_created Threads[] @relation("UserThreadsCreated")
+  threads Threads[] @relation("UserThreadsUpdated")
+  likes_id Likes[] @relation("UsersToLikesId")
+  likes_name Likes[] @relation("UsersToLikesCreatedName")
+}
+
+model Following{
+  id Int @id @default(autoincrement())
+  following Users @relation("userFollowing",fields: [following_id], references: [id])
+  following_id Int
+  follower Users @relation("userFollower", fields: [follower_id], references: [id])
+  follower_id Int
+  create_at DateTime @default(now())
+  updated_at DateTime
+}
+
+model Threads{
+  id Int @id @default(autoincrement())
+  content String
+  image String
+  created_at DateTime @default(now())
+  thread_created Users @relation("UserThreadsCreated",fields: [created_by], references: [full_name])
+  created_by String
+  updated_at DateTime
+  thread_updated Users @relation("UserThreadsUpdated", fields: [updated_by], references: [full_name])
+  updated_by String
+  likes Likes[] @relation("ThreadsToLikesId")
+}
+
+model Likes{
+  id Int @id @default(autoincrement())
+  user_likes Users @relation("UsersToLikesId", fields: [user_id], references: [id])
+  user_id Int
+  thread_likes Threads @relation("ThreadsToLikesId", fields: [thread_id], references: [id])
+  thread_id Int
+  created_at DateTime @default(now())
+  likes_created Users @relation("UsersToLikesCreatedName", fields: [ created_by], references: [full_name])
+  created_by String
+}
