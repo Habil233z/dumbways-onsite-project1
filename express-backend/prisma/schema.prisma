@@ -13,14 +13,14 @@ datasource db {
 
 model Users{
   id Int @id @default(autoincrement())
-  username String
+  username String @unique
   full_name String @unique
-  email String
+  email String @unique
   password String
   photo_profile String
   bio String
-  created_at DateTime @default(now())
-  updated_at DateTime
+  created_at DateTime? @default(now())
+  updated_at DateTime?
   following Following[] @relation("userFollowing")
   follower Following[] @relation("userFollower")
   threads_created Threads[] @relation("UserThreadsCreated")
@@ -39,7 +39,7 @@ model Following{
   follower Users @relation("userFollower", fields: [follower_id], references: [id])
   follower_id Int
   create_at DateTime @default(now())
-  updated_at DateTime
+  updated_at DateTime?
 }
 
 model Threads{
@@ -49,9 +49,9 @@ model Threads{
   created_at DateTime @default(now())
   thread_created Users @relation("UserThreadsCreated",fields: [created_by], references: [full_name])
   created_by String
-  updated_at DateTime
-  thread_updated Users @relation("UserThreadsUpdated", fields: [updated_by], references: [full_name])
-  updated_by String
+  updated_at DateTime?
+  thread_updated Users? @relation("UserThreadsUpdated", fields: [updated_by], references: [full_name])
+  updated_by String?
   likes Likes[] @relation("ThreadsToLikesId")
   replies Replies[] @relation("ThreadReplied")
 }
@@ -78,7 +78,7 @@ model Replies{
   created_at DateTime @default(now())
   replierName Users @relation("ReplierName", fields: [created_by], references: [full_name])
   created_by String
-  updated_at DateTime
-  updaterName Users @relation("UpdaterName", fields: [updated_by], references: [full_name])
-  updated_by String
+  updated_at DateTime?
+  updaterName Users? @relation("UpdaterName", fields: [updated_by], references: [full_name])
+  updated_by String?
 }
