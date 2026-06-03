@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useState } from "react"
+import Header from "./Header"
 
 export default function Post() {
     if (!localStorage.getItem("token")) {
@@ -18,13 +19,16 @@ export default function Post() {
     })
 
     return (
-        <div className="h-screen flex justify-center items-center">
-            <div className="border-gray-800 border-2 h-100 w-200 bg-gray-200">
+        <>
+        <Header />
+        <div className="h-screen flex justify-center items-center bg-gray-800">
+            <div className="border-gray-800 border-2 h-100 w-200 bg-gray-200 pt-5">
                 <h1 className="text-center font-bold text-6xl">Post</h1>
                 <div className="flex flex-col justify-center items-center gap-4">
                 {post.map((items) => {return <h1 className="text-4xl text-center">{items.content}</h1>})}
                 </div>
             </div>
         </div>
+        </>
     )
 }

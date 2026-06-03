@@ -6,6 +6,9 @@ import jwt from "jsonwebtoken"
 export const Register = async (req:Request, res:Response) => {
     try {
         const {username, full_name, email, password, bio} = req.body
+
+        
+
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
         const newUser = await prisma.users.create({
