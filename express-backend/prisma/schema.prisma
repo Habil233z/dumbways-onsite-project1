@@ -17,7 +17,7 @@ model Users{
   full_name String @unique
   email String @unique
   password String
-  photo_profile String
+  photo_profile String @unique
   bio String
   created_at DateTime? @default(now())
   updated_at DateTime?
@@ -30,6 +30,7 @@ model Users{
   replier Replies[] @relation("UsersReplies")
   repliesName Replies[] @relation("ReplierName")
   updaterName Replies[] @relation("UpdaterName")
+  threadsCreatonPic Threads[] @relation("UserThreadProfilePic")
 }
 
 model Following{
@@ -45,8 +46,10 @@ model Following{
 model Threads{
   id Int @id @default(autoincrement())
   content String
-  image String
+  image String?
   created_at DateTime @default(now())
+  creator_pic Users? @relation("UserThreadProfilePic", fields: [creator_photo_profile], references: [photo_profile])
+  creator_photo_profile String?
   thread_created Users @relation("UserThreadsCreated",fields: [created_by], references: [full_name])
   created_by String
   updated_at DateTime?

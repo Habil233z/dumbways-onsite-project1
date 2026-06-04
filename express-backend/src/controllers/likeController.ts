@@ -1,0 +1,49 @@
+import { prisma } from "../lib/prisma"
+import type { Request, Response} from "express"
+
+export const AddLike = async (req:Request, res:Response) => {
+    try {
+        const decoded = req.user
+        const user_id = decoded.id
+        const created_by= decoded.full_name
+        const {thread_id} = req.body
+        const newLike = await prisma.likes.create({
+            data: {
+                user_id,
+                thread_id,
+                created_by
+            }})
+        return (
+            res.status(201).json({
+                message: "success like",
+                data: {
+                    user_id: newLike.user_id,
+                    thread_id: newLike.thread_id,
+                    created_by: newLike.created_by
+        }}))
+    } catch (error) {
+        res.status(400).json({
+        message: "fail to like"})
+    }
+}
+
+export const RemoveLike = async (req:Request, res:Response) => {
+    try {
+        const decoded = req.user
+        const user_id = decoded.id
+        const created_by= decoded.full_name
+        const {thread_id} = req.body
+        const deleteLike = await prisma.likes.deleteMany({
+            where: {
+                user_id: user_id,
+                thread_id: thread_id,
+                created_by: created_by
+            }})
+        return (
+            res.status(201).json({
+                message: "success delete like",
+            }))
+    } catch (error) {
+        
+    }
+}

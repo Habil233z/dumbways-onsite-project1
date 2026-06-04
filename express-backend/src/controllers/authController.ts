@@ -6,9 +6,6 @@ import jwt from "jsonwebtoken"
 export const Register = async (req:Request, res:Response) => {
     try {
         const {username, full_name, email, password, bio} = req.body
-
-        
-
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
         const newUser = await prisma.users.create({
@@ -55,7 +52,7 @@ export const Login = async (req:Request, res:Response) => {
                 message: "User not found or password wrong"
             })
         }
-        const token = jwt.sign({username: user.username, full_name: user.full_name }, process.env.SECRET_KEY as string, {
+        const token = jwt.sign({id:user.id, username: user.username, full_name: user.full_name }, process.env.SECRET_KEY as string, {
        expiresIn: '2 days',
         });
         res.status(200).json({
