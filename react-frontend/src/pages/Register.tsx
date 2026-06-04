@@ -11,11 +11,13 @@ export default function Register() {
 
     const handleClick = async e => {
         e.preventDefault()
-        if (username === ""|| full_name === "" || email === "" || password ==="" || bio === "") {
-            window.alert("All box must be filled")
-            window.location.href = '/register'
+        if (selectedFile === null) {
+            return window.alert("Must select profile picture image file")
         }
-        const response = await axios.post("http://localhost:3000/register", {username, full_name, email, password, bio})
+        if (username === ""|| full_name === "" || email === "" || password ==="" || bio === "") {
+            return window.alert("All box must be filled")
+        }
+        const response = await axios.post("http://localhost:3000/register", {username, full_name, email, password, bio, selectedFile})
         
         localStorage.setItem("token", response.data.token)
         window.location.href = '/'
@@ -26,6 +28,12 @@ export default function Register() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [bio, setBio] = useState("")
+    const [selectedFile, setSelectedFile] = useState(null)
+
+    const fileSelectHandler = (e) => {
+        setSelectedFile(e.target.files[0])
+        console.log(e.target.files[0])
+    }
 
     return (
         <div className="h-screen flex justify-center items-center bg-gray-900">
@@ -34,11 +42,15 @@ export default function Register() {
                 <h2 className="text-center mt-8 text-4xl mb-5 text-gray-950 font-medium">Register to Circle</h2>
                 <form className="flex justify-center items-center">
                     <div className="w-180 flex flex-col gap-4">
-                        <input type="text" name="username" placeholder="Username" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5" value={username} onChange={e => setUsername(e.target.value)}/>
-                        <input type="text" name="full_name" placeholder="Full Name" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5" value={full_name} onChange={e => setFull_name(e.target.value)}/>
-                        <input type="text" name="email" placeholder="Email" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5" value={email} onChange={e => setEmail(e.target.value)}/>
-                        <input type="text" name="password" placeholder="Password" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5" value={password} onChange={e => setPassword(e.target.value)}/>
-                        <input type="text" name="bio" placeholder="Your bio" className="h-10 bg-gray-300 max-w-full border-2 border-gray-600 pl-5 min-h-50 text-wrap" value={bio} onChange={e => setBio(e.target.value)}/>
+                        <input type="text" placeholder="Username" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5" onChange={e => setUsername(e.target.value)}/>
+                        <input type="text" placeholder="Full Name" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5" onChange={e => setFull_name(e.target.value)}/>
+                        <div className="flex-row-reverse flex">
+                        <input type="file" className="bg-gray-300 w-60 border-2 border-gray-600 pl-5" onChange={fileSelectHandler} accept="image/*"/>
+                        <h3 className="mr-5 text-gray-300">Select you profile picture</h3>
+                        </div>
+                        <input type="text" placeholder="Email" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5" onChange={e => setEmail(e.target.value)}/>
+                        <input type="text" placeholder="Password" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5" onChange={e => setPassword(e.target.value)}/>
+                        <input type="text" placeholder="Your bio" className="h-10 bg-gray-300 max-w-full border-2 border-gray-600 pl-5 min-h-50 text-wrap" value={bio} onChange={e => setBio(e.target.value)}/>
                         <div className="flex items-center justify-center">
                         <Button type="submit" onClick={handleClick} className="bg-gray-950 text-gray-300">Submit</Button>
                         </div>
