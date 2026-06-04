@@ -33,8 +33,8 @@ export default function Login() {
                 <h1 className="text-center mt-8 text-4xl font-extrabold text-green-600">Circle</h1>
                 <h2 className="text-center mt-8 text-4xl mb-5 text-gray-950 font-medium">Login to Circle</h2>
                 <form className="ml-5 mr-5">
-                    <input type="text" placeholder="Email or Username" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-4 mb-5" value={emailOrUsername} onChange={e => setEmailOrUsername(e.target.value)}/>
-                    <input type="text" placeholder="Password" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-4 mb-5" value={password} onChange={e => setPassword(e.target.value)}/>
+                    <input type="text" placeholder="Email or Username" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-4 mb-5" onChange={e => setEmailOrUsername(e.target.value)}/>
+                    <input type="text" placeholder="Password" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-4 mb-5" onChange={e => setPassword(e.target.value)}/>
                     <div className="flex items-center justify-center">
                     <Button onClick={handleClick} className="bg-gray-950 text-gray-300">Submit</Button>
                     </div>

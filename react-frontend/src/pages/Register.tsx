@@ -17,7 +17,8 @@ export default function Register() {
         if (username === ""|| full_name === "" || email === "" || password ==="" || bio === "") {
             return window.alert("All box must be filled")
         }
-        const response = await axios.post("http://localhost:3000/register", {username, full_name, email, password, bio, selectedFile})
+        const file = selectedFile
+        const response = await axios.post("http://localhost:3000/register", {username, full_name, email, password, bio, file})
         
         localStorage.setItem("token", response.data.token)
         window.location.href = '/'
