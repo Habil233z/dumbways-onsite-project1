@@ -45,7 +45,7 @@ export default function Register() {
                         <input type="text" placeholder="Username" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5" onChange={e => setUsername(e.target.value)}/>
                         <input type="text" placeholder="Full Name" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5" onChange={e => setFull_name(e.target.value)}/>
                         <div className="flex-row-reverse flex">
-                        <input type="file" className="bg-gray-300 w-60 border-2 border-gray-600 pl-5" onChange={fileSelectHandler} accept="image/*"/>
+                        <input type="file" name="file" className="bg-gray-300 w-60 border-2 border-gray-600 pl-5" onChange={fileSelectHandler} accept="image/*"/>
                         <h3 className="mr-5 text-gray-300">Select you profile picture</h3>
                         </div>
                         <input type="text" placeholder="Email" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5" onChange={e => setEmail(e.target.value)}/>
