@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import axios from "axios"
 import { useState } from "react"
 
 export default function CreatePost() {
@@ -18,6 +19,23 @@ export default function CreatePost() {
         console.log(e.target.files[0])
     }
 
+    const handleSubmit = async e => {
+        try {
+            const token = localStorage.getItem("token")||null
+            if (selectedFile === null) {
+                await axios.post("http://localhost:3000/post/create", {content}, {headers: {Authorization: `Bearer ${token}`}})
+                window.alert("Post created")
+                return window.location.href = "/post"
+            }
+                await axios.post("http://localhost:3000/post/create", {content, file:selectedFile}, {headers: {"Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`}})
+                window.alert("Post created")
+                return window.location.href = "/post"
+            
+        } catch (error) {
+            return window.alert("Not authenticated")
+        }
+    }
+
     return (
         <div className="fixed h-20 w-full bg-gray-800 border-t-4 border-gray-900 mt-500 inset-x-0 bottom-0">
             <div className="flex items-center justify-center">
@@ -26,9 +44,12 @@ export default function CreatePost() {
             {createForm && <div className="fixed inset-0 h-full w-ful bg-gray-950 opacity-50" onClick={handleOutsideClick}></div>}
             {createForm && 
                 <div className="fixed h-100 w-[50%] bg-gray-500 top-50  ml-[25%] mr-auto flex flex-col justify-center items-center border-4 border-gray-900">
-                    <h1 className="font-bold text-4xl">Create Post</h1>
+                    <h1 className="font-bold text-4xl mb-5">Create Post</h1>
                     <input type="text" placeholder="Your Post Text" className="border-4 border-gray-900 bg-gray-400 overflow-hidden text-clip w-100 min-h-30" onChange={e => setContent(e.target.value)}/>
                     <input type="file" onChange={fileSelectHandler} accept="image/*" className="bg-gray-400 border-4 border-gray-900 mt-5 w-60 pl-5"/>
+                    <div className="flex items-center justify-center">
+                    <Button onClick={handleSubmit} className="bg-gray-950 text-gray-300 mt-5">Post</Button>
+                    </div>
                 </div>}
         </div>
     )

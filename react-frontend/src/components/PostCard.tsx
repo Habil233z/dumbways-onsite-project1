@@ -32,7 +32,7 @@ export default function PostCard() {
             })})
 
     const handleLike = async (e, id) => {
-        e.preventDefault()
+
         const token = localStorage.getItem("token")||null
         const headers = {"Authorization" : `Bearer ${token}`}
         if (document.getElementById("like"+id)?.classList.contains("bg-red-900")){
@@ -47,6 +47,10 @@ export default function PostCard() {
             console.log(response)
     }}
 
+    const handleReply = async (e, id) => {
+        e.preventDefault
+    }
+
     return (
         <>
         {errorStatus && 
@@ -57,18 +61,22 @@ export default function PostCard() {
             </div>}
         {post.map((item) => {
             return (
-                <div className="w-100% min-h-40 bg-gray-600 m-5 p-5 flex" key={item.id}>
+                <div className="w-100% min-h-40 bg-gray-600 m-5 p-5 flex border-2 border-gray-900" key={item.id} onClick={() => alert("clicked")}>
                     <div className="flex">
                             <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center">
-                        <img src={item.creator_photo_profile} className="object-none h-full"></img>
+                        <img src={item.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
                         </div>
                     </div>
                     <div  className="w-full ml-5">
                         <h1 className="font-medium text-2xl">{item.created_by}</h1>
                         <p className="wrap-break-word">{item.content}</p>
+                        {item.image && 
+                        <div>
+                            <img src={item.image} alt="Fail to load image" className="" onClick={(e) => {e.stopPropagation()}}/>    
+                        </div>}
                         <div className="flex mt-8 flex-row-reverse">
-                            <Button className="w-20" id={"like"+ item.id} onClick={(e) => handleLike(e, item.id)}>Like</Button>
-                            <Button className="w-20" id={"reply"+ item.id}>Reply</Button>
+                            <Button className="w-20" id={"like"+ item.id} onClick={(e) => {e.stopPropagation(); handleLike(e, item.id)}}>Like</Button>
+                            <Button className="w-20" id={"reply"+ item.id} onClick={(e) => {e.stopPropagation(); handleReply(e, item.id)}}>Reply</Button>
                         </div>
                     </div>
                 </div>

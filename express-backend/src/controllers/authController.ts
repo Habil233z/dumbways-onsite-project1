@@ -20,7 +20,7 @@ export const Register = async (req:Request, res:Response) => {
                 bio
             }
         })
-        const token = jwt.sign({username: newUser.username, full_name: newUser.full_name }, process.env.SECRET_KEY as string, {
+        const token = jwt.sign({username: newUser.username, full_name: newUser.full_name ,photo_profile: newUser.photo_profile}, process.env.SECRET_KEY as string, {
         expiresIn: '2 days',
         });
         return (
@@ -52,7 +52,7 @@ export const Login = async (req:Request, res:Response) => {
                 message: "User not found or password wrong"
             })
         }
-        const token = jwt.sign({id:user.id, username: user.username, full_name: user.full_name }, process.env.SECRET_KEY as string, {
+        const token = jwt.sign({id:user.id, username: user.username, full_name: user.full_name, photo_profile: user.photo_profile}, process.env.SECRET_KEY as string, {
        expiresIn: '2 days',
         });
         res.status(200).json({

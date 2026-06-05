@@ -50,10 +50,10 @@ model Threads{
   created_at DateTime @default(now())
   creator_pic Users? @relation("UserThreadProfilePic", fields: [creator_photo_profile], references: [photo_profile])
   creator_photo_profile String?
-  thread_created Users @relation("UserThreadsCreated",fields: [created_by], references: [full_name])
+  thread_created Users @relation("UserThreadsCreated",fields: [created_by], references: [username])
   created_by String
   updated_at DateTime?
-  thread_updated Users? @relation("UserThreadsUpdated", fields: [updated_by], references: [full_name])
+  thread_updated Users? @relation("UserThreadsUpdated", fields: [updated_by], references: [username])
   updated_by String?
   likes Likes[] @relation("ThreadsToLikesId")
   replies Replies[] @relation("ThreadReplied")
@@ -66,7 +66,7 @@ model Likes{
   thread_likes Threads @relation("ThreadsToLikesId", fields: [thread_id], references: [id])
   thread_id Int
   created_at DateTime @default(now())
-  likes_created Users @relation("UsersToLikesCreatedName", fields: [ created_by], references: [full_name])
+  likes_created Users @relation("UsersToLikesCreatedName", fields: [ created_by], references: [username])
   created_by String
 }
 
@@ -79,9 +79,9 @@ model Replies{
   image String
   content String
   created_at DateTime @default(now())
-  replierName Users @relation("ReplierName", fields: [created_by], references: [full_name])
+  replierName Users @relation("ReplierName", fields: [created_by], references: [username])
   created_by String
   updated_at DateTime?
-  updaterName Users? @relation("UpdaterName", fields: [updated_by], references: [full_name])
+  updaterName Users? @relation("UpdaterName", fields: [updated_by], references: [username])
   updated_by String?
 }

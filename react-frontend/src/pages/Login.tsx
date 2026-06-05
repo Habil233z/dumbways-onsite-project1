@@ -12,13 +12,12 @@ export default function Login() {
     async function handleClick(e) {
         try {
             if (emailOrUsername === "" || password === "") {
-                window.alert("Box must be filled")
-                window.location.href = "/login"
+                return window.alert("Box must be filled")
             }
             e.preventDefault()
             const response = await axios.post("http://localhost:3000/login", {emailOrUsername, password})
             localStorage.setItem("token", response.data.token)
-            window.location.href = "/"
+            return window.location.href = "/"
         } catch (error) {
             return window.alert("User doesn't exist or password wrong")
         }
