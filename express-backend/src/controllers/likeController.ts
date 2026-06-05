@@ -3,9 +3,9 @@ import type { Request, Response} from "express"
 
 export const AddLike = async (req:Request, res:Response) => {
     try {
-        const decoded = req.user
+        const decoded = await req.user
         const user_id = decoded.id
-        const created_by= decoded.full_name
+        const created_by= decoded.username
         const {thread_id} = req.body
         const newLike = await prisma.likes.create({
             data: {
@@ -31,7 +31,7 @@ export const RemoveLike = async (req:Request, res:Response) => {
     try {
         const decoded = req.user
         const user_id = decoded.id
-        const created_by= decoded.full_name
+        const created_by= decoded.username
         const {thread_id} = req.body
         const deleteLike = await prisma.likes.deleteMany({
             where: {
