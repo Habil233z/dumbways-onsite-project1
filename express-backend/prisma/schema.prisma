@@ -30,7 +30,8 @@ model Users{
   replier Replies[] @relation("UsersReplies")
   repliesName Replies[] @relation("ReplierName")
   updaterName Replies[] @relation("UpdaterName")
-  threadsCreatonPic Threads[] @relation("UserThreadProfilePic")
+  threadsCreatorPic Threads[] @relation("UserThreadProfilePic")
+  threadReplies Replies[] @relation("UserReplyProfilePic")
 }
 
 model Following{
@@ -76,11 +77,13 @@ model Replies{
   user_id Int
   threadReplied Threads @relation("ThreadReplied", fields: [thread_id], references: [id])
   thread_id Int
-  image String
+  image String?
   content String
   created_at DateTime @default(now())
   replierName Users @relation("ReplierName", fields: [created_by], references: [username])
   created_by String
+  creator_pic Users? @relation("UserReplyProfilePic", fields: [creator_photo_profile], references: [photo_profile])
+  creator_photo_profile String?
   updated_at DateTime?
   updaterName Users? @relation("UpdaterName", fields: [updated_by], references: [username])
   updated_by String?

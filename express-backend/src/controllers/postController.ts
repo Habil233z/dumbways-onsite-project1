@@ -2,8 +2,8 @@ import { prisma } from "../lib/prisma"
 import type { Request, Response} from "express"
 
 export const GetPost = async (req: Request, res: Response) => {
+    const decoded = req.user
     try {
-        const decoded = req.user
         const post = await prisma.threads.findMany({orderBy : {created_at: "asc"}})
         const likes = await prisma.likes.findMany({orderBy : {created_at: "asc"}})
         return res.status(200).json({
@@ -16,9 +16,9 @@ export const GetPost = async (req: Request, res: Response) => {
 }
 
 export const CreatePost = async (req: Request, res: Response) => {
+    const decoded = req.user
+    const {content} = await req.body
     try {
-        const decoded = req.user
-        const {content} = await req.body
         const photo = req.file ? req.file.filename : ""
         const image = "http://localhost:3000/uploads/" + photo
         const newPost = await prisma.threads.create({
@@ -32,6 +32,22 @@ export const CreatePost = async (req: Request, res: Response) => {
         return res.status(201).json({
             message: "Post created successfully",
             data: {content: newPost.content, image: newPost.image, created_by: newPost.created_by, creator_photo_profile: newPost.creator_photo_profile}
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const GetPostReply = async (req: Request, res: Response) => {
+    const decoded = req.user
+    const {thread} = req.body
+    try {
+        const postReply = await prisma.replies.findMany({where: {thread_id : thread}, orderBy: {created_at: "asc"}})
+        const mainThread = await prisma.threads.findUnique({where: {id: thread}})
+        const likes = await prisma.likes.findMany({orderBy : {created_at: "asc"}})
+        return res.status(200).json({
+            message: "GetPostReply Success",
+            data: {postReply, mainThread, decoded, likes}
         })
     } catch (error) {
         console.log(error)

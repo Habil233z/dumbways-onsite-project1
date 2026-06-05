@@ -20,6 +20,9 @@ export default function CreatePost() {
     }
 
     const handleSubmit = async e => {
+        if (content === "") {
+            return window.alert("Post must have a text")
+        }
         try {
             const token = localStorage.getItem("token")||null
             if (selectedFile === null) {
@@ -37,7 +40,7 @@ export default function CreatePost() {
     }
 
     return (
-        <div className="fixed h-20 w-full bg-gray-800 border-t-4 border-gray-900 mt-500 inset-x-0 bottom-0">
+        <div className="fixed h-20 w-full bg-gray-800 border-t-4 border-gray-900 mt-500 inset-x-0 bottom-0" id="createPost">
             <div className="flex items-center justify-center">
             <Button className="bg-gray-950 mt-5" onClick={handleCreateButton}>Create Post</Button>
             </div>
