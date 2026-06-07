@@ -76,6 +76,7 @@ export default function PostCard() {
 
     const handleClickThread = async (e, id) => {
         setShowDetail(true)
+        document.getElementById("createPost")?.classList.add("hidden")
         document.body.classList.add("overflow-hidden");
         document.getElementById("createPost")?.classList.remove("fixed")
         const token = localStorage.getItem("token")||null
@@ -93,6 +94,7 @@ export default function PostCard() {
     }
 
     function handleOutsideClick() {
+    document.getElementById("createPost")?.classList.remove("hidden")
     document.body.classList.remove("overflow-hidden");
     document.getElementById("createPost")?.classList.add("fixed")
     setShowDetail(false)
@@ -101,12 +103,12 @@ export default function PostCard() {
     function ThreadDetail() {
         return (
         <>
-        <div className="fixed inset-0 h-full w-ful bg-gray-950 opacity-50" onClick={handleOutsideClick}></div>
-            <div className="fixed h-max-186 w-[50%] bg-gray-500 top-19  ml-[4.8%] mr-auto flex flex-col items-center border-4 border-gray-900">
+        <div className="fixed inset-0 h-screen w-screen bg-gray-950 opacity-50" onClick={handleOutsideClick}></div>
+            <div className="fixed h-max-186 w-[50%] bg-gray-500 top-19  ml-[-1%] mr-auto flex flex-col items-center border-4 border-gray-900">
                 <div className="h-50 w-full flex bg-gray-600 border-b-2 border-gray-900">
                     <div className="h-50 w-30 mt-3 ml-3">
                         <div className="flex">
-                            <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center">
+                            <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950">
                         <img src={mainThread.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
                         </div>
                     </div>
@@ -167,9 +169,9 @@ export default function PostCard() {
             </div>}
         {post.map((item) => {
             return (
-                <div className="w-100% min-h-40 bg-gray-600 m-5 p-5 flex border-1 border-gray-900" key={item.id} onClick={(e)=> handleClickThread(e, item.id)}>
+                <div className="w-100% min-h-40 bg-gray-600 m-5 p-5 flex border border-gray-900" key={item.id} onClick={(e)=> handleClickThread(e, item.id)}>
                     <div className="flex">
-                            <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center">
+                            <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950">
                         <img src={item.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
                         </div>
                     </div>
