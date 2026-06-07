@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
 
 function AuthButton() {
@@ -8,26 +7,20 @@ function AuthButton() {
         window.location.href = '/'
     }
     return(
-    <>
-    <div className="flex  flex-col items-center justify-center ml-2">
-    <Button><Link to="/">Home</Link></Button>
+    <div className="pl-10 pr-10 bg-gray-800">
+        <Link to="/"><div className="bg-gray-800 text-gray-300 h-15 w-full border-2 border-gray-950 flex items-center pl-5">Home</div></Link>
+        <Link to="/post"><div className="bg-gray-800 text-gray-300 h-15 w-full border-2 border-gray-950 flex items-center pl-5">Post</div></Link>
+        <Link to="/login"><div onClick={handleClick} className="bg-gray-800 text-gray-300 h-15 w-full border-2 border-gray-950 flex items-center pl-5">Logout</div></Link>
     </div>
-    <div className="flex flex-row-reverse w-full mr-2">
-        <div className="flex items-center justify-center">
-        <Button onClick={handleClick} className="bg-gray-950"><Link to="/">logout</Link></Button>
-        </div>
-        <div className="flex items-center justify-center">
-        <Button className="bg-gray-950 mr-5"><Link to="/post">Post</Link></Button>
-        </div>
-    </div>
-    </>
     )
     }
 
 export default function Header() {
     return (
-    <div className="flex h-20 w-full bg-gray-800 border-b-4 border-gray-900">
+    <div className="flex flex-col h-screen bg-gray-700 border-gray-950 w-[33%] border-r-2">
+        <div className="h-20 border-b-2 border-l-2 border-gray-950 flex justify-center items-center"><h1 className="text-green-700 font-bold text-5xl">Circle</h1></div>
         <AuthButton />
+        <div className="h-10 bg-gray-900 w-full"></div>
     </div>
     )
 }

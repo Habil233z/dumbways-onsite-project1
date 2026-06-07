@@ -7,6 +7,7 @@ export default function PostCard() {
     const [post, setPost] = useState([])
     const [errorStatus, setErrorStatus] = useState(false)
     const [showDetail, setShowDetail] = useState(false)
+    const [allLikes, setAllLikes] = useState([])
 
     const [likes, setLikes] = useState([])
     const [mainThread, setMainThread] = useState({})
@@ -23,6 +24,7 @@ export default function PostCard() {
             setErrorStatus(false)
             setPost(post)
             const likes = response.data.data.likes
+            setAllLikes(likes)
             const token = response.data.data.decoded
             const userliked = likes.filter(like => like.user_id === token.id)
             setUserLikes(userliked)
@@ -35,7 +37,15 @@ export default function PostCard() {
             const target = document.getElementById("like" + like.thread_id)
             return (
         target?.classList.add("bg-red-900"))
-            })})
+            },
+        allLikes.map((like) => {
+            const target = document.getElementById("like" + like.thread_id)
+            const likeCounts = allLikes.filter(count => count.thread_id === like.thread_id).length
+            
+            console.log(likeCounts)
+            console.log(target)
+        })
+        )})
 
     const handleLike = async (e, id) => {
 
@@ -50,6 +60,20 @@ export default function PostCard() {
             const response = await axios.post("http://localhost:3000/like/add", {thread_id:id} ,{headers})
     }}
     
+        const handleLikeReply = async (e, id) => {
+
+        const token = localStorage.getItem("token")||null
+        const headers = {"Authorization" : `Bearer ${token}`}
+        //if (document.getElementById("like"+id)?.classList.contains("bg-red-900")){
+        //    document.getElementById("like"+id)?.classList.remove("bg-red-900")
+        //    const response = await axios.post("http://localhost:3000/like/remove", {thread_id:id} ,{headers})
+
+        //} else {
+        //    document.getElementById("like"+id)?.classList.add("bg-red-900")
+        //    const response = await axios.post("http://localhost:3000/like/add", {thread_id:id} ,{headers})
+        //}
+        }
+
     const handleClickThread = async (e, id) => {
         setShowDetail(true)
         document.body.classList.add("overflow-hidden");
@@ -77,8 +101,8 @@ export default function PostCard() {
     function ThreadDetail() {
         return (
         <>
-            <div className="fixed inset-0 h-full w-ful bg-gray-950 opacity-50" onClick={handleOutsideClick}></div>
-            <div className="fixed h-186 w-[50%] bg-gray-500 top-19  ml-[4.8%] mr-auto flex flex-col items-center border-4 border-gray-900">
+        <div className="fixed inset-0 h-full w-ful bg-gray-950 opacity-50" onClick={handleOutsideClick}></div>
+            <div className="fixed h-max-186 w-[50%] bg-gray-500 top-19  ml-[4.8%] mr-auto flex flex-col items-center border-4 border-gray-900">
                 <div className="h-50 w-full flex bg-gray-600 border-b-2 border-gray-900">
                     <div className="h-50 w-30 mt-3 ml-3">
                         <div className="flex">
@@ -98,10 +122,16 @@ export default function PostCard() {
                     </div>
                 </div>
 
-                <div className="w-230 bg-red-500 overflow-auto">
+                <div className="w-230 overflow-auto">
+                    {postReply.length === 0 && 
+                    <div className="h-20 bg-gray-800 mt-5 mb-5 flex justify-center items-center border-2 border-gray-900">
+                        <div className="bg-gray-400 border-2 border-gray-900">
+                            <h1 className="font-medium text-4xl p-2">This post has no reply</h1>
+                        </div>
+                    </div>}
                     {postReply.map((reply) => {
                         return (
-                    <div className="w-100% min-h-40 bg-gray-600 m-5 p-5 flex border-2 border-gray-900" key={reply.id} onClick={(e)=> handleClickThread(e, reply.id)}>
+                    <div className="w-100% min-h-40 bg-gray-600 m-5 p-5 flex border-2 border-gray-900" key={reply.id}>
                     <div className="flex">
                             <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center">
                         <img src={reply.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
@@ -115,14 +145,14 @@ export default function PostCard() {
                             <img src={reply.image} alt="Fail to load image" className="" onClick={(e) => {e.stopPropagation()}}/>    
                         </div>}
                         <div className="flex mt-8 flex-row-reverse">
-                            <Button className="w-20" id={"likeReply"+ reply.id} onClick={(e) => {e.stopPropagation(); handleLike(e, reply.id)}}>Like</Button>
+                            <Button className="w-20" id={"likeReply"+ reply.id} onClick={(e) => {e.stopPropagation(); handleLikeReply(e, reply.id)}}>Like</Button>
                         </div>
                     </div>
                 </div>
                         )
                     })}
                 </div>
-            </div>
+        </div>
         </>
         )
     }
@@ -137,7 +167,7 @@ export default function PostCard() {
             </div>}
         {post.map((item) => {
             return (
-                <div className="w-100% min-h-40 bg-gray-600 m-5 p-5 flex border-2 border-gray-900" key={item.id} onClick={(e)=> handleClickThread(e, item.id)}>
+                <div className="w-100% min-h-40 bg-gray-600 m-5 p-5 flex border-1 border-gray-900" key={item.id} onClick={(e)=> handleClickThread(e, item.id)}>
                     <div className="flex">
                             <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center">
                         <img src={item.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>

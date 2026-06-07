@@ -1,6 +1,7 @@
 import PostCard from "@/components/PostCard"
 import Header from "../components/Header"
 import CreatePost from "@/components/CreatePost"
+import Profile from "@/components/Profile"
 
 export default function Post() {
     if (!localStorage.getItem("token")) {
@@ -8,14 +9,15 @@ export default function Post() {
     }
 
     return (
-        <>
+        <div className="flex">
         <Header/>
-        <div className="h-full flex justify-center items-center bg-gray-800">
-            <div className="h-full min-h-screen bg-gray-700 w-[60%] flex flex-col border-l-2 border-r-2 border-gray-950 pb-20">
+        <div className="h-screen pb-20 w-full flex justify-center items-center bg-gray-800 overflow-y-scroll overflow-hidden">
+            <div className="min-h-screen mt-80 bg-gray-700 w-[80%] flex flex-col border-l-2 border-r-2 border-gray-950 ">
                 <PostCard />
             </div>
         </div>
+        <Profile />
         <CreatePost/>
-        </>
+        </div>
     )
 }
