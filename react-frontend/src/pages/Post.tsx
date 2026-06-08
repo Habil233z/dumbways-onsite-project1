@@ -11,7 +11,7 @@ export default function Post() {
     return (
         <div className="flex">
         <Header/>
-        <div className="h-screen pb-30 w-full flex justify-center items-center bg-gray-800 overflow-y-scroll overflow-hidden">
+        <div className="h-screen pb-30 w-full flex justify-center items-center bg-gray-800 overflow-y-scroll overflow-hidden pt-68">
             <div className="min-h-screen mt-185 bg-gray-700 w-[80%] flex flex-col border-l-2 border-r-2 border-gray-950 ">
                 <PostCard />
             </div>

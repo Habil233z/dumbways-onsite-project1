@@ -34,7 +34,7 @@ export const Register = async (req:Request, res:Response) => {
                 password: newUser.password,
                 bio: newUser.bio
             },
-            token
+            token, user
             })
         )
     } catch(error) {
@@ -53,12 +53,13 @@ export const Login = async (req:Request, res:Response) => {
                 message: "User not found or password wrong"
             })
         }
+        const identity = {id:user.id, username: user.username, full_name: user.full_name, photo_profile: user.photo_profile}
         const token = jwt.sign({id:user.id, username: user.username, full_name: user.full_name, photo_profile: user.photo_profile}, process.env.SECRET_KEY as string, {
        expiresIn: '2 days',
         });
         res.status(200).json({
             message: "Success",
-            token
+            token, identity
         })
     } catch (error) {
         console.log(error)

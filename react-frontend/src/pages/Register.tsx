@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import axios from "axios"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
-
+    const navigate = useNavigate()
     if (localStorage.getItem("token")) {
-        window.location.href = "/"
+        navigate("/")
     }
 
     const handleClick = async e => {
@@ -23,7 +23,7 @@ export default function Register() {
             {headers: {"Content-Type": "multipart/form-data"}}
         )
         localStorage.setItem("token", response.data.token)
-        window.location.href = '/'
+        navigate("/")
     }
 
     const [username, setUsername] = useState("")
@@ -33,10 +33,6 @@ export default function Register() {
     const [bio, setBio] = useState("")
     const [selectedFile, setSelectedFile] = useState(null)
 
-    const fileSelectHandler = (e) => {
-        setSelectedFile(e.target.files[0])
-        console.log(e.target.files[0])
-    }
 
     return (
         <div className="h-screen flex justify-center items-center bg-gray-900">
@@ -48,8 +44,12 @@ export default function Register() {
                         <input type="text" placeholder="Username" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5" onChange={e => setUsername(e.target.value)}/>
                         <input type="text" placeholder="Full Name" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5" onChange={e => setFull_name(e.target.value)}/>
                         <div className="flex-row-reverse flex">
-                        <input type="file" name="file" className="bg-gray-300 w-60 border-2 border-gray-600 pl-5" onChange={fileSelectHandler} accept="image/*"/>
-                        <h3 className="mr-5 text-gray-300">Select you profile picture</h3>
+                        <div className="flex items-center">
+                            <h3 className="mr-4 text-gray-300">Select your profile picture</h3>
+                            <div className="flex justify-center items-center w-10 h-10 bg-gray-500 border-2 border-gray-900">
+                                <label>IMG<input type="file" accept="image/*" className="hidden" onChange={e => setSelectedFile(e.target.files[0])}/></label>
+                            </div>
+                        </div>
                         </div>
                         <input type="text" placeholder="Email" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5" onChange={e => setEmail(e.target.value)}/>
                         <input type="text" placeholder="Password" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5" onChange={e => setPassword(e.target.value)}/>

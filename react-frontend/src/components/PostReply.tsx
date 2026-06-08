@@ -8,6 +8,7 @@ export default function PostReply() {
     const [repliesLikes, setRepliesLikes] = useState([])
     const [postReply, setPostReply] = useState([])
 
+
     useState(
         async function getPost() {
         const token = localStorage.getItem("token")||null
@@ -34,9 +35,6 @@ export default function PostReply() {
         repliesLikes.map((like) => {
             const target = document.getElementById("likeReply" + like.replie_id)
             const likeCounts = repliesLikes.filter(count => count.replie_id === like.replie_id).length
-            
-            console.log(likeCounts)
-            console.log(target)
         })
     )})
     
@@ -71,6 +69,7 @@ export default function PostReply() {
                             <img src={reply.image} alt="Fail to load image" className="" onClick={(e) => {e.stopPropagation()}}/>    
                         </div>}
                         <div className="flex mt-8 flex-row-reverse">
+                            <div className="flex justify-center items-center mr-2 ml-5" id={"likeCount"+ reply.id}>{repliesLikes.filter(count => count.replie_id === reply.id).length}</div>
                             <Button className="w-20" id={"likeReply"+ reply.id} onClick={(e) => {e.stopPropagation(); handleLikeReply(e, reply.id)}}>Like</Button>
                         </div>
                     </div>

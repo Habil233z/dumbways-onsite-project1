@@ -36,14 +36,13 @@ export default function PostCard() {
         allLikes.map((like) => {
             const target = document.getElementById("like" + like.thread_id)
             const likeCounts = allLikes.filter(count => count.thread_id === like.thread_id).length
-            
-            console.log(likeCounts)
-            console.log(target)
         })
         )})
 
     const handleLike = async (e, id) => {
         e.preventDefault()
+        
+        console.log(document.getElementById("likeCount" + id)?.innerHTML)
         const token = localStorage.getItem("token")||null
         const headers = {"Authorization" : `Bearer ${token}`}
         if (document.getElementById("like"+id)?.classList.contains("bg-red-900")){
@@ -81,6 +80,7 @@ export default function PostCard() {
                             <img src={item.image} alt="Fail to load image" className="" onClick={(e) => {e.stopPropagation()}}/>    
                         </div>}
                         <div className="flex mt-8 flex-row-reverse ">
+                            <div className="flex justify-center items-center mr-2 ml-5" id={"likeCount"+ item.id}>{allLikes.filter(count => count.thread_id === item.id).length}</div>
                             <Button className="w-20" id={"like"+ item.id} onClick={(e) => {e.stopPropagation(); handleLike(e, item.id)}}>Like</Button>
                             <Button className="w-20" id={"reply"+ item.id} onClick={(e) => {e.stopPropagation(); handleReply(e, item.id)}}>Reply</Button>
                         </div>

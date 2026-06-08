@@ -77,9 +77,8 @@ export default function MainPost() {
                 </div>
                 <div className="w-[80%] flex items-center justify-center">
                     <input type="text" className="bg-gray-400 w-[70%] h-10" onChange={e => setContent(e.target.value)}/>
-                    <div className="flex justify-center items-center w-10 h-10 bg-green-400">
-                        <label>IMG</label>
-                        <input type="file" accept="image/*" className="hidden" onChange={e => setSelectedFile(e.target.files[0])}/>
+                    <div className="flex justify-center items-center w-10 h-10 bg-gray-500 mr-5">
+                        <label>IMG<input type="file" accept="image/*" className="hidden" onChange={e => setSelectedFile(e.target.files[0])}/></label>
                     </div>
                     <Button className="bg-gray-950 text-gray-300 h-10" onClick={handleSubmit}>Post</Button>
                 </div>

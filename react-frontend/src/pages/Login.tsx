@@ -1,23 +1,34 @@
 import { Button } from "@/components/ui/button";
+import { setProfile } from "@/slices_redux/profileSlice";
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
-
+    const navigate = useNavigate()
     if (localStorage.getItem("token")) {
-        window.location.href = "/"
+        navigate("/")
     }
+    
+    const profile = useSelector((state) => state.profile)
+    const dispatch = useDispatch()
 
     async function handleClick(e) {
+        e.preventDefault()
         try {
             if (emailOrUsername === "" || password === "") {
                 return window.alert("Box must be filled")
             }
             e.preventDefault()
             const response = await axios.post("http://localhost:3000/login", {emailOrUsername, password})
+            const identity = response.data.identity
+            console.log(profile)
+            dispatch(setProfile({identity}))
+
+
             localStorage.setItem("token", response.data.token)
-            return window.location.href = "/"
+            navigate("/")
         } catch (error) {
             return window.alert("User doesn't exist or password wrong")
         }

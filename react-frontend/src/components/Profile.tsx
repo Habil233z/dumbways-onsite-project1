@@ -1,5 +1,13 @@
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+
 
 export default function Profile() {
+    const profile = useSelector((state) => state.profile)
+    console.log(profile)
+
+    
+
     return (
         <div className="w-[33%] bg-gray-900 pt-20 flex justify-center">
             <div className="h-100 w-80 bg-gray-500 border-gray-950 border-2 flex flex-col items-center">
