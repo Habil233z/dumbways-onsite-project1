@@ -40,14 +40,29 @@ export const CreatePost = async (req: Request, res: Response) => {
 
 export const GetPostReply = async (req: Request, res: Response) => {
     const decoded = req.user
-    const {thread} = req.body
+    const {id} = req.params
+    const thread_id = Number(id)
     try {
-        const postReply = await prisma.replies.findMany({where: {thread_id : thread}, orderBy: {created_at: "asc"}})
-        const mainThread = await prisma.threads.findUnique({where: {id: thread}})
-        const likes = await prisma.likes.findMany({orderBy : {created_at: "asc"}})
+        const postReply = await prisma.replies.findMany({where: {thread_id : thread_id}, orderBy: {created_at: "asc"}})
+        const likesReply = await prisma.likesReplies.findMany({orderBy : {replie_id: "asc"}})
         return res.status(200).json({
             message: "GetPostReply Success",
-            data: {postReply, mainThread, decoded, likes}
+            data: {postReply, decoded, likesReply}
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const GetPostById = async (req: Request, res: Response) => {
+    const decoded = req.user
+    const {id} = req.params
+    const thread_id = Number(id)
+    try {
+        const mainThread = await prisma.threads.findUnique({where: {id: thread_id}})
+        return res.status(200).json({
+            message: "GetPostReply Success",
+            data: {mainThread, decoded}
         })
     } catch (error) {
         console.log(error)
