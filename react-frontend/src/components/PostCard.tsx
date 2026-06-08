@@ -64,9 +64,9 @@ export default function PostCard() {
             </div>}
         {post.map((item) => {
             return (
-                <div>
+                <div className="w-[80%] items-center justify-center">
                 <Link to={`/postDetail/${item.id}`}>
-                <div className="w-100% min-h-40 bg-gray-600 m-5 p-5 flex border border-gray-900" key={item.id}>
+                <div className="w-100% min-h-40 bg-gray-600 m-5 p-5 flex border border-gray-900 rounded-4xl" key={item.id}>
                     <div className="flex">
                             <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950">
                         <img src={item.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>

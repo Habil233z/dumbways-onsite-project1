@@ -55,7 +55,7 @@ export default function PostReply() {
     <>
         {postReply.map ((reply) => {
                 return (
-                    <div className="w-100% min-h-40 bg-gray-600 m-5 p-5 flex border-2 border-gray-900" key={reply.id}>
+                    <div className="w-100% min-h-40 bg-gray-600 m-5 p-5 flex border-2 border-gray-900 rounded-4xl" key={reply.id}>
                     <div className="flex">
                             <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center">
                         <img src={reply.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
