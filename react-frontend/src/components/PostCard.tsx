@@ -65,6 +65,7 @@ export default function PostCard() {
             </div>}
         {post.map((item) => {
             return (
+                <div>
                 <Link to={`/postDetail/${item.id}`}>
                 <div className="w-100% min-h-40 bg-gray-600 m-5 p-5 flex border border-gray-900" key={item.id}>
                     <div className="flex">
@@ -86,6 +87,7 @@ export default function PostCard() {
                     </div>
                 </div>
                 </Link>
+                </div>
         )})}
         </>
     )

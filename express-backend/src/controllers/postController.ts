@@ -68,3 +68,27 @@ export const GetPostById = async (req: Request, res: Response) => {
         console.log(error)
     }
 }
+
+export const CreateReply = async (req: Request, res: Response) => {
+    const decoded = req.user
+    const {content, thread_id} = await req.body
+    try {
+        const photo = req.file ? req.file.filename : ""
+        const image = "http://localhost:3000/uploads/" + photo
+        const newReply = await prisma.replies.create({
+            data: {
+                thread_id,
+                content,
+                image,
+                created_by: decoded.username,
+                creator_photo_profile: decoded.photo_profile,
+            }
+        })
+        return res.status(201).json({
+            message: "Post created successfully",
+            data: {content: newReply.content, image: newReply.image, created_by: newReply.created_by, creator_photo_profile: newReply.creator_photo_profile}
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
