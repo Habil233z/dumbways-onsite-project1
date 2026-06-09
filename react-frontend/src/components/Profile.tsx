@@ -1,6 +1,6 @@
 import { setProfile } from "@/slices_redux/profileSlice"
 import axios from "axios"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 
@@ -9,21 +9,17 @@ export default function Profile() {
     const headers = {"Authorization" : `Bearer ${token}`}
     const dispatch = useDispatch()
 
-    const profile = {
-        photo_profile: " ",
-        email: " ",
-        username: " ",
-        bio: " "
-    }
-    const profileRedux = useSelector((state)=> state.profile) 
+    const [profile, setSideProfile] =useState({})
 
-    useState(
     async function fetchProfile() {
         const response = await axios.get("http://localhost:3000/getProfile", {headers})
         dispatch(setProfile(response.data.data.profile))
-    })
+        setSideProfile(response.data.data.profile)
+    }
     
-    
+    useEffect(() => {
+        fetchProfile()
+    }, [])
     
     
 

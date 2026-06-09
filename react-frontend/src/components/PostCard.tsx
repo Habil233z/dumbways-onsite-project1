@@ -23,7 +23,6 @@ export default function PostCard() {
 
     async function mapLikes() {
         try {
-            console.log(allLikes)
             setErrorStatus(false)
             const response = await axios.get(`http://localhost:3000/like/get`,{headers})
             setAllLikes(response.data.data.likes)
