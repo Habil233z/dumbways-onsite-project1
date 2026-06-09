@@ -68,11 +68,13 @@ export default function PostCard() {
                     <h1 className="font-extrabold text-4xl">Fail fetching threads</h1>
                 </div>
             </div>}
+
+        <div className="overflow-y-scroll w-[90%] bg-gray-700 flex flex-col items-center mt-10 rounded-4xl pb-20">
         {post.map((item) => {
             return (
                 <div className="w-[80%] items-center justify-center" key={item.id}>
                 <Link to={`/postDetail/${item.id}`}>
-                <div className="w-100% min-h-40 bg-gray-600 m-5 p-5 flex border border-gray-900 rounded-4xl">
+                <div className="w-100% min-h-40 bg-gray-600 flex border border-gray-900 rounded-4xl m-5">
                     <div className="flex">
                             <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950">
                         <img src={item.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
@@ -95,6 +97,7 @@ export default function PostCard() {
                 </Link>
                 </div>
         )})}
+        </div>
         </>
     )
 }
