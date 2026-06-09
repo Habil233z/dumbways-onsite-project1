@@ -102,7 +102,7 @@ export const GetLikes = async (req:Request, res:Response) => {
         const likes = await prisma.likes.findMany({orderBy : {thread_id: "asc"}})
         return res.status(200).json({
             message: "Success get like data",
-            data: {likes}
+            data: {likes, decoded}
         })
     } catch (error) {
         res.status(400).json({

@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios, { all } from "axios"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
@@ -18,17 +18,22 @@ export default function PostCard() {
             setAllLikes(response.data.data.likes)
             setPost(response.data.data.post)
         } catch (error) {
-            return (setErrorStatus(true))
+            setErrorStatus(true)
     }}
 
     async function mapLikes() {
         try {
+            console.log(allLikes)
             setErrorStatus(false)
-            const response = await axios.get(`http://localhost:3000/`,{headers})
+            const response = await axios.get(`http://localhost:3000/like/get`,{headers})
             setAllLikes(response.data.data.likes)
-            const mapLikesReply = await allLikes.map((like) => {
+            const id = response.data.data.decoded.id
+            const userLike = response.data.data.likes.filter(like => like.user_id === id)
+            const mapLikesReply = await userLike.map((like) => {
             const target = document.getElementById("like" + like.thread_id)
-            target?.classList.add("bg-red-900")
+            return (
+                target?.classList.add("bg-red-900")
+            )
         })
         } catch (error) {
             console.log(error)
@@ -64,9 +69,9 @@ export default function PostCard() {
             </div>}
         {post.map((item) => {
             return (
-                <div className="w-[80%] items-center justify-center">
+                <div className="w-[80%] items-center justify-center" key={item.id}>
                 <Link to={`/postDetail/${item.id}`}>
-                <div className="w-100% min-h-40 bg-gray-600 m-5 p-5 flex border border-gray-900 rounded-4xl" key={item.id}>
+                <div className="w-100% min-h-40 bg-gray-600 m-5 p-5 flex border border-gray-900 rounded-4xl">
                     <div className="flex">
                             <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950">
                         <img src={item.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
