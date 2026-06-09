@@ -86,7 +86,9 @@ export default function PostDetail() {
     useEffect(() => {
         getMainPost()
         getPostReply()
+        setTimeout(() => {
         getRepliesLikes()
+        }, 50)
     }, [])
 
     return (
