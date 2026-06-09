@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Register() {
     const navigate = useNavigate()
     if (localStorage.getItem("token")) {
-        navigate("/")
+        window.location.href="/"
     }
 
     const handleClick = async e => {
@@ -23,7 +23,7 @@ export default function Register() {
             {headers: {"Content-Type": "multipart/form-data"}}
         )
         localStorage.setItem("token", response.data.token)
-        navigate("/")
+        window.location.href="/"
     }
 
     const [username, setUsername] = useState("")
