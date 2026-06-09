@@ -10,6 +10,7 @@ function AuthButton() {
     return(
     <div className="pl-10 pr-10 bg-gray-800">
         <Link to="/"><div className="bg-gray-800 text-gray-300 h-15 w-full border-2 border-gray-950 flex items-center pl-5">Home</div></Link>
+        <Link to="/search"><div className="bg-gray-800 text-gray-300 h-15 w-full border-2 border-gray-950 flex items-center pl-5">Search</div></Link>
         <Link to="/post"><div className="bg-gray-800 text-gray-300 h-15 w-full border-2 border-gray-950 flex items-center pl-5">Post</div></Link>
         <Link to="/login"><div onClick={handleClick} className="bg-gray-800 text-gray-300 h-15 w-full border-2 border-gray-950 flex items-center pl-5">Logout</div></Link>
     </div>

@@ -10,7 +10,8 @@ export default function Login() {
     if (localStorage.getItem("token")) {
         navigate("/")
     }
-    
+    const [identity, setIdentity] = useState([])
+
     const profile = useSelector((state) => state.profile)
     const dispatch = useDispatch()
 
@@ -22,8 +23,10 @@ export default function Login() {
             }
             e.preventDefault()
             const response = await axios.post("http://localhost:3000/login", {emailOrUsername, password})
-            const identity = response.data.identity
+            setIdentity(response.data.identity)
             console.log(profile)
+            console.log(identity)
+            console.log(response.data.identity)
             dispatch(setProfile({identity}))
 
 

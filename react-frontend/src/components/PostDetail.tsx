@@ -34,33 +34,39 @@ export default function PostDetail() {
             const response = await axios.get(`http://localhost:3000/post/reply/${id}`,{headers})
             setRepliesLikes(response.data.data.likesReply)
             setPostReply(response.data.data.postReply)
-            console.log(postReply)
         } catch (error) {
             console.log(error)
             setErrorStatus(true)
         }
     }
-    
-    function likeReply() {
-    repliesLikes.map((like) => {
+
+    async function getRepliesLikes() {
+        try {
+            setErrorStatus(false)
+            const response = await axios.get(`http://localhost:3000/post/reply/${id}`,{headers})
+            setRepliesLikes(response.data.data.likesReply)
+            const mapLikesReply = await response.data.data.likesReply.map((like) => {
             const target = document.getElementById("likeReply" + like.replie_id)
-            return (
-        target?.classList.add("bg-red-900"))
+            target?.classList.add("bg-red-900")
             }
-    )    
+    )
+        } catch (error) {
+            console.log(error)
+            setErrorStatus(true)
+        }
     }
-        
 
     const handleLikeReply = async (e, id) => {
-        e.preventDefault()
         if (document.getElementById("likeReply"+id)?.classList.contains("bg-red-900")){
             document.getElementById("likeReply"+id)?.classList.remove("bg-red-900")
             const response = await axios.post("http://localhost:3000/like/replyRemove", {replie_id:id} ,{headers})
-
+            getPostReply()
         } else {
             document.getElementById("likeReply"+id)?.classList.add("bg-red-900")
             const response = await axios.post("http://localhost:3000/like/replyAdd", {replie_id:id} ,{headers})
-    }}
+            getPostReply()
+        
+    }   }
 
     const handleSubmit = async e => {
         if (content === "") {
@@ -69,11 +75,11 @@ export default function PostDetail() {
         try {
             const token = localStorage.getItem("token")||null
             if (selectedFile === null) {
-                await axios.post("http://localhost:3000/post/createReply", {content, thread_id: mainThread.id}, {headers: {Authorization: `Bearer ${token}`}})
-                getPostReply()
+                await axios.post("http://localhost:3000/post/createReply", {content, thread_id: mainThread.id}, {headers})
+                getRepliesLikes()
             }
                 await axios.post("http://localhost:3000/post/createReply", {content, file:selectedFile, thread_id: mainThread.id}, {headers: {"Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`}})
-                getPostReply()
+                getRepliesLikes()
             
         } catch (error) {
             return window.alert("Not authenticated")
@@ -83,7 +89,7 @@ export default function PostDetail() {
     useEffect(() => {
         getMainPost()
         getPostReply()
-        likeReply()
+        getRepliesLikes()
     }, [])
 
     return (

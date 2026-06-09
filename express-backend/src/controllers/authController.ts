@@ -65,3 +65,24 @@ export const Login = async (req:Request, res:Response) => {
         console.log(error)
     }
 }
+
+export const getProfile = async (req: Request, res: Response) => {
+    const decoded = req.user
+    try {
+        const data = await prisma.users.findUnique({where: {id: decoded.id}})
+        const profile = {
+            id: data?.id,
+            username: data?.username,
+            full_name: data?.full_name,
+            email: data?.email,
+            photo_profile: data?.photo_profile,
+            bio: data?.bio
+        }
+        return res.status(200).json({
+            message: "GetPostReply Success",
+            data: {profile}
+        })
+    } catch (error) {
+        
+    }
+}
