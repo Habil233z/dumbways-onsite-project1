@@ -83,6 +83,6 @@ export const getProfile = async (req: Request, res: Response) => {
             data: {profile}
         })
     } catch (error) {
-        
+        console.log(error)
     }
 }

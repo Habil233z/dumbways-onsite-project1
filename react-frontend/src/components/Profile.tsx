@@ -21,7 +21,6 @@ export default function Profile() {
     async function fetchProfile() {
         const response = await axios.get("http://localhost:3000/getProfile", {headers})
         dispatch(setProfile(response.data.data.profile))
-        console.log(profileRedux)
     })
     
     
