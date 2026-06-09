@@ -10,9 +10,7 @@ export default function Login() {
     if (localStorage.getItem("token")) {
         navigate("/")
     }
-    const [identity, setIdentity] = useState([])
 
-    const profile = useSelector((state) => state.profile)
     const dispatch = useDispatch()
 
     async function handleClick(e) {
@@ -23,11 +21,7 @@ export default function Login() {
             }
             e.preventDefault()
             const response = await axios.post("http://localhost:3000/login", {emailOrUsername, password})
-            setIdentity(response.data.identity)
-            console.log(profile)
-            console.log(identity)
-            console.log(response.data.identity)
-            dispatch(setProfile({identity}))
+            dispatch(setProfile(response.data.identity))
 
 
             localStorage.setItem("token", response.data.token)

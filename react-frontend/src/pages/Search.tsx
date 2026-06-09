@@ -24,8 +24,6 @@ export default function Search() {
     }
 
     return (
-        <div className="flex">
-        <Header />
         <div className="h-screen flex bg-gray-800 flex-col w-full">
             <div className="h-20 mb-10 bg-gray-700 border-b-2 border-gray-950 flex justify-center items-center">
                 <input type="text" className="bg-gray-600 h-10 w-[70%] pl-6" placeholder="Search User" onChange={e => setInput(e.target.value)}/>
@@ -49,8 +47,6 @@ export default function Search() {
                 })}
             </div>
             </div>
-        </div>
-        <Profile />
         </div>
     )
 }

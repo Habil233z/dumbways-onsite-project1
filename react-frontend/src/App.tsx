@@ -6,18 +6,28 @@ import Login from './pages/Login'
 import Post from './pages/Post'
 import PostDetail from './pages/PostDetail'
 import Search from './pages/Search'
+import Header from './components/Header'
+import Profile from './components/Profile'
 
 function App() {
   return (
     <BrowserRouter>
-    <Routes>
-      <Route path='/login' element={<Login/>}/>
-      <Route path='/register' element={<Register/>}/>
-      <Route path='/' element={<Home/>}/>
-      <Route path='/search' element={<Search/>}/>
-      <Route path='/post' element={<Post/>}/>
-      <Route path='/postDetail/:id' element={<PostDetail/>}/>
-    </Routes>
+    {!localStorage.getItem("token") && 
+      <Routes>
+        <Route path='/login' element={<Login/>}/>
+        <Route path='/register' element={<Register/>}/>
+      </Routes>
+    }
+    <div className='flex'>
+      <Header />
+        <Routes>
+          <Route path='/' element={<Home/>}/>
+          <Route path='/search' element={<Search/>}/>
+          <Route path='/post' element={<Post/>}/>
+          <Route path='/postDetail/:id' element={<PostDetail/>}/>
+        </Routes>
+      <Profile />
+    </div>
     </BrowserRouter>
   )
  

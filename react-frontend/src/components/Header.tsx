@@ -1,11 +1,9 @@
 import { Link, useNavigate } from "react-router-dom"
 
 function AuthButton() {
-    const navigate = useNavigate()
-
     function handleClick() {
         localStorage.removeItem("token")
-        navigate("/login")
+        window.location.href="/login"
     }
     return(
     <div className="pl-10 pr-10 bg-gray-800">
