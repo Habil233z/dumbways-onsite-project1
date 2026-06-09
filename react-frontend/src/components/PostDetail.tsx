@@ -8,7 +8,6 @@ export default function PostDetail() {
     const [repliesLikes, setRepliesLikes] = useState([])
     const [postReply, setPostReply] = useState([])
 
-    const [likes, setLikes] = useState([])
     const [mainThread, setMainThread] = useState({})
     const [content, setContent] = useState("")
     const [selectedFile, setSelectedFile] = useState(null)
@@ -48,8 +47,7 @@ export default function PostDetail() {
             const mapLikesReply = await response.data.data.likesReply.map((like) => {
             const target = document.getElementById("likeReply" + like.replie_id)
             target?.classList.add("bg-red-900")
-            }
-    )
+            })
         } catch (error) {
             console.log(error)
             setErrorStatus(true)
@@ -65,8 +63,7 @@ export default function PostDetail() {
             document.getElementById("likeReply"+id)?.classList.add("bg-red-900")
             const response = await axios.post("http://localhost:3000/like/replyAdd", {replie_id:id} ,{headers})
             getPostReply()
-        
-    }   }
+        }}
 
     const handleSubmit = async e => {
         if (content === "") {
@@ -76,10 +73,10 @@ export default function PostDetail() {
             const token = localStorage.getItem("token")||null
             if (selectedFile === null) {
                 await axios.post("http://localhost:3000/post/createReply", {content, thread_id: mainThread.id}, {headers})
-                getRepliesLikes()
+                getPostReply()
             }
                 await axios.post("http://localhost:3000/post/createReply", {content, file:selectedFile, thread_id: mainThread.id}, {headers: {"Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`}})
-                getRepliesLikes()
+                getPostReply()
             
         } catch (error) {
             return window.alert("Not authenticated")

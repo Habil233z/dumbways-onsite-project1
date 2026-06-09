@@ -95,3 +95,17 @@ export const RemoveLikeReply = async (req:Request, res:Response) => {
         message: "fail to remove like"})
     }
 }
+
+export const GetLikes = async (req:Request, res:Response) => {
+    const decoded = req.user
+    try {
+        const likes = await prisma.likes.findMany({orderBy : {thread_id: "asc"}})
+        return res.status(200).json({
+            message: "Success get like data",
+            data: {likes}
+        })
+    } catch (error) {
+        res.status(400).json({
+        message: "Fail to get like data"})
+    }
+}

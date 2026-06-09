@@ -4,55 +4,55 @@ import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
 
 export default function PostCard() {
-    const [userlikes, setUserLikes] = useState([])
     const [post, setPost] = useState([])
     const [errorStatus, setErrorStatus] = useState(false)
     const [allLikes, setAllLikes] = useState([])
 
-    useState(
-        async function getPost() {
-        const token = localStorage.getItem("token")||null
-        const headers = {"Authorization" : `Bearer ${token}`}
+    const token = localStorage.getItem("token")||null
+    const headers = {"Authorization" : `Bearer ${token}`}
+
+    async function getPost() {
         try {
-            const response = await axios.get("http://localhost:3000/post/get", {headers})
-            const post = response.data.data.post
             setErrorStatus(false)
-            setPost(post)
-            const likes = response.data.data.likes
-            setAllLikes(likes)
-            const token = response.data.data.decoded
-            const userliked = likes.filter(like => like.user_id === token.id)
-            setUserLikes(userliked)
+            const response = await axios.get("http://localhost:3000/post/get", {headers})
+            setAllLikes(response.data.data.likes)
+            setPost(response.data.data.post)
         } catch (error) {
             return (setErrorStatus(true))
-    }})
+    }}
 
-    useEffect(() => {
-        userlikes.map((like) => {
+    async function mapLikes() {
+        try {
+            setErrorStatus(false)
+            const response = await axios.get(`http://localhost:3000/`,{headers})
+            setAllLikes(response.data.data.likes)
+            const mapLikesReply = await allLikes.map((like) => {
             const target = document.getElementById("like" + like.thread_id)
-            return (
-        target?.classList.add("bg-red-900"))
-            },
-        allLikes.map((like) => {
-            const target = document.getElementById("like" + like.thread_id)
-            const likeCounts = allLikes.filter(count => count.thread_id === like.thread_id).length
+            target?.classList.add("bg-red-900")
         })
-        )})
+        } catch (error) {
+            console.log(error)
+            setErrorStatus(true)
+        }
+        
+    }
 
     const handleLike = async (e, id) => {
         e.preventDefault()
-        
-        console.log(document.getElementById("likeCount" + id)?.innerHTML)
-        const token = localStorage.getItem("token")||null
-        const headers = {"Authorization" : `Bearer ${token}`}
         if (document.getElementById("like"+id)?.classList.contains("bg-red-900")){
             document.getElementById("like"+id)?.classList.remove("bg-red-900")
             const response = await axios.post("http://localhost:3000/like/remove", {thread_id:id} ,{headers})
-
+            getPost()
         } else {
             document.getElementById("like"+id)?.classList.add("bg-red-900")
             const response = await axios.post("http://localhost:3000/like/add", {thread_id:id} ,{headers})
-    }}
+            getPost()
+        }}
+
+    useEffect(() => {
+        getPost()
+        mapLikes()
+    }, [])
 
     return (
         <>
