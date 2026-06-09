@@ -30,7 +30,7 @@ export default function Search() {
                 <Button className="h-10" onClick={handleFind}>Find</Button>
             </div>
             <div className="flex flex-col w-full h-full items-center">
-            <div className="bg-gray-500 w-[90%]">
+            <div className="bg-gray-500 w-[90%] rounded-4xl">
                 {searchedUser.map((user) => {
                     return (
                     <div className="w-100% min-h-40 bg-gray-600 m-5 p-5 flex border-2 border-gray-900 rounded-4xl" key={user.id}>

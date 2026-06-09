@@ -24,7 +24,7 @@ export default function Profile() {
     
 
     return (
-        <div className="w-[33%] bg-gray-900 pt-20 flex justify-center">
+        <div className="w-[33%] bg-gray-800 pt-20 flex justify-center border-l-2 border-gray-900">
             <div className="h-100 w-80 bg-gray-500 border-gray-950 border-2 flex flex-col items-center">
                 <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center items-center mt-5 border-2 border-gray-950">
                     <img src={profile.photo_profile} className="object-none h-full"></img>

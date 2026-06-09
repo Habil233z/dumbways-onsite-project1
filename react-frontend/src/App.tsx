@@ -8,6 +8,7 @@ import PostDetail from './pages/PostDetail'
 import Search from './pages/Search'
 import Header from './components/Header'
 import Profile from './components/Profile'
+import Follow from './pages/Follow'
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home/>}/>
           <Route path='/search' element={<Search/>}/>
+          <Route path='/follow' element={<Follow/>}/>
           <Route path='/post' element={<Post/>}/>
           <Route path='/postDetail/:id' element={<PostDetail/>}/>
         </Routes>
