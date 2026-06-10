@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { Button } from "./ui/button"
 
 export default function PostDetail() {
@@ -86,6 +86,10 @@ export default function PostDetail() {
     }, [])
 
     return (
+    <div className="h-screen w-full flex flex-col items-center">
+        <div className="w-full flex">
+        <Link to="/post"><div className="h-15 w-20 bg-gray-200 rounded-br-4xl dark:bg-gray-900"></div></Link>
+        </div>
     <div className="pt-10 pb-20 w-[90%]">
         <div className="flex flex-col items-center">
                 <div className="h-50 w-full flex bg-white border border-gray-900 rounded-4xl dark:bg-gray-900">
@@ -143,6 +147,7 @@ export default function PostDetail() {
             )
         })}
         </div>
+    </div>
     </div>
     )
 }
