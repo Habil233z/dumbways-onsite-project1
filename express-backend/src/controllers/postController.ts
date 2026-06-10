@@ -60,9 +60,10 @@ export const GetPostById = async (req: Request, res: Response) => {
     const thread_id = Number(id)
     try {
         const mainThread = await prisma.threads.findUnique({where: {id: thread_id}})
+        const mainLike = await prisma.likes.findMany({where: {thread_id: thread_id}})
         return res.status(200).json({
             message: "GetPostReply Success",
-            data: {mainThread, decoded}
+            data: {mainThread, mainLike ,decoded}
         })
     } catch (error) {
         console.log(error)

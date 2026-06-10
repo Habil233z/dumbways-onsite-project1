@@ -8,6 +8,7 @@ export default function PostDetail() {
     const [postReply, setPostReply] = useState([])
 
     const [mainThread, setMainThread] = useState({})
+    const [mainLike, setMainLike] = useState([])
     const [content, setContent] = useState("")
     const [selectedFile, setSelectedFile] = useState(null)
 
@@ -19,6 +20,7 @@ export default function PostDetail() {
         try {
             const response = await axios.get(`http://localhost:3000/post/mainPost/${id}`,{headers})
             setMainThread(response.data.data.mainThread)
+            setMainLike(response.data.data.mainLike)
         } catch (error) {
             console.log(error)
         }
@@ -46,6 +48,26 @@ export default function PostDetail() {
             console.log(error)
         }
     }
+
+    async function applyMainLikes() {
+        if (mainLike.filter(state => state.thread_id === mainThread.id)) {
+            const target = document.getElementById("like" + mainThread.id)
+            target?.classList.add("fill-red-700")
+        }
+        
+    }
+
+    const handleLike = async (e, id) => {
+        e.preventDefault()
+        if (document.getElementById("like"+id)?.classList.contains("fill-red-700")){
+            document.getElementById("like"+id)?.classList.remove("fill-red-700")
+            await axios.post("http://localhost:3000/like/remove", {thread_id:id} ,{headers})
+            getMainPost()
+        } else {
+            document.getElementById("like"+id)?.classList.add("fill-red-700")
+            await axios.post("http://localhost:3000/like/add", {thread_id:id} ,{headers})
+            getMainPost()
+    }}
 
     const handleLikeReply = async (e, id) => {
         if (document.getElementById("likeReply"+id)?.classList.contains("fill-red-700")){
@@ -81,7 +103,9 @@ export default function PostDetail() {
         getMainPost()
         getPostReply()
         setTimeout(() => {
-        getRepliesLikes()
+            getMainPost()
+            getRepliesLikes()
+            applyMainLikes()
         }, 50)
     }, [])
 
@@ -108,6 +132,10 @@ export default function PostDetail() {
                         <div className="max-w-full">
                             <img src={mainThread.image} alt="Fail to load image" className=""/>    
                         </div>}
+                        <div className="flex flex-row-reverse items-end h-full w-full">
+                            <div className="mb-7 ml-4 mr-6" id={"likeCount"}>{mainLike.length}</div>
+                            <svg viewBox="0 0 24 24" width="30" height="30" id={"like"+ mainThread.id} onClick={(e) => {e.stopPropagation(); handleLike(e, mainThread.id)}}  className="mb-6 fill-gray-700 hover:fill-red-500 active:fill-red-900"><path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"/></svg>
+                        </div>
                     </div>
                 </div>
                 <div className="w-[80%] flex items-center justify-center mt-2">
