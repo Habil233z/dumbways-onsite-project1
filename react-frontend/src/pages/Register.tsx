@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Register() {
     const navigate = useNavigate()
     if (localStorage.getItem("token")) {
-        window.location.href="/"
+        window.location.href="/post"
     }
 
     const handleClick = async e => {
@@ -23,7 +23,7 @@ export default function Register() {
             {headers: {"Content-Type": "multipart/form-data"}}
         )
         localStorage.setItem("token", response.data.token)
-        window.location.href="/"
+        window.location.href="/post"
     }
 
     const [username, setUsername] = useState("")
@@ -33,10 +33,11 @@ export default function Register() {
     const [bio, setBio] = useState("")
     const [selectedFile, setSelectedFile] = useState(null)
 
+    document.body.style.overflow = "hidden"
 
     return (
-        <div className="h-screen flex justify-center items-center bg-gray-900">
-            <div className="border-gray-800 border-2 w-200 bg-gray-700 pb-10">
+        <div className="h-screen flex justify-center items-center bg-gray-100">
+            <div className="border-gray-800 border-2 w-200 bg-white pb-10 rounded-4xl shadow-2xl">
                 <h1 className="text-center mt-8 text-4xl font-extrabold text-green-600">Circle</h1>
                 <h2 className="text-center mt-8 text-4xl mb-5 text-gray-950 font-medium">Register to Circle</h2>
                 <form className="flex justify-center items-center">
@@ -45,10 +46,21 @@ export default function Register() {
                         <input type="text" placeholder="Full Name" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5" onChange={e => setFull_name(e.target.value)}/>
                         <div className="flex-row-reverse flex">
                         <div className="flex items-center">
-                            <h3 className="mr-4 text-gray-300">Select your profile picture</h3>
-                            <div className="flex justify-center items-center w-10 h-10 bg-gray-500 border-2 border-gray-900">
-                                <label>IMG<input type="file" accept="image/*" className="hidden" onChange={e => setSelectedFile(e.target.files[0])}/></label>
+                            {!selectedFile && 
+                            <>
+                            <h3 className="mr-4 text-gray-800">Select your profile picture</h3>
+                            <div className="flex justify-center items-center w-20 h-10 bg-gray-600 border-2 border-gray-900 rounded-xl hover:bg-gray-700 active:bg-gray-900">
+                                <label className="text-gray-200">Image<input type="file" accept="image/*" className="hidden" onChange={e => setSelectedFile(e.target.files[0])}/></label>
                             </div>
+                            </>}
+                            {selectedFile && 
+                            <>
+                            <h3 className="mr-4 text-gray-800">Picture Selected</h3>
+                            <div className="flex justify-center items-center w-20 h-10 bg-gray-800 border-2 border-gray-900 rounded-xl hover:bg-gray-700">
+                                <label className="text-gray-200">Image<input type="file" accept="image/*" className="hidden" onChange={e => setSelectedFile(e.target.files[0])}/></label>
+                            </div>
+                            </>}
+                            
                         </div>
                         </div>
                         <input type="text" placeholder="Email" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5" onChange={e => setEmail(e.target.value)}/>

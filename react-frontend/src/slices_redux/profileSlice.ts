@@ -5,7 +5,9 @@ const initialState = {
         username: "", 
         email: "",
         full_name: "", 
-        photo_profile: ""}
+        photo_profile: "",
+        bio: "",
+        created_at: ""}
 
 const profileSlice = createSlice({
     name: "profile",
@@ -16,8 +18,9 @@ const profileSlice = createSlice({
         state.username = action.payload.username,
         state.email = action.payload.email,
         state.full_name = action.payload.full_name,
-        state.photo_profile = action.payload.photo_profile 
-        },
+        state.photo_profile = action.payload.photo_profile,
+        state.bio = action.payload.bio,
+        state.created_at = action.payload.created_at},
     unSetProfile: () => {return initialState}
     }
 })

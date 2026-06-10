@@ -72,12 +72,14 @@ export const GetPostById = async (req: Request, res: Response) => {
 export const CreateReply = async (req: Request, res: Response) => {
     const decoded = req.user
     const {content, thread_id} = await req.body
+    const threadId: number = Number(thread_id)
     try {
         const photo = req.file ? req.file.filename : ""
         const image = "http://localhost:3000/uploads/" + photo
+        console.log("ran")
         const newReply = await prisma.replies.create({
             data: {
-                thread_id,
+                thread_id: threadId,
                 content,
                 image,
                 created_by: decoded.username,

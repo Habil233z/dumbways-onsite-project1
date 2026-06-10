@@ -76,7 +76,8 @@ export const getProfile = async (req: Request, res: Response) => {
             full_name: data?.full_name,
             email: data?.email,
             photo_profile: data?.photo_profile,
-            bio: data?.bio
+            bio: data?.bio,
+            created_at: data?.created_at
         }
         return res.status(200).json({
             message: "GetPostReply Success",
