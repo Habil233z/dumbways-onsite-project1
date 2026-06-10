@@ -28,7 +28,7 @@ export default function CreatePost() {
     }
 
     return (
-        <div className="fixed h-20 w-full bg-gray-200 border-t-2 border-gray-900 mt-500 inset-x-0 bottom-0 dark:bg-gray-900 dark:border-gray-700" id="createPost">
+        <div className="fixed h-20 w-full bg-gray-200 border-t-2 mt-500 inset-x-0 bottom-0 dark:bg-gray-900 dark:border-gray-700" id="createPost">
             <div className="flex items-center justify-center">
             <Button className="bg-gray-950 mt-5 dark:bg-gray-500 dark:hover:bg-gray-600 dark:active:bg-gray-700" onClick={e => setCreateForm(true)}>Create Post</Button>
             </div>
