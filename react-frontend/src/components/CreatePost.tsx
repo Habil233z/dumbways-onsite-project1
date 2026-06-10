@@ -7,7 +7,7 @@ export default function CreatePost() {
     const [content, setContent] = useState("")
     const [selectedFile, setSelectedFile] = useState(null)
 
-    const handleSubmit = async e => {
+    const handleSubmit = async () => {
         if (content === "") {
             return window.alert("Post must have a text")
         }

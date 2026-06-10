@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom"
 import { Button } from "./ui/button"
 
 export default function PostDetail() {
-    const [errorStatus, setErrorStatus] = useState(false)
     const [repliesLikes, setRepliesLikes] = useState([])
     const [postReply, setPostReply] = useState([])
 
@@ -18,30 +17,25 @@ export default function PostDetail() {
 
     async function getMainPost() {
         try {
-            setErrorStatus(false)
             const response = await axios.get(`http://localhost:3000/post/mainPost/${id}`,{headers})
             setMainThread(response.data.data.mainThread)
         } catch (error) {
             console.log(error)
-            setErrorStatus(true)
         }
         }
 
     async function getPostReply() {
         try {
-            setErrorStatus(false)
             const response = await axios.get(`http://localhost:3000/post/reply/${id}`,{headers})
             setRepliesLikes(response.data.data.likesReply)
             setPostReply(response.data.data.postReply)
         } catch (error) {
             console.log(error)
-            setErrorStatus(true)
         }
     }
 
     async function getRepliesLikes() {
         try {
-            setErrorStatus(false)
             const response = await axios.get(`http://localhost:3000/post/reply/${id}`,{headers})
             setRepliesLikes(response.data.data.likesReply)
             await response.data.data.likesReply.map((like) => {
@@ -50,22 +44,21 @@ export default function PostDetail() {
             })
         } catch (error) {
             console.log(error)
-            setErrorStatus(true)
         }
     }
 
     const handleLikeReply = async (e, id) => {
         if (document.getElementById("likeReply"+id)?.classList.contains("fill-red-700")){
             document.getElementById("likeReply"+id)?.classList.remove("fill-red-700")
-            const response = await axios.post("http://localhost:3000/like/replyRemove", {replie_id:id} ,{headers})
+            await axios.post("http://localhost:3000/like/replyRemove", {replie_id:id} ,{headers})
             getPostReply()
         } else {
             document.getElementById("likeReply"+id)?.classList.add("fill-red-700")
-            const response = await axios.post("http://localhost:3000/like/replyAdd", {replie_id:id} ,{headers})
+            await axios.post("http://localhost:3000/like/replyAdd", {replie_id:id} ,{headers})
             getPostReply()
         }}
 
-    const handleSubmit = async e => {
+    const handleSubmit = async () => {
         if (content === "") {
             return window.alert("Post must have a text")
         }

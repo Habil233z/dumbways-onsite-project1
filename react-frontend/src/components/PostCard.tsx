@@ -1,4 +1,4 @@
-import axios, { all } from "axios"
+import axios from "axios"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
@@ -28,7 +28,7 @@ export default function PostCard() {
             setAllLikes(response.data.data.likes)
             const id = response.data.data.decoded.id
             const userLike = response.data.data.likes.filter(like => like.user_id === id)
-            const mapLikesReply = await userLike.map((like) => {
+            await userLike.map((like) => {
             const target = document.getElementById("like" + like.thread_id)
             return (
                 target?.classList.add("fill-red-700")
@@ -45,11 +45,11 @@ export default function PostCard() {
         e.preventDefault()
         if (document.getElementById("like"+id)?.classList.contains("fill-red-700")){
             document.getElementById("like"+id)?.classList.remove("fill-red-700")
-            const response = await axios.post("http://localhost:3000/like/remove", {thread_id:id} ,{headers})
+            await axios.post("http://localhost:3000/like/remove", {thread_id:id} ,{headers})
             getPost()
         } else {
             document.getElementById("like"+id)?.classList.add("fill-red-700")
-            const response = await axios.post("http://localhost:3000/like/add", {thread_id:id} ,{headers})
+            await axios.post("http://localhost:3000/like/add", {thread_id:id} ,{headers})
             getPost()
         }}
 
