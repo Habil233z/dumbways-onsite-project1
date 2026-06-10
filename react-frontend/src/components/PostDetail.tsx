@@ -44,9 +44,9 @@ export default function PostDetail() {
             setErrorStatus(false)
             const response = await axios.get(`http://localhost:3000/post/reply/${id}`,{headers})
             setRepliesLikes(response.data.data.likesReply)
-            const mapLikesReply = await response.data.data.likesReply.map((like) => {
+            await response.data.data.likesReply.map((like) => {
             const target = document.getElementById("likeReply" + like.replie_id)
-            target?.classList.add("bg-red-900")
+            target?.classList.add("fill-red-700")
             })
         } catch (error) {
             console.log(error)
@@ -55,12 +55,12 @@ export default function PostDetail() {
     }
 
     const handleLikeReply = async (e, id) => {
-        if (document.getElementById("likeReply"+id)?.classList.contains("bg-red-900")){
-            document.getElementById("likeReply"+id)?.classList.remove("bg-red-900")
+        if (document.getElementById("likeReply"+id)?.classList.contains("fill-red-700")){
+            document.getElementById("likeReply"+id)?.classList.remove("fill-red-700")
             const response = await axios.post("http://localhost:3000/like/replyRemove", {replie_id:id} ,{headers})
             getPostReply()
         } else {
-            document.getElementById("likeReply"+id)?.classList.add("bg-red-900")
+            document.getElementById("likeReply"+id)?.classList.add("fill-red-700")
             const response = await axios.post("http://localhost:3000/like/replyAdd", {replie_id:id} ,{headers})
             getPostReply()
         }}
@@ -95,7 +95,7 @@ export default function PostDetail() {
     return (
     <div className="pt-10 pb-20 w-[90%]">
         <div className="flex flex-col items-center">
-                <div className="h-50 w-full flex bg-white border border-gray-900 rounded-4xl">
+                <div className="h-50 w-full flex bg-white border border-gray-900 rounded-4xl dark:bg-gray-900">
                     <div className="h-50 w-30 mt-3 ml-3">
                         <div className="flex">
                         <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950 mt-2 ml-2">
@@ -114,7 +114,7 @@ export default function PostDetail() {
                     </div>
                 </div>
                 <div className="w-[80%] flex items-center justify-center mt-2">
-                    <input type="text" className="bg-gray-100 w-[70%] h-10 border-2 border-gray-900" onChange={e => setContent(e.target.value)}/>
+                    <input type="text" className="bg-gray-100 w-[70%] h-10 border-2 border-gray-900 dark:bg-gray-700 pl-5" onChange={e => setContent(e.target.value)}/>
                     <div className="flex justify-center items-center w-10 h-10 bg-gray-400 mr-5 border-2 border-l-0 border-gray-900 hover:bg-gray-600 active:bg-gray-900">
                         <label>
                         <svg width="20" height="20" viewBox="0 0 24 24">
@@ -122,13 +122,13 @@ export default function PostDetail() {
                         </svg>
                         <input type="file" accept="image/*" className="hidden" onChange={e => setSelectedFile(e.target.files[0])}/></label>
                     </div>
-                    <Button className="bg-gray-950 text-gray-300 h-10" onClick={handleSubmit}>Post</Button>
+                    <Button className="bg-gray-950 text-gray-300 h-10 dark:bg-gray-800 dark:hover:bg-gray-900 dark:active:bg-gray-700" onClick={handleSubmit}>Post</Button>
                 </div>
             </div>
         <div className="h-full flex flex-col items-center">
         {postReply.map ((reply) => {
                 return (
-                <div className="w-[90%] min-h-40 bg-white m-5 p-5 flex border-2 border-gray-900 rounded-4xl" key={reply.id}>
+                <div className="w-[90%] min-h-40 bg-white m-5 p-5 flex border-2 border-gray-900 rounded-4xl dark:bg-gray-900" key={reply.id}>
                     <div className="flex">
                             <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center">
                         <img src={reply.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
@@ -143,7 +143,7 @@ export default function PostDetail() {
                         </div>}
                         <div className="flex mt-8 flex-row-reverse">
                             <div className="flex justify-center items-center mr-2 ml-5" id={"likeCount"+ reply.id}>{repliesLikes.filter(count => count.replie_id === reply.id).length}</div>
-                            <Button className="w-20" id={"likeReply"+ reply.id} onClick={(e) => {e.stopPropagation(); handleLikeReply(e, reply.id)}}>Like</Button>
+                            <svg viewBox="0 0 24 24" width="30" height="30" id={"likeReply"+ reply.id} onClick={(e) => {e.stopPropagation(); handleLikeReply(e, reply.id)}} className="fill-gray-700 hover:fill-red-500 active:fill-red-900"><path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"/></svg>
                         </div>
                     </div>
                 </div>

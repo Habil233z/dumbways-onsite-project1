@@ -28,8 +28,8 @@ export default function SideProfile() {
     }
 
     return (
-        <div className="w-[33%] bg-gray-100 pt-20 flex justify-center pr-15" id="SideProfile">
-            <div className="h-100 w-90 bg-white border-gray-950 border-2 flex flex-col items-center rounded-4xl" onClick={handleClick}>
+        <div className="w-[33%] bg-gray-100 pt-20 flex justify-center pr-15 dark:bg-gray-950" id="SideProfile">
+            <div className="h-100 w-90 bg-white border-gray-950 border-2 flex flex-col items-center rounded-4xl dark:bg-gray-900" onClick={handleClick}>
                 <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center items-center mt-10 border-2 border-gray-950">
                     <img src={profile.photo_profile} className="object-none h-full"></img>
                 </div>

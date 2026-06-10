@@ -1,5 +1,3 @@
-import Profile from "@/components/SideProfile"
-import Header from "../components/SideHeader"
 import { Button } from "@/components/ui/button"
 import axios from "axios"
 import { useEffect, useState } from "react"
@@ -32,27 +30,28 @@ export default function Search() {
         setProfile(profileRedux)
     }, [])
 
-    document.getElementById("postSideHeader")?.classList.remove("bg-gray-200")
-    document.getElementById("profileSideHeader")?.classList.remove("bg-gray-200")
-    document.getElementById("searchSideHeader")?.classList.add("bg-gray-200")
-    document.getElementById("followsSideHeader")?.classList.remove("bg-gray-200")
+    document.getElementById("postSideHeader")?.classList.remove("bg-gray-600")
+    document.getElementById("profileSideHeader")?.classList.remove("bg-gray-600")
+    document.getElementById("searchSideHeader")?.classList.add("bg-gray-600")
+    document.getElementById("followsSideHeader")?.classList.remove("bg-gray-600")
     document.getElementById("SideProfile")?.classList.remove("hidden")
 
     return (
-        <div className="h-screen flex bg-gray-100 flex-col w-full">
-            <div className="h-16 mb-10 bg-gray-100 flex justify-center items-center">
-                <input type="text" className="bg-gray-100 h-10 w-[70%] pl-6 border border-gray-800" placeholder="Search User" onChange={e => setInput(e.target.value)}/>
+        <div className="h-screen flex bg-gray-100 flex-col w-full dark:bg-gray-950">
+            <div className="h-16 mb-10 flex justify-center items-center">
+                <input type="text" className="bg-gray-100 h-10 w-[70%] pl-6 border border-gray-800 dark:bg-gray-700" placeholder="Search User" onChange={e => setInput(e.target.value)}/>
                 <Button className="h-10" onClick={handleFind}>Find</Button>
             </div>
             <div className="flex flex-col w-full h-full items-center">
-            <div className="bg-gray-100 w-[90%] rounded-4xl">
+            <div className="bg-gray-100 w-[90%] rounded-4xl dark:bg-gray-950">
                 {searchedUser.length === 0 && !firstOpen && 
                 <div className="h-50 flex justify-center items-center">
                     <h1 className="text-4xl">No user found</h1>
                 </div>}
+                <div className="overflow-y-scroll pb-50">
                 {searchedUser.map((user) => {
                     return (
-                    <div className="w-100% min-h-40 bg-white m-5 p-5 flex border-2 border-gray-900 rounded-4xl shadow-2xl" key={user.id} id={user.id}>
+                    <div className="w-100% min-h-40 bg-white m-5 p-5 flex border-2 border-gray-900 rounded-4xl shadow-2xl dark:bg-gray-900" key={user.id} id={user.id}>
                     <div className="flex">
                             <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border border-gray-800">
                         <img src={user.photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
@@ -77,6 +76,7 @@ export default function Search() {
                     </div>
                     )
                 })}
+                </div>
             </div>
             </div>
         </div>

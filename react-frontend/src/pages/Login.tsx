@@ -39,19 +39,19 @@ export default function Login() {
     const [password, setPassword] = useState("")
     
     return (
-        <div className="h-screen flex justify-center items-center bg-gray-100 overflow-hidden">
-            <div className="border-gray-800 border-2 h-100 w-200 bg-white rounded-4xl shadow-2xl">
-                <h1 className="text-center mt-8 text-4xl font-extrabold text-blue-700">SociNet</h1>
-                <h2 className="text-center mt-8 text-4xl mb-5 text-gray-950 font-medium">Login to SociNet</h2>
+        <div className="h-screen flex justify-center items-center bg-gray-100 overflow-hidden dark:bg-gray-950">
+            <div className="border-gray-800 border-2 h-100 w-200 bg-white rounded-4xl shadow-2xl dark:bg-gray-900">
+                <h1 className="text-center mt-8 text-4xl font-extrabold text-blue-700 dark:text-blue-800">SociNet</h1>
+                <h2 className="text-center mt-8 text-4xl mb-5 text-gray-950 font-medium dark:text-gray-300">Login to SociNet</h2>
                 <form className="ml-5 mr-5">
-                    <input type="text" placeholder="Email or Username" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-4 mb-5" onChange={e => setEmailOrUsername(e.target.value)}/>
-                    <input type="text" placeholder="Password" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-4 mb-5" onChange={e => setPassword(e.target.value)}/>
+                    <input type="text" placeholder="Email or Username" className="h-10 bg-gray-200 w-full border-2 border-gray-600 pl-4 mb-5 dark:text-gray-950 dark:bg-gray-500" onChange={e => setEmailOrUsername(e.target.value)}/>
+                    <input type="text" placeholder="Password" className="h-10 bg-gray-200 w-full border-2 border-gray-600 pl-4 mb-5 dark:text-gray-950 dark:bg-gray-500" onChange={e => setPassword(e.target.value)}/>
                     <div className="flex items-center justify-center">
-                    <Button onClick={handleClick} className="bg-gray-800 text-gray-300 w-20 h-10">Submit</Button>
+                    <Button onClick={handleClick} className="bg-gray-800 text-gray-300 w-20 h-10 dark:bg-gray-950 dark:hover:bg-gray-700 dark:active:bg-gray-800">Submit</Button>
                     </div>
                 </form>
                 <div className="flex flex-row-reverse pr-5">
-                    <Button className="bg-gray-800"><Link to="/register" className="text-gray-300">Register</Link></Button>
+                    <Button className="bg-gray-800 dark:bg-gray-950 dark:hover:bg-gray-700 dark:active:bg-gray-800"><Link to="/register" className="text-gray-300">Register</Link></Button>
                     <h2>Didn't have account?</h2>
                 </div>
             </div>
