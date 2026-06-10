@@ -6,13 +6,15 @@ import Login from './pages/Login'
 import Post from './pages/Post'
 import PostDetail from './pages/PostDetail'
 import Search from './pages/Search'
-import Header from './components/Header'
+import SideHeader from './components/SideHeader'
 import SideProfile from './components/SideProfile'
-import Follow from './pages/Follow'
+import Follows from './pages/Follows'
+import Header from './components/Header'
 
 function App() {
   return (
     <BrowserRouter>
+    <Header />
     {!localStorage.getItem("token") && 
       <Routes>
         <Route path='/login' element={<Login/>}/>
@@ -20,11 +22,11 @@ function App() {
       </Routes>
     }
     <div className='flex'>
-      <Header />
+      <SideHeader />
         <Routes>
           <Route path='/' element={<Profile/>}/>
           <Route path='/search' element={<Search/>}/>
-          <Route path='/follow' element={<Follow/>}/>
+          <Route path='/follows' element={<Follows/>}/>
           <Route path='/post' element={<Post/>}/>
           <Route path='/postDetail/:id' element={<PostDetail/>}/>
         </Routes>

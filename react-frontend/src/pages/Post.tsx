@@ -1,5 +1,5 @@
 import PostCard from "@/components/PostCard"
-import Header from "../components/Header"
+import Header from "../components/SideHeader"
 import CreatePost from "@/components/CreatePost"
 import Profile from "@/components/SideProfile"
 
@@ -8,7 +8,12 @@ export default function Post() {
         window.location.href = "/"
     }
 
+    document.getElementById("postSideHeader")?.classList.add("bg-gray-200")
+    document.getElementById("profileSideHeader")?.classList.remove("bg-gray-200")
+    document.getElementById("searchSideHeader")?.classList.remove("bg-gray-200")
+    document.getElementById("followsSideHeader")?.classList.remove("bg-gray-200")
     document.getElementById("SideProfile")?.classList.remove("hidden")
+    document.body.style.overflow = "hidden"
 
     return (
         <div className="h-screen w-full flex">

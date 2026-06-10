@@ -1,12 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { setProfile } from "@/slices_redux/profileSlice";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
-    const navigate = useNavigate()
     if (localStorage.getItem("token")) {
         window.location.href="/post"
     }
@@ -31,7 +30,10 @@ export default function Login() {
         }
     }
 
-    document.body.style.overflow = "hidden"
+    useEffect(() => {
+        document.body.style.overflow = "hidden"
+        document.getElementById("header")?.classList.add("hidden")
+    }, [])
 
     const [emailOrUsername, setEmailOrUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -39,7 +41,7 @@ export default function Login() {
     return (
         <div className="h-screen flex justify-center items-center bg-gray-100 overflow-hidden">
             <div className="border-gray-800 border-2 h-100 w-200 bg-white rounded-4xl shadow-2xl">
-                <h1 className="text-center mt-8 text-4xl font-extrabold text-green-600">SociNet</h1>
+                <h1 className="text-center mt-8 text-4xl font-extrabold text-blue-700">SociNet</h1>
                 <h2 className="text-center mt-8 text-4xl mb-5 text-gray-950 font-medium">Login to SociNet</h2>
                 <form className="ml-5 mr-5">
                     <input type="text" placeholder="Email or Username" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-4 mb-5" onChange={e => setEmailOrUsername(e.target.value)}/>

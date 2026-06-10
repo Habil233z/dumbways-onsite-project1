@@ -34,9 +34,9 @@ export default function CreatePost() {
             </div>
             {createForm && <div className="fixed inset-0 h-full w-ful bg-gray-950 opacity-50" onClick={e => setCreateForm(false)}></div>}
             {createForm && 
-                <div className="fixed h-100 w-[50%] bg-gray-500 top-50  ml-[25%] mr-auto flex flex-col justify-center items-center border-4 border-gray-900">
+                <div className="fixed h-100 w-[50%] bg-gray-200 top-50  ml-[25%] mr-auto flex flex-col justify-center items-center border-4 border-gray-900 shadow-2xl">
                     <h1 className="font-bold text-4xl mb-5">Create Post</h1>
-                    <input type="text" placeholder="Your Post Text" className="border-4 border-gray-900 bg-gray-400 overflow-hidden text-clip w-100 min-h-30" onChange={e => setContent(e.target.value)}/>
+                    <input type="text" placeholder="Your Post Text" className="border-4 border-gray-900 bg-gray-300 overflow-hidden text-clip w-100 min-h-30" onChange={e => setContent(e.target.value)}/>
                     <input type="file" onChange={e => setSelectedFile(e.target.files[0])} accept="image/*" className="bg-gray-400 border-4 border-gray-900 mt-5 w-60 pl-5"/>
                     <div className="flex items-center justify-center">
                     <Button onClick={handleSubmit} className="bg-gray-950 text-gray-300 mt-5">Post</Button>

@@ -38,7 +38,7 @@ export default function Register() {
     return (
         <div className="h-screen flex justify-center items-center bg-gray-100">
             <div className="border-gray-800 border-2 w-200 bg-white pb-10 rounded-4xl shadow-2xl">
-                <h1 className="text-center mt-8 text-4xl font-extrabold text-green-600">Circle</h1>
+                <h1 className="text-center mt-8 text-4xl font-extrabold text-blue-700">SociNet</h1>
                 <h2 className="text-center mt-8 text-4xl mb-5 text-gray-950 font-medium">Register to Circle</h2>
                 <form className="flex justify-center items-center">
                     <div className="w-180 flex flex-col gap-4">

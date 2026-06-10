@@ -12,7 +12,11 @@ export default function UserProfile() {
         setProfile(profileRedux)
     })
 
-    document.getElementById("SideProfile")?.classList.add("hidden")
+    document.getElementById("postSideHeader")?.classList.remove("bg-gray-200")
+    document.getElementById("profileSideHeader")?.classList.add("bg-gray-200")
+    document.getElementById("searchSideHeader")?.classList.remove("bg-gray-200")
+    document.getElementById("followsSideHeader")?.classList.remove("bg-gray-200")
+    document.getElementById("SideProfile")?.classList.remove("hidden")
 
     return (
         <div className="h-screen flex bg-gray-100 flex-col w-full items-center">

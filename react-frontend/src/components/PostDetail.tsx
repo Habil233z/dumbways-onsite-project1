@@ -93,10 +93,9 @@ export default function PostDetail() {
     }, [])
 
     return (
-    <>
+    <div className="">
         <div className="flex flex-col items-center">
                 <div className="h-50 w-full flex bg-white border-b border-gray-900 rounded-4xl">
-
                     <div className="h-50 w-30 mt-3 ml-3">
                         <div className="flex">
                         <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950 mt-2 ml-2">
@@ -150,6 +149,6 @@ export default function PostDetail() {
                 </div>
             )
         })}
-    </>
+    </div>
     )
 }
