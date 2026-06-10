@@ -93,9 +93,9 @@ export default function PostDetail() {
     }, [])
 
     return (
-    <div className="">
+    <div className="pt-10 pb-20 w-[90%]">
         <div className="flex flex-col items-center">
-                <div className="h-50 w-full flex bg-white border-b border-gray-900 rounded-4xl">
+                <div className="h-50 w-full flex bg-white border border-gray-900 rounded-4xl">
                     <div className="h-50 w-30 mt-3 ml-3">
                         <div className="flex">
                         <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950 mt-2 ml-2">
@@ -125,10 +125,10 @@ export default function PostDetail() {
                     <Button className="bg-gray-950 text-gray-300 h-10" onClick={handleSubmit}>Post</Button>
                 </div>
             </div>
-
+        <div className="h-full flex flex-col items-center">
         {postReply.map ((reply) => {
                 return (
-                <div className="w-100% min-h-40 bg-white m-5 p-5 flex border-2 border-gray-900 rounded-4xl" key={reply.id}>
+                <div className="w-[90%] min-h-40 bg-white m-5 p-5 flex border-2 border-gray-900 rounded-4xl" key={reply.id}>
                     <div className="flex">
                             <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center">
                         <img src={reply.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
@@ -138,8 +138,8 @@ export default function PostDetail() {
                         <h1 className="font-medium text-2xl">{reply.created_by}</h1>
                         <p className="wrap-break-word">{reply.content}</p>
                         {reply.image !== "http://localhost:3000/uploads/" && 
-                        <div className="max-w-full">
-                            <img src={reply.image} alt="Fail to load image" className="" onClick={(e) => {e.stopPropagation()}}/>    
+                        <div className="">
+                            <img className="max-h-50" src={reply.image} alt="Fail to load image" onClick={(e) => {e.stopPropagation()}}/>    
                         </div>}
                         <div className="flex mt-8 flex-row-reverse">
                             <div className="flex justify-center items-center mr-2 ml-5" id={"likeCount"+ reply.id}>{repliesLikes.filter(count => count.replie_id === reply.id).length}</div>
@@ -149,6 +149,7 @@ export default function PostDetail() {
                 </div>
             )
         })}
+        </div>
     </div>
     )
 }
