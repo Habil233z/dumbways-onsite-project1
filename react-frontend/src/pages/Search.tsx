@@ -34,7 +34,7 @@ export default function Search() {
         e.preventDefault()
         try {
             const response = await axios.post("http://localhost:3000/follow/unFollow", {id: id} ,{headers})
-            handleFind()
+            setFollowButton()
         } catch (error) {
             console.log(error)
         }}
@@ -43,7 +43,7 @@ export default function Search() {
         e.preventDefault()
         try {
             const response = await axios.post("http://localhost:3000/follow/follow", {id: id} ,{headers})
-            handleFind()
+            setFollowButton()
         } catch (error) {
             console.log(error)
         }}
