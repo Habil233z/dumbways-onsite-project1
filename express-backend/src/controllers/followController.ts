@@ -13,7 +13,7 @@ export const getFollowing = async (req: Request, res: Response) => {
         })
 
     } catch (error) {
-        
+        console.log(error)
     }
 }
 
@@ -29,6 +29,41 @@ export const getFollower = async (req: Request, res: Response) => {
         })
 
     } catch (error) {
-        
+        console.log(error)
+    }
+}
+
+export const unFollow = async (req: Request, res: Response) => {
+    const decoded = req.user
+    const {id} = req.body
+    try {
+        const unfollow = await prisma.following.deleteMany({where: {follower_id: decoded.id, following_id: id}})
+        return res.status(200).json({
+            message: "UnFollowed successfull",
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const follow = async (req: Request, res: Response) => {
+    const decoded = req.user
+    const {id} = req.body
+    try {
+        const follow = await prisma.following.create({
+            data: {
+                follower_id: decoded.id,
+                following_id: id
+            }
+        })
+        return res.status(200).json({
+            message: "followed successfull",
+            data: {
+                follower_id: decoded.id,
+                following_id: id
+            }
+        })
+    } catch (error) {
+        console.log(error)
     }
 }

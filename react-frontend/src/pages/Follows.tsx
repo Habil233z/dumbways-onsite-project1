@@ -28,6 +28,28 @@ export default function Follow() {
         setMode("follower")
     }
 
+    const handleUnFollow = async (e, id) => {
+        e.preventDefault()
+        try {
+            const response = await axios.post("http://localhost:3000/follow/unFollow", {id: id} ,{headers})
+            handleFollowing()
+        } catch (error) {
+            
+        }
+        
+    }
+
+    const handleFollow = async (e, id) => {
+        e.preventDefault()
+        try {
+            const response = await axios.post("http://localhost:3000/follow/follow", {id: id} ,{headers})
+            handleFollowing()
+        } catch (error) {
+            
+        }
+        
+    }
+
     useEffect(() => {
     setTimeout(() => {
         handleFollowing()
@@ -82,8 +104,8 @@ export default function Follow() {
                     </div>
                         <div>
                             <div>
-                                {mode === "following" && <Button className="h-10" id={"unfollowBtn" + user.id}>Unfollow</Button>}
-                                {mode === "follower" && <Button className="h-10" id={"followBtn" + user.id}>Follow</Button>}
+                                {mode === "following" && <Button className="h-10" id={"unfollowBtn" + user.id} onClick={(e) => handleUnFollow(e, user.id)}>Unfollow</Button>}
+                                {mode === "follower" && <Button className="h-10" id={"followBtn" + user.id} onClick={(e) => handleFollow(e, user.id)}>Follow</Button>}
                             </div>
                         </div>
                     </div>
