@@ -18,8 +18,8 @@ export default function Follow() {
         document.getElementById("followingButtonHead")?.classList.add("bg-gray-600")
         document.getElementById("followerButtonHead")?.classList.remove("bg-gray-600")
         setSearchedUser(response.data.data.userFollowed)
-        unTagFollower()
         setMode("following")
+        setButton()
     }
 
     async function handleFollower() {
@@ -27,23 +27,14 @@ export default function Follow() {
         document.getElementById("followerButtonHead")?.classList.add("bg-gray-600")
         document.getElementById("followingButtonHead")?.classList.remove("bg-gray-600")
         setSearchedUser(response.data.data.userFollowing)
-        setMode("follower")
-        tagFollower()
+        setButton()
     }
 
-    async function tagFollower() {
+    async function setButton() {
         const response = await axios.get("http://localhost:3000/follow/getFollowing", {headers})
         const followersAlreadyFollow = response.data.data.userFollowed
         const thatPerson = followersAlreadyFollow.map((request) => request.id)
         setFollowedUsers(thatPerson)
-    }
-
-    async function unTagFollower() {
-        const response = await axios.get("http://localhost:3000/follow/getFollowing", {headers})
-        const followersAlreadyFollow = response.data.data.userFollowed
-        const thatPerson = followersAlreadyFollow.map((request) => request.id)
-        setFollowedUsers(thatPerson)
-        
     }
 
     const handleUnFollow = async (e, id) => {
@@ -52,7 +43,7 @@ export default function Follow() {
             const response = await axios.post("http://localhost:3000/follow/unFollow", {id: id} ,{headers})
             handleFollowing()
         } catch (error) {
-            
+            console.log(error)
         }
         
     }
@@ -63,7 +54,7 @@ export default function Follow() {
             const response = await axios.post("http://localhost:3000/follow/follow", {id: id} ,{headers})
             handleFollowing()
         } catch (error) {
-            
+            console.log(error)
         }
         
     }
