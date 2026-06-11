@@ -3,7 +3,7 @@ import { useEffect } from "react"
 
 export default function Post() {
     if (!localStorage.getItem("token")) {
-        window.location.href = "/"
+        window.location.href = "/login"
     }
 
     useEffect(() => {

@@ -21,9 +21,8 @@ export const Register = async (req:Request, res:Response) => {
             }
         })
         const user = await prisma.users.findFirst({where: {OR: [{email: email}, {username: username}]}});
-        const token = jwt.sign({id:user.id, username: user.username, full_name: user.full_name ,photo_profile: user.photo_profile}, process.env.SECRET_KEY as string, {
-        expiresIn: '2 days',
-        });
+        const token = jwt.sign({id:user.id, username: user.username, full_name: user.full_name ,photo_profile: user.photo_profile, email: user.email}, process.env.SECRET_KEY as string, {
+        expiresIn: '2 days'})
         return (
             res.status(201).json({
                 message: "register successfull",
@@ -53,10 +52,9 @@ export const Login = async (req:Request, res:Response) => {
                 message: "User not found or password wrong"
             })
         }
-        const identity = {id:user.id, username: user.username, full_name: user.full_name, photo_profile: user.photo_profile}
-        const token = jwt.sign({id:user.id, username: user.username, full_name: user.full_name, photo_profile: user.photo_profile}, process.env.SECRET_KEY as string, {
-       expiresIn: '2 days',
-        });
+        const identity = {id:user.id, username: user.username, full_name: user.full_name, photo_profile: user.photo_profile, email: user.email}
+        const token = jwt.sign({id:user.id, username: user.username, full_name: user.full_name, photo_profile: user.photo_profile, email: user.email}, process.env.SECRET_KEY as string, {
+       expiresIn: '2 days'})
         res.status(200).json({
             message: "Success",
             token, identity
@@ -82,6 +80,34 @@ export const getProfile = async (req: Request, res: Response) => {
         return res.status(200).json({
             message: "GetPostReply Success",
             data: {profile}
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const editProfile = async (req: Request, res: Response) => {
+    const decoded = req.user
+    try {
+        const {username, full_name, bio} = await req.body
+        const photo = req.file ? req.file.filename : ""
+        const photo_profile = "http://localhost:3000/uploads/" + photo
+        const editedProfile = await prisma.users.update({
+            where: {email: decoded.email},
+            data: {
+                username,
+                full_name,
+                bio,
+                photo_profile
+            }
+        })
+        const user = await prisma.users.findUnique({where: {email: decoded.email}});
+        const identity = {id:user.id, username: user.username, full_name: user.full_name, photo_profile: user.photo_profile, email: user.email}
+        const token = jwt.sign({id:user.id, username: user.username, full_name: user.full_name, photo_profile: user.photo_profile, email: user.email}, process.env.SECRET_KEY as string, {
+        expiresIn: '2 days'});
+        return res.status(201).json({
+            message: "Profile successfully updated",
+            data : {token, identity}
         })
     } catch (error) {
         console.log(error)

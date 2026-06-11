@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 
 export default function UserProfile() {
         if (!localStorage.getItem("token")) {
@@ -11,7 +12,7 @@ export default function UserProfile() {
     const [profile, setProfile] = useState({})
     useEffect(() => {
         setProfile(profileRedux)
-    })
+    }, [profileRedux])
 
     document.getElementById("postSideHeader")?.classList.remove("bg-gray-600")
     document.getElementById("profileSideHeader")?.classList.add("bg-gray-600")
@@ -33,7 +34,7 @@ export default function UserProfile() {
                         
                     </div>
                     <div className="w-full flex flex-row-reverse">
-                        <Button className="h-10 w-25 bg-blue-700 hover:bg-blue-800 active:bg-blue-900">Edit profile</Button>
+                        <Button className="h-10 w-25 bg-blue-700 hover:bg-blue-800 active:bg-blue-900"><Link to="/editProfile" className="text-gray-300">Edit Profile</Link></Button>
                     </div>
                 </div>
                 <p>{profile.bio}</p>
