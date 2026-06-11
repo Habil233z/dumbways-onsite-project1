@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button"
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
 
 export default function Search() {
         if (!localStorage.getItem("token")) {
@@ -9,25 +8,48 @@ export default function Search() {
     }
     const [firstOpen, setFirstOpen] = useState(true)
     const [searchedUser, setSearchedUser] = useState([])
+    const [followedUsers, setFollowedUsers] = useState([])
     const [input, setInput] = useState("")
     const token = localStorage.getItem("token")
     const headers = {"Authorization" : `Bearer ${token}`}
 
     const handleFind = async () => {
         try {
+            setFollowButton()
             setFirstOpen(false)
             const response = await axios.post("http://localhost:3000/user/find", {input}, {headers})
             setSearchedUser(response.data.data.searchedUser)
-            document.getElementById(`${profile.id}`)?.classList.add("hidden")
         } catch (error) {
             console.log(error)
-        }
+        }}
+
+    async function setFollowButton() {
+        const response = await axios.get("http://localhost:3000/follow/getFollowing", {headers})
+        const followersAlreadyFollow = response.data.data.userFollowed
+        const thatPerson = followersAlreadyFollow.map((request) => request.id)
+        setFollowedUsers(thatPerson)
     }
 
-    const profileRedux = useSelector((state)=> state.profile) 
-    const [profile, setProfile] = useState({})
+    const handleUnFollow = async (e, id) => {
+        e.preventDefault()
+        try {
+            const response = await axios.post("http://localhost:3000/follow/unFollow", {id: id} ,{headers})
+            handleFind()
+        } catch (error) {
+            console.log(error)
+        }}
+
+    const handleFollow = async (e, id) => {
+        e.preventDefault()
+        try {
+            const response = await axios.post("http://localhost:3000/follow/follow", {id: id} ,{headers})
+            handleFind()
+        } catch (error) {
+            console.log(error)
+        }}
+
     useEffect(() => {
-        setProfile(profileRedux)
+        document.getElementById("profilePadding")?.classList.add("hidden")
     }, [])
 
     document.getElementById("postSideHeader")?.classList.remove("bg-gray-600")
@@ -72,7 +94,8 @@ export default function Search() {
                         </div>
                     </div>
                         <div>
-                            <Button className="h-10">Follow</Button>
+                            {followedUsers.includes(user.id) && <Button className="h-10" id={"unfollowBtn" + user.id} onClick={(e) => handleUnFollow(e, user.id)}>Unfollow</Button>}
+                            {!followedUsers.includes(user.id) && <Button className="h-10" id={"followBtn" + user.id} onClick={(e) => handleFollow(e, user.id)}>Follow</Button>}
                         </div>
                     </div>
                     )})}
