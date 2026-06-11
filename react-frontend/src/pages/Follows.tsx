@@ -44,9 +44,7 @@ export default function Follow() {
             handleFollowing()
         } catch (error) {
             console.log(error)
-        }
-        
-    }
+        }}
 
     const handleFollow = async (e, id) => {
         e.preventDefault()
@@ -55,9 +53,7 @@ export default function Follow() {
             handleFollowing()
         } catch (error) {
             console.log(error)
-        }
-        
-    }
+        }}
 
     useEffect(() => {
     setTimeout(() => {

@@ -7,9 +7,11 @@ export default function PostCard() {
     const [post, setPost] = useState([])
     const [errorStatus, setErrorStatus] = useState(false)
     const [allLikes, setAllLikes] = useState([])
+    const [followedUsers, setFollowedUsers] = useState([])
 
     const token = localStorage.getItem("token")||null
     const headers = {"Authorization" : `Bearer ${token}`}
+    const [userId, setUserId] = useState(0)
 
     async function getPost() {
         try {
@@ -17,6 +19,7 @@ export default function PostCard() {
             const response = await axios.get("http://localhost:3000/post/get", {headers})
             setAllLikes(response.data.data.likes)
             setPost(response.data.data.post)
+            setUserId(response.data.data.decoded.id)
         } catch (error) {
             setErrorStatus(true)
     }}
@@ -50,6 +53,31 @@ export default function PostCard() {
             getPost()
         }}
 
+    async function setFollowButton() {
+        const response = await axios.get("http://localhost:3000/follow/getFollowing", {headers})
+        const followersAlreadyFollow = response.data.data.userFollowed
+        const thatPerson = followersAlreadyFollow.map((request) => request.id)
+        setFollowedUsers(thatPerson)
+    }
+
+    const handleUnFollow = async (e, id) => {
+        e.preventDefault()
+        try {
+            await axios.post("http://localhost:3000/follow/unFollow", {id: id} ,{headers})
+            setFollowButton()
+        } catch (error) {
+            console.log(error)
+        }}
+
+    const handleFollow = async (e, id) => {
+        e.preventDefault()
+        try {
+            await axios.post("http://localhost:3000/follow/follow", {id: id} ,{headers})
+            setFollowButton()
+        } catch (error) {
+            console.log(error)
+        }}
+
     useEffect(() => {
         getPost()
         setTimeout(() => {
@@ -80,17 +108,29 @@ export default function PostCard() {
                         </div>
                     </div>
                     <div  className="w-full ml-5">
-                        <h1 className="mt-2">{item.created_at}</h1>
-                        <h1 className="font-medium text-2xl">{item.created_by}</h1>
+                        <div className="flex">
+                            <div>
+                                <h1 className="mt-2">{item.created_at}</h1>
+                                <h1 className="font-medium text-2xl">{item.created_by}</h1>
+                            </div>
+                            <div className="w-full flex flex-row-reverse mt-5 mr-5">
+                                <div>
+                                {followedUsers.includes(item.creator_id) && item.creator_id !== userId &&  <Button className="h-10" id={"unfollowBtn" + item.id} onClick={(e) => handleUnFollow(e, item.id)}>Unfollow</Button>}
+                                {!followedUsers.includes(item.creator_id) && item.creator_id !== userId && <Button className="h-10" id={"followBtn" + item.id} onClick={(e) => handleFollow(e, item.id)}>Follow</Button>}
+                                </div>
+                            </div>
+                        </div>
                         <p className="wrap-break-word">{item.content}</p>
-                        {item.image !== "http://localhost:3000/uploads/" && 
-                        <div className="max-w-full">
-                            <img src={item.image} alt="Fail to load image" className="" onClick={(e) => {e.stopPropagation()}}/>    
-                        </div>}
-                        <div className="flex mt-8 flex-row-reverse pb-5">
-                            <div className="flex justify-center items-center mr-5 ml-2" id={"likeCount"+ item.id}>{allLikes.filter(count => count.thread_id === item.id).length}</div>
-                            <svg viewBox="0 0 24 24" width="30" height="30" id={"like"+ item.id} onClick={(e) => {e.stopPropagation(); handleLike(e, item.id)}} className="fill-gray-700 hover:fill-red-500 active:fill-red-900"><path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"/></svg>
-                            <Button className="w-20 mr-5" id={"reply"+ item.id}>Reply</Button>
+                            {item.image !== "http://localhost:3000/uploads/" && 
+                            <div className="max-w-full">
+                                <img src={item.image} alt="Fail to load image" className="" onClick={(e) => {e.stopPropagation()}}/>    
+                            </div>}
+                        <div>
+                            <div className="flex mt-8 flex-row-reverse pb-5">
+                                <div className="flex justify-center items-center mr-5 ml-2" id={"likeCount"+ item.id}>{allLikes.filter(count => count.thread_id === item.id).length}</div>
+                                <svg viewBox="0 0 24 24" width="30" height="30" id={"like"+ item.id} onClick={(e) => {e.stopPropagation(); handleLike(e, item.id)}} className="fill-gray-700 hover:fill-red-500 active:fill-red-900"><path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"/></svg>
+                                <Button className="w-20 mr-5" id={"reply"+ item.id}>Reply</Button>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -26,7 +26,8 @@ export const CreatePost = async (req: Request, res: Response) => {
                 content,
                 image,
                 created_by: decoded.username,
-                creator_photo_profile: decoded.photo_profile
+                creator_photo_profile: decoded.photo_profile,
+                creator_id: decoded.id
             }
         })
         return res.status(201).json({
@@ -85,6 +86,7 @@ export const CreateReply = async (req: Request, res: Response) => {
                 image,
                 created_by: decoded.username,
                 creator_photo_profile: decoded.photo_profile,
+                creator_id: decoded.id
             }
         })
         return res.status(201).json({

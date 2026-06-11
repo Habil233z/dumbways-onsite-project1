@@ -31,10 +31,10 @@ model Users{
   updaterName Replies[] @relation("UpdaterName")
   threadsCreatorPic Threads[] @relation("UserThreadProfilePic")
   threadReplies Replies[] @relation("UserReplyProfilePic")
-
   likesReplieId LikesReplies[] @relation("UsersToLikesRepliesId")
-
   likesReplieCreatedByName LikesReplies[] @relation("UsersToLikesRepliesCreatedByName")
+  threadsCreatorId Threads[] @relation("CreatorId")
+  repliesCreatorId Replies[] @relation("replyCreatorId")
 }
 
 model Following{
@@ -56,6 +56,8 @@ model Threads{
   creator_photo_profile String?
   thread_created Users @relation("UserThreadsCreated",fields: [created_by], references: [username], onDelete: Cascade)
   created_by String
+  creator Users? @relation("CreatorId", fields: [creator_id], references: [id], onDelete: Cascade)
+  creator_id Int
   updated_at DateTime?
   thread_updated Users? @relation("UserThreadsUpdated", fields: [updated_by], references: [username], onDelete: Cascade)
   updated_by String?
@@ -85,6 +87,8 @@ model Replies{
   created_by String
   creator_pic Users? @relation("UserReplyProfilePic", fields: [creator_photo_profile], references: [photo_profile], onDelete: Cascade)
   creator_photo_profile String?
+  creator Users @relation("replyCreatorId", fields: [creator_id], references: [id], onDelete: Cascade)
+  creator_id Int
   updated_at DateTime?
   updaterName Users? @relation("UpdaterName", fields: [updated_by], references: [username], onDelete: Cascade)
   updated_by String?
