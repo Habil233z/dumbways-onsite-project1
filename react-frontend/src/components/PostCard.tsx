@@ -81,6 +81,7 @@ export default function PostCard() {
     useEffect(() => {
         getPost()
         setTimeout(() => {
+        setFollowButton()
         mapLikes()
         }, 10)
     }, [])
