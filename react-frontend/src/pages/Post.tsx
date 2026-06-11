@@ -9,8 +9,9 @@ export default function Post() {
 
     useEffect(() => {
         document.getElementById("postSideHeader")?.classList.add("bg-gray-600")
+        document.getElementById("profilePadding")?.classList.add("hidden")
     })
-    
+    document.getElementById("profilePadding")?.classList.add("hidden")
     document.getElementById("profileSideHeader")?.classList.remove("bg-gray-600")
     document.getElementById("searchSideHeader")?.classList.remove("bg-gray-600")
     document.getElementById("followsSideHeader")?.classList.remove("bg-gray-600")

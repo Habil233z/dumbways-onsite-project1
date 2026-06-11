@@ -41,8 +41,7 @@ export default function PostDetail() {
             const response = await axios.get(`http://localhost:3000/post/reply/${id}`,{headers})
             setRepliesLikes(response.data.data.likesReply)
             await response.data.data.likesReply.map((like) => {
-            const target = document.getElementById("likeReply" + like.replie_id)
-            target?.classList.add("fill-red-700")
+            document.getElementById("likeReply" + like.replie_id)?.classList.add("fill-red-700")
             })
         } catch (error) {
             console.log(error)
@@ -51,8 +50,7 @@ export default function PostDetail() {
 
     async function applyMainLikes() {
         if (mainLike.filter(state => state.thread_id === mainThread.id)) {
-            const target = document.getElementById("like" + mainThread.id)
-            target?.classList.add("fill-red-700")
+            document.getElementById("like" + mainThread.id)?.classList.add("fill-red-700")
         }
         
     }
@@ -102,17 +100,18 @@ export default function PostDetail() {
     useEffect(() => {
         getMainPost()
         getPostReply()
+        getRepliesLikes()
+        applyMainLikes()
         setTimeout(() => {
-            getMainPost()
             getRepliesLikes()
             applyMainLikes()
-        }, 50)
+        }, 100)
     }, [])
 
     return (
     <div className="h-screen w-full flex flex-col items-center">
         <div className="w-full flex">
-        <Link to="/post"><div className="h-15 w-20 bg-gray-200 rounded-br-4xl dark:bg-gray-900"></div></Link>
+        <Link to="/post"><div className="h-15 w-20 bg-gray-200 rounded-br-4xl dark:bg-gray-900 flex justify-center items-center"><svg viewBox="0 0 24 24" width="30" height="30"><path className="dark:fill-gray-400" d="M19,11H9l3.29-3.29a1,1,0,0,0,0-1.42,1,1,0,0,0-1.41,0l-4.29,4.3A2,2,0,0,0,6,12H6a2,2,0,0,0,.59,1.4l4.29,4.3a1,1,0,1,0,1.41-1.42L9,13H19a1,1,0,0,0,0-2Z"/></svg></div></Link>
         </div>
     <div className="pt-10 pb-20 w-[90%]">
         <div className="flex flex-col items-center">

@@ -35,6 +35,7 @@ export default function Search() {
     document.getElementById("searchSideHeader")?.classList.add("bg-gray-600")
     document.getElementById("followsSideHeader")?.classList.remove("bg-gray-600")
     document.getElementById("SideProfile")?.classList.remove("hidden")
+    document.getElementById("profilePadding")?.classList.add("hidden")
 
     return (
         <div className="h-screen flex bg-gray-100 flex-col w-full dark:bg-gray-950">

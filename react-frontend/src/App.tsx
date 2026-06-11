@@ -10,6 +10,7 @@ import SideHeader from './components/SideHeader'
 import SideProfile from './components/SideProfile'
 import Follows from './pages/Follows'
 import Header from './components/Header'
+import ProfilePadding from './components/ProfilePadding'
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path='/postDetail/:id' element={<PostDetail/>}/>
         </Routes>
       <SideProfile />
+      <ProfilePadding />
     </div>
     </BrowserRouter>
   )

@@ -29,10 +29,7 @@ export default function PostCard() {
             const id = response.data.data.decoded.id
             const userLike = response.data.data.likes.filter(like => like.user_id === id)
             await userLike.map((like) => {
-            const target = document.getElementById("like" + like.thread_id)
-            return (
-                target?.classList.add("fill-red-700")
-            )
+            document.getElementById("like" + like.thread_id)?.classList.add("fill-red-700")
         })
         } catch (error) {
             console.log(error)

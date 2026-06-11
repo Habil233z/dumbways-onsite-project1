@@ -1,10 +1,17 @@
 import PostDetail from "@/components/PostDetail"
+import { useEffect } from "react"
 
 export default function Post() {
     if (!localStorage.getItem("token")) {
         window.location.href = "/"
     }
 
+    useEffect(() => {
+            document.getElementById("postSideHeader")?.classList.add("bg-gray-600")
+            document.getElementById("profilePadding")?.classList.add("hidden")
+        })
+
+    document.getElementById("profilePadding")?.classList.add("hidden")
     document.getElementById("postSideHeader")?.classList.add("bg-gray-600")
     document.getElementById("profileSideHeader")?.classList.remove("bg-gray-600")
     document.getElementById("searchSideHeader")?.classList.remove("bg-gray-600")

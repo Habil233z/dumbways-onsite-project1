@@ -24,7 +24,7 @@ export default function Follow() {
         const response = await axios.get("http://localhost:3000/follow/getFollower", {headers})
         document.getElementById("followerButtonHead")?.classList.add("bg-gray-600")
         document.getElementById("followingButtonHead")?.classList.remove("bg-gray-600")
-        setSearchedUser(response.data.data.userFollowed)
+        setSearchedUser(response.data.data.userFollowing)
         setMode("follower")
     }
 
@@ -39,6 +39,7 @@ export default function Follow() {
     document.getElementById("profileSideHeader")?.classList.remove("bg-gray-600")
     document.getElementById("searchSideHeader")?.classList.remove("bg-gray-600")
     document.getElementById("SideProfile")?.classList.remove("hidden")
+    document.getElementById("profilePadding")?.classList.add("hidden")
     }, [])
 
     
@@ -60,7 +61,7 @@ export default function Follow() {
                 <div className="h-full w-full  flex flex-col items-center">
                     {searchedUsers.map((user) => {
                     return (
-                    <div className="w-100% min-h-40 bg-white m-5 p-5 flex border-2 border-gray-900 rounded-4xl shadow-2xl dark:bg-gray-900" key={user.id} id={user.id}>
+                    <div className="w-[60%] min-h-40 bg-white m-5 p-5 flex border-2 border-gray-900 rounded-4xl shadow-2xl dark:bg-gray-900" key={user.id} id={user.id}>
                     <div className="flex">
                             <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border border-gray-800">
                         <img src={user.photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
@@ -80,7 +81,10 @@ export default function Follow() {
                         </div>
                     </div>
                         <div>
-                            <Button className="h-10">Follow</Button>
+                            <div>
+                                {mode === "following" && <Button className="h-10" id={"unfollowBtn" + user.id}>Unfollow</Button>}
+                                {mode === "follower" && <Button className="h-10" id={"followBtn" + user.id}>Follow</Button>}
+                            </div>
                         </div>
                     </div>
                     )})}
