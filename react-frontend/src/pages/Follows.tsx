@@ -19,7 +19,7 @@ export default function Follow() {
         document.getElementById("followerButtonHead")?.classList.remove("bg-gray-600")
         setSearchedUser(response.data.data.userFollowed)
         setMode("following")
-        setButton()
+        setFollowButton()
     }
 
     async function handleFollower() {
@@ -27,10 +27,10 @@ export default function Follow() {
         document.getElementById("followerButtonHead")?.classList.add("bg-gray-600")
         document.getElementById("followingButtonHead")?.classList.remove("bg-gray-600")
         setSearchedUser(response.data.data.userFollowing)
-        setButton()
+        setFollowButton()
     }
 
-    async function setButton() {
+    async function setFollowButton() {
         const response = await axios.get("http://localhost:3000/follow/getFollowing", {headers})
         const followersAlreadyFollow = response.data.data.userFollowed
         const thatPerson = followersAlreadyFollow.map((request) => request.id)
