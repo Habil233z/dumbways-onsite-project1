@@ -1,12 +1,16 @@
 import PostCard from "@/components/PostCard"
 import CreatePost from "@/components/CreatePost"
+import { useEffect } from "react"
 
 export default function Post() {
     if (!localStorage.getItem("token")) {
         window.location.href = "/"
     }
 
-    document.getElementById("postSideHeader")?.classList.add("bg-gray-600")
+    useEffect(() => {
+        document.getElementById("postSideHeader")?.classList.add("bg-gray-600")
+    })
+    
     document.getElementById("profileSideHeader")?.classList.remove("bg-gray-600")
     document.getElementById("searchSideHeader")?.classList.remove("bg-gray-600")
     document.getElementById("followsSideHeader")?.classList.remove("bg-gray-600")

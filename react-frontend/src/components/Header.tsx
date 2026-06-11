@@ -27,14 +27,10 @@ export default function Header() {
 
     function applyMode() {
         if (localStorage.getItem("mode") === "day") {
-            console.log("switch to day mode")
             document.documentElement.classList.remove("dark")}
         if (localStorage.getItem("mode") === "night") {
-            console.log("switch to dark mode")
             document.documentElement.classList.add("dark")}
         }
-        console.log("run pass")
-
     useEffect(() => {
         getMode()
         applyMode()

@@ -74,8 +74,7 @@ export default function Search() {
                             <Button className="h-10">Follow</Button>
                         </div>
                     </div>
-                    )
-                })}
+                    )})}
                 </div>
             </div>
             </div>
