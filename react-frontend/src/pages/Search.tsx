@@ -12,12 +12,14 @@ export default function Search() {
     const [input, setInput] = useState("")
     const token = localStorage.getItem("token")
     const headers = {"Authorization" : `Bearer ${token}`}
+    const [userId, setUserId] = useState(0)
 
     const handleFind = async () => {
         try {
             setFollowButton()
             setFirstOpen(false)
             const response = await axios.post("http://localhost:3000/user/find", {input}, {headers})
+            setUserId(response.data.data.decoded.id)
             setSearchedUser(response.data.data.searchedUser)
         } catch (error) {
             console.log(error)
@@ -33,7 +35,7 @@ export default function Search() {
     const handleUnFollow = async (e, id) => {
         e.preventDefault()
         try {
-            const response = await axios.post("http://localhost:3000/follow/unFollow", {id: id} ,{headers})
+            await axios.post("http://localhost:3000/follow/unFollow", {id: id} ,{headers})
             setFollowButton()
         } catch (error) {
             console.log(error)
@@ -42,7 +44,7 @@ export default function Search() {
     const handleFollow = async (e, id) => {
         e.preventDefault()
         try {
-            const response = await axios.post("http://localhost:3000/follow/follow", {id: id} ,{headers})
+            await axios.post("http://localhost:3000/follow/follow", {id: id} ,{headers})
             setFollowButton()
         } catch (error) {
             console.log(error)
@@ -94,8 +96,8 @@ export default function Search() {
                         </div>
                     </div>
                         <div>
-                            {followedUsers.includes(user.id) && <Button className="h-10" id={"unfollowBtn" + user.id} onClick={(e) => handleUnFollow(e, user.id)}>Unfollow</Button>}
-                            {!followedUsers.includes(user.id) && <Button className="h-10" id={"followBtn" + user.id} onClick={(e) => handleFollow(e, user.id)}>Follow</Button>}
+                            {followedUsers.includes(user.id) && user.id !== userId && <Button className="h-10" id={"unfollowBtn" + user.id} onClick={(e) => handleUnFollow(e, user.id)}>Unfollow</Button>}
+                            {!followedUsers.includes(user.id) && user.id !== userId && <Button className="h-10" id={"followBtn" + user.id} onClick={(e) => handleFollow(e, user.id)}>Follow</Button>}
                         </div>
                     </div>
                     )})}
