@@ -11,6 +11,7 @@ export default function Follow() {
     const headers = {"Authorization" : `Bearer ${token}`}
     const [mode, setMode] = useState("following")
     const [searchedUsers, setSearchedUser] = useState([])
+    const [followedUsers, setFollowedUsers] = useState([])
     
     async function handleFollowing() {
         const response = await axios.get("http://localhost:3000/follow/getFollowing", {headers})
@@ -31,22 +32,17 @@ export default function Follow() {
     }
 
     async function tagFollower() {
-        const response = await axios.get("http://localhost:3000/follow/getFollower", {headers})
-        const followersAlreadyFollow = response.data.data.userFollowing
+        const response = await axios.get("http://localhost:3000/follow/getFollowing", {headers})
+        const followersAlreadyFollow = response.data.data.userFollowed
         const thatPerson = followersAlreadyFollow.map((request) => request.id)
-        thatPerson.map((user) => {
-        document.getElementById(`${user}`)?.classList.add("hidden")
-        })
-        
+        setFollowedUsers(thatPerson)
     }
 
     async function unTagFollower() {
-        const response = await axios.get("http://localhost:3000/follow/getFollower", {headers})
-        const followersAlreadyFollow = response.data.data.userFollowing
+        const response = await axios.get("http://localhost:3000/follow/getFollowing", {headers})
+        const followersAlreadyFollow = response.data.data.userFollowed
         const thatPerson = followersAlreadyFollow.map((request) => request.id)
-        thatPerson.map((user) => {
-        document.getElementById(`${user}`)?.classList.remove("hidden")
-        })
+        setFollowedUsers(thatPerson)
         
     }
 
@@ -126,8 +122,8 @@ export default function Follow() {
                     </div>
                         <div>
                             <div>
-                                {mode === "following" && <Button className="h-10" id={"unfollowBtn" + user.id} onClick={(e) => handleUnFollow(e, user.id)}>Unfollow</Button>}
-                                {mode === "follower" && <Button className="h-10" id={"followBtn" + user.id} onClick={(e) => handleFollow(e, user.id)}>Follow</Button>}
+                                {followedUsers.includes(user.id) && <Button className="h-10" id={"unfollowBtn" + user.id} onClick={(e) => handleUnFollow(e, user.id)}>Unfollow</Button>}
+                                {!followedUsers.includes(user.id) && <Button className="h-10" id={"followBtn" + user.id} onClick={(e) => handleFollow(e, user.id)}>Follow</Button>}
                             </div>
                         </div>
                     </div>
