@@ -17,6 +17,7 @@ export default function Follow() {
         document.getElementById("followingButtonHead")?.classList.add("bg-gray-600")
         document.getElementById("followerButtonHead")?.classList.remove("bg-gray-600")
         setSearchedUser(response.data.data.userFollowed)
+        unTagFollower()
         setMode("following")
     }
 
@@ -26,6 +27,27 @@ export default function Follow() {
         document.getElementById("followingButtonHead")?.classList.remove("bg-gray-600")
         setSearchedUser(response.data.data.userFollowing)
         setMode("follower")
+        tagFollower()
+    }
+
+    async function tagFollower() {
+        const response = await axios.get("http://localhost:3000/follow/getFollower", {headers})
+        const followersAlreadyFollow = response.data.data.userFollowing
+        const thatPerson = followersAlreadyFollow.map((request) => request.id)
+        thatPerson.map((user) => {
+        document.getElementById(`${user}`)?.classList.add("hidden")
+        })
+        
+    }
+
+    async function unTagFollower() {
+        const response = await axios.get("http://localhost:3000/follow/getFollower", {headers})
+        const followersAlreadyFollow = response.data.data.userFollowing
+        const thatPerson = followersAlreadyFollow.map((request) => request.id)
+        thatPerson.map((user) => {
+        document.getElementById(`${user}`)?.classList.remove("hidden")
+        })
+        
     }
 
     const handleUnFollow = async (e, id) => {
