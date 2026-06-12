@@ -13,7 +13,7 @@ export default function CreatePost() {
         setImage(photo)
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault
         if (content === "") {
             return window.alert("Post must have a text")

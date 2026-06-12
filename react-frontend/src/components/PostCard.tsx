@@ -40,9 +40,7 @@ export default function PostCard() {
         } catch (error) {
             console.log(error)
             setErrorStatus(true)
-        }
-        
-    }
+        }}
 
     const handleLike = async (e: any, id: number) => {
         e.preventDefault()
@@ -126,7 +124,7 @@ export default function PostCard() {
                         </div>
                         <p className="wrap-break-word">{item.content}</p>
                             {item.image !== "http://localhost:3000/uploads/" && 
-                            <div className="max-w-full">
+                            <div className="max-w-full pr-20">
                                 <img src={item.image} alt="Fail to load image" className="" onClick={(e) => {e.stopPropagation()}}/>    
                             </div>}
                         <div>
