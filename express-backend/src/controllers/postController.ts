@@ -6,9 +6,10 @@ export const GetPost = async (req: Request, res: Response) => {
     try {
         const post = await prisma.threads.findMany({orderBy : {created_at: "asc"}})
         const likes = await prisma.likes.findMany({orderBy : {thread_id: "asc"}})
+        const replies = await prisma.replies.findMany({orderBy : {thread_id: "asc"}})
         return res.status(200).json({
             message: "Fetch successfull",
-            data: {post, likes, decoded}
+            data: {post, likes, decoded, replies}
             })
     } catch (error) {
         console.log(error)

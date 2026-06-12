@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { setProfile } from "@/slices_redux/profileSlice"
+import type { User } from "@/types"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -9,22 +10,22 @@ export default function EditProfile() {
     if (!localStorage.getItem("token")) {
         window.location.href = "/"
     }
-    const profileRedux = useSelector((state)=> state.profile)
-    const [photo_profile, setPhoto_profile] = useState(null)
+    const profileRedux = useSelector((state: any)=> state.profile) as User
+    const [photo_profile, setPhoto_profile] = useState<string>("")
     const [newPhoto, setNewPhoto] = useState(null)
     const [username, setUsername] = useState("")
     const [full_name, setFull_name] = useState("")
     const [bio, setBio] = useState("")
     
-    function handlePhotoChange(e) {
-        const photo = URL.createObjectURL(e.target.files[0])
+    function handlePhotoChange(e: any) {
+        const photo: any = URL.createObjectURL(e.target.files[0])
         setNewPhoto(e.target.files[0])
-        setPhoto_profile(photo)
+        setPhoto_profile(photo as any)
     }
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    async function handleSubmit(e) {
+    async function handleSubmit(e: any) {
         e.preventDefault()
         const token = localStorage.getItem("token")
         try {

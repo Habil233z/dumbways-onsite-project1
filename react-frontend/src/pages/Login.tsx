@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { setProfile } from "@/slices_redux/profileSlice";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 export default function Login() {
     if (localStorage.getItem("token")) {
@@ -12,7 +12,7 @@ export default function Login() {
 
     const dispatch = useDispatch()
 
-    async function handleClick(e) {
+    async function handleClick(e: any) {
         e.preventDefault()
         try {
             if (emailOrUsername === "" || password === "") {

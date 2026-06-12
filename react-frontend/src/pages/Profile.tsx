@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import type { User } from "@/types"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
@@ -8,8 +9,8 @@ export default function UserProfile() {
         window.location.href = "/login"
     }
 
-    const profileRedux = useSelector((state)=> state.profile) 
-    const [profile, setProfile] = useState({})
+    const profileRedux = useSelector((state: any)=> state.profile) as User
+    const [profile, setProfile] = useState<User>({} as User)
     useEffect(() => {
         setProfile(profileRedux)
     }, [profileRedux])

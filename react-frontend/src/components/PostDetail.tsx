@@ -2,17 +2,18 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { Button } from "./ui/button"
+import type { Follow, Likes, Post, Replies, RepliesLike } from "@/types"
 
 export default function PostDetail() {
-    const [repliesLikes, setRepliesLikes] = useState([])
-    const [postReply, setPostReply] = useState([])
+    const [repliesLikes, setRepliesLikes] = useState<Likes[]>([])
+    const [postReply, setPostReply] = useState<Replies[]>([])
 
-    const [mainThread, setMainThread] = useState({})
-    const [mainLike, setMainLike] = useState([])
+    const [mainThread, setMainThread] = useState<Post>({} as Post)
+    const [mainLike, setMainLike] = useState<Likes[]>([])
     const [content, setContent] = useState("")
-    const [selectedFile, setSelectedFile] = useState(null)
-    const [followedUsers, setFollowedUsers] = useState([])
-    const [userId, setUserId] = useState(0)
+    const [selectedFile, setSelectedFile] = useState<File | null>(null)
+    const [followedUsers, setFollowedUsers] = useState<Follow[]>([])
+    const [userId, setUserId] = useState<number>(0)
 
     const token = localStorage.getItem("token")||null
     const headers = {"Authorization" : `Bearer ${token}`}
@@ -24,7 +25,7 @@ export default function PostDetail() {
             setMainThread(response.data.data.mainThread)
             setMainLike(response.data.data.mainLike)
             setUserId(response.data.data.decoded.id)
-            const likeFilter = response.data.data.mainLike.map((likerId) => likerId.user_id)
+            const likeFilter = response.data.data.mainLike.map((likerId: Likes) => likerId.user_id)
             if (likeFilter.includes(response.data.data.decoded.id)) {
                 document.getElementById("like" + mainThread.id)?.classList.add("fill-red-700")
             }
@@ -46,7 +47,7 @@ export default function PostDetail() {
         try {
             const response = await axios.get(`http://localhost:3000/post/reply/${id}`,{headers})
             setRepliesLikes(response.data.data.likesReply)
-            await response.data.data.likesReply.map((like) => {
+            await response.data.data.likesReply.map((like: RepliesLike) => {
             document.getElementById("likeReply" + like.replie_id)?.classList.add("fill-red-700")
             })
         } catch (error) {
@@ -54,7 +55,7 @@ export default function PostDetail() {
         }
     }
 
-    const handleLike = async (e, id) => {
+    const handleLike = async (e: any, id: number) => {
         e.preventDefault()
         if (document.getElementById("like"+id)?.classList.contains("fill-red-700")){
             document.getElementById("like"+id)?.classList.remove("fill-red-700")
@@ -66,7 +67,7 @@ export default function PostDetail() {
             getMainPost()
     }}
 
-    const handleLikeReply = async (e, id) => {
+    const handleLikeReply = async (id: number) => {
         if (document.getElementById("likeReply"+id)?.classList.contains("fill-red-700")){
             document.getElementById("likeReply"+id)?.classList.remove("fill-red-700")
             await axios.post("http://localhost:3000/like/replyRemove", {replie_id:id} ,{headers})
@@ -98,11 +99,11 @@ export default function PostDetail() {
     async function setFollowButton() {
         const response = await axios.get("http://localhost:3000/follow/getFollowing", {headers})
         const followersAlreadyFollow = response.data.data.userFollowed
-        const thatPerson = followersAlreadyFollow.map((request) => request.id)
+        const thatPerson = followersAlreadyFollow.map((request: Follow) => request.id)
         setFollowedUsers(thatPerson)
     }
 
-    const handleUnFollow = async (e, mainThread) => {
+    const handleUnFollow = async (e: any, mainThread: Post) => {
         e.preventDefault()
         try {
             await axios.post("http://localhost:3000/follow/unFollow", {id: mainThread.creator_id} ,{headers})
@@ -111,7 +112,7 @@ export default function PostDetail() {
             console.log(error)
         }}
 
-    const handleFollow = async (e, mainThread) => {
+    const handleFollow = async (e: any, mainThread: Post) => {
         e.preventDefault()
         try {
             await axios.post("http://localhost:3000/follow/follow", {id: mainThread.creator_id} ,{headers})
@@ -134,7 +135,7 @@ export default function PostDetail() {
         <div className="w-full flex">
         <Link to="/post"><div className="h-15 w-20 bg-gray-200 rounded-br-4xl dark:bg-gray-900 flex justify-center items-center"><svg viewBox="0 0 24 24" width="30" height="30"><path className="dark:fill-gray-400" d="M19,11H9l3.29-3.29a1,1,0,0,0,0-1.42,1,1,0,0,0-1.41,0l-4.29,4.3A2,2,0,0,0,6,12H6a2,2,0,0,0,.59,1.4l4.29,4.3a1,1,0,1,0,1.41-1.42L9,13H19a1,1,0,0,0,0-2Z"/></svg></div></Link>
         </div>
-    <div className="pt-10 pb-20 w-[90%]">
+    <div className="pt-10 pb-20 w-[60%]">
         <div className="flex flex-col items-center">
                 <div className="h-50 w-full flex bg-white border border-gray-900 rounded-4xl dark:bg-gray-900">
                     <div className="h-50 w-30 mt-3 ml-3">
@@ -155,8 +156,8 @@ export default function PostDetail() {
                     </div>
                     <div className="flex flex-col items-end h-full pr-8">
                          <div className="mt-6">
-                            {followedUsers.includes(mainThread.creator_id) && mainThread.creator_id !== userId &&  <Button className="h-10" id={"unfollowBtn" + mainThread.creator_id} onClick={(e) => handleUnFollow(e, mainThread)}>Unfollow</Button>}
-                            {!followedUsers.includes(mainThread.creator_id) && mainThread.creator_id !== userId && <Button className="h-10" id={"followBtn" + mainThread.creator_id} onClick={(e) => handleFollow(e, mainThread)}>Follow</Button>}
+                            {followedUsers.includes(mainThread.creator_id as any) && mainThread.creator_id !== userId &&  <Button className="h-10" id={"unfollowBtn" + mainThread.creator_id} onClick={(e) => handleUnFollow(e, mainThread)}>Unfollow</Button>}
+                            {!followedUsers.includes(mainThread.creator_id as any) && mainThread.creator_id !== userId && <Button className="h-10" id={"followBtn" + mainThread.creator_id} onClick={(e) => handleFollow(e, mainThread)}>Follow</Button>}
                         </div>
                         <div className="flex flex-row-reverse h-full items-end">
                             <div className="mb-5 ml-4" id={"likeCount"}>{mainLike.length}</div>
@@ -171,7 +172,7 @@ export default function PostDetail() {
                         <svg width="20" height="20" viewBox="0 0 24 24">
                             <path d="m13,20.5c0,.276-.224.5-.5.5H4.5c-2.481,0-4.5-2.019-4.5-4.5V4.5C0,2.019,2.019,0,4.5,0h12c2.481,0,4.5,2.019,4.5,4.5v8c0,.276-.224.5-.5.5s-.5-.224-.5-.5V4.5c0-1.93-1.57-3.5-3.5-3.5H4.5c-1.93,0-3.5,1.57-3.5,3.5v8.336l3.811-3.811c1.322-1.322,3.628-1.322,4.95,0l7.094,7.122c.195.195.194.512,0,.707-.098.097-.226.146-.353.146-.128,0-.256-.049-.354-.147l-7.094-7.121c-.943-.943-2.591-.944-3.535,0L1,14.25v2.25c0,1.93,1.57,3.5,3.5,3.5h8c.276,0,.5.224.5.5Zm4-15c0,1.379-1.122,2.5-2.5,2.5s-2.5-1.121-2.5-2.5,1.122-2.5,2.5-2.5,2.5,1.121,2.5,2.5Zm-1,0c0-.827-.673-1.5-1.5-1.5s-1.5.673-1.5,1.5.673,1.5,1.5,1.5,1.5-.673,1.5-1.5Zm7.5,13.5h-3.5v-3.5c0-.276-.224-.5-.5-.5s-.5.224-.5.5v3.5h-3.5c-.276,0-.5.224-.5.5s.224.5.5.5h3.5v3.5c0,.276.224.5.5.5s.5-.224.5-.5v-3.5h3.5c.276,0,.5-.224.5-.5s-.224-.5-.5-.5Z"/>
                         </svg>
-                        <input type="file" accept="image/*" className="hidden" onChange={e => setSelectedFile(e.target.files[0])}/></label>
+                        <input type="file" accept="image/*" className="hidden" onChange={(e: any) => setSelectedFile(e.target.files[0])}/></label>
                     </div>
                     <Button className="bg-gray-950 text-gray-300 h-10 dark:bg-gray-800 dark:hover:bg-gray-900 dark:active:bg-gray-700" onClick={handleSubmit}>Post</Button>
                 </div>
@@ -179,7 +180,7 @@ export default function PostDetail() {
         <div className="h-full flex flex-col items-center">
         {postReply.map ((reply) => {
                 return (
-                <div className="w-[90%] min-h-40 bg-white m-5 p-5 flex border-2 border-gray-900 rounded-4xl dark:bg-gray-900" key={reply.id}>
+                <div className="w-[80%] min-h-40 bg-white m-5 p-5 flex border-2 border-gray-900 rounded-4xl dark:bg-gray-900" key={reply.id}>
                     <div className="flex">
                             <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center">
                         <img src={reply.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
@@ -198,12 +199,12 @@ export default function PostDetail() {
                         <div>
                             <div className="flex flex-col items-end h-full ">
                                 <div className="">
-                                {followedUsers.includes(reply.creator_id) && reply.creator_id !== userId &&  <Button className="h-10" id={"unfollowBtn" + reply.creator_id} onClick={(e) => handleUnFollow(e, reply)}>Unfollow</Button>}
-                                {!followedUsers.includes(reply.creator_id) && reply.creator_id !== userId && <Button className="h-10" id={"followBtn" + reply.creator_id} onClick={(e) => handleFollow(e, reply)}>Follow</Button>}
+                                {followedUsers.includes(reply.creator_id as any) && reply.creator_id !== userId &&  <Button className="h-10" id={"unfollowBtn" + reply.creator_id} onClick={(e) => handleUnFollow(e, reply)}>Unfollow</Button>}
+                                {!followedUsers.includes(reply.creator_id as any) && reply.creator_id !== userId && <Button className="h-10" id={"followBtn" + reply.creator_id} onClick={(e) => handleFollow(e, reply)}>Follow</Button>}
                                 </div>
                             <div className="flex items-end h-full flex-row-reverse">
-                                <div className="flex justify-center items-center mr-2 ml-5" id={"likeCount"+ reply.id}>{repliesLikes.filter(count => count.replie_id === reply.id).length}</div>
-                                <svg viewBox="0 0 24 24" width="30" height="30" id={"likeReply"+ reply.id} onClick={(e) => {e.stopPropagation(); handleLikeReply(e, reply.id)}} className="fill-gray-700 hover:fill-red-500 active:fill-red-900"><path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"/></svg>
+                                <div className="flex justify-center items-center mr-2 ml-5" id={"likeCount"+ reply.id}>{repliesLikes.filter((count: Likes) => count.replie_id === reply.id).length}</div>
+                                <svg viewBox="0 0 24 24" width="30" height="30" id={"likeReply"+ reply.id} onClick={(e) => {e.stopPropagation(); handleLikeReply(reply.id)}} className="fill-gray-700 hover:fill-red-500 active:fill-red-900"><path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"/></svg>
                             </div>
                             </div>
                         </div>

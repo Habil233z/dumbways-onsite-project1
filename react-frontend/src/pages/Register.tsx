@@ -8,7 +8,7 @@ export default function Register() {
         window.location.href="/post"
     }
 
-    const handleClick = async e => {
+    const handleClick = async (e: any) => {
         e.preventDefault()
         if (selectedFile === null) {
             return window.alert("Must select profile picture image file")
@@ -52,14 +52,14 @@ export default function Register() {
                             <>
                             <h3 className="mr-4 text-gray-800">Select your profile picture</h3>
                             <div className="flex justify-center items-center w-20 h-10 bg-gray-600 border-2 border-gray-900 rounded-xl hover:bg-gray-700 active:bg-gray-900 dark:bg-gray-950 dark:hover:bg-gray-700 dark:active:bg-gray-800">
-                                <label className="text-gray-200">Image<input type="file" accept="image/*" className="hidden" onChange={e => setSelectedFile(e.target.files[0])}/></label>
+                                <label className="text-gray-200">Image<input type="file" accept="image/*" className="hidden" onChange={(e: any) => setSelectedFile(e.target.files[0])}/></label>
                             </div>
                             </>}
                             {selectedFile && 
                             <>
                             <h3 className="mr-4 text-gray-800">Picture Selected</h3>
                             <div className="flex justify-center items-center w-20 h-10 bg-gray-800 border-2 border-gray-900 rounded-xl hover:bg-gray-700 active:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-gray-950">
-                                <label className="text-gray-200">Image<input type="file" accept="image/*" className="hidden" onChange={e => setSelectedFile(e.target.files[0])}/></label>
+                                <label className="text-gray-200">Image<input type="file" accept="image/*" className="hidden" onChange={(e: any) => setSelectedFile(e.target.files[0])}/></label>
                             </div>
                             </>}
                             

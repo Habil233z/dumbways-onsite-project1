@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { useEffect, useState } from "react"
 
 export default function Header() {
-    const [mode, setMode] = useState("")
+    const [mode, setMode] = useState<string>("")
 
     const handleClickDay = () => {
         localStorage.setItem("mode", "night")

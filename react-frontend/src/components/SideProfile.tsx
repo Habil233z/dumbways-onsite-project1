@@ -1,9 +1,9 @@
 import { setProfile } from "@/slices_redux/profileSlice"
+import type { User } from "@/types"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useDispatch} from "react-redux"
 import { useNavigate } from "react-router-dom"
-
 
 export default function SideProfile() {
     const token = localStorage.getItem("token")
@@ -11,7 +11,7 @@ export default function SideProfile() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const [profile, setSideProfile] =useState({})
+    const [profile, setSideProfile] =useState<User>({} as User)
 
     async function fetchProfile() {
         const response = await axios.get("http://localhost:3000/getProfile", {headers})
