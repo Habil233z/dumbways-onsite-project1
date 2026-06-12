@@ -137,24 +137,24 @@ export default function PostDetail() {
         </div>
     <div className="pt-10 pb-20 w-[60%]">
         <div className="flex flex-col items-center">
-                <div className="h-50 w-full flex bg-white border border-gray-900 rounded-4xl dark:bg-gray-900">
-                    <div className="h-50 w-30 mt-3 ml-3">
+                <div className="w-full flex bg-white border border-gray-900 rounded-4xl dark:bg-gray-900">
+                    <div className="min-h-50 w-30 mt-3 ml-3">
                         <div className="flex">
                         <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950 mt-2 ml-2">
                             <img src={mainThread.creator_photo_profile} className="object-none h-full" ></img>
                         </div>
                     </div>
                     </div>
-                    <div className="h-50 w-full flex flex-col">
+                    <div className="min-h-50 w-full flex flex-col">
                         <h1 className="mt-2">{mainThread.created_at}</h1>
                         <h1 className="font-bold text-4xl mt-2">{mainThread.created_by}</h1>
                         <p className="wrap-break-word">{mainThread.content}</p>
                         {mainThread.image !== "http://localhost:3000/uploads/" && 
-                        <div className="max-w-full">
+                        <div className="max-w-full pb-20">
                             <img src={mainThread.image} alt="Fail to load image" className=""/>    
                         </div>}
                     </div>
-                    <div className="flex flex-col items-end h-full pr-8">
+                    <div className="flex flex-col items-end min-h-50 pr-8 flex-1">
                          <div className="mt-6">
                             {followedUsers.includes(mainThread.creator_id as any) && mainThread.creator_id !== userId &&  <Button className="h-10" id={"unfollowBtn" + mainThread.creator_id} onClick={(e) => handleUnFollow(e, mainThread)}>Unfollow</Button>}
                             {!followedUsers.includes(mainThread.creator_id as any) && mainThread.creator_id !== userId && <Button className="h-10" id={"followBtn" + mainThread.creator_id} onClick={(e) => handleFollow(e, mainThread)}>Follow</Button>}
