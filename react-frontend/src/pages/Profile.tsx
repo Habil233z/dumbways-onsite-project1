@@ -25,7 +25,7 @@ export default function UserProfile() {
 
     return (
         <div className="h-screen flex bg-gray-100 flex-col w-full items-center dark:bg-gray-950">
-            <div className="w-[85%] border-gray-800 border-2 h-100 bg-white justify-center items-center mt-10 flex flex-col rounded-t-2xl pl-10 pr-10 shadow-4xl dark:bg-gray-900">
+            <div className="w-[60%] border-gray-800 border-2 min-h-100 bg-white justify-center items-center mt-20 flex flex-col rounded-t-2xl pl-10 pr-10 shadow-4xl dark:bg-gray-900">
                 <div className="flex w-full">
                     <div className="w-full">
                         <div className="rounded-[50%] w-40 h-40 overflow-hidden flex justify-center items-center border-2 border-gray-950">
@@ -41,6 +41,9 @@ export default function UserProfile() {
                 </div>
                 <p>{profile.bio}</p>
                 <p className="mt-10">Created at: {profile.created_at}</p>
+            </div>
+            <div className="h-screen w-[60%] flex flex-col items-center">
+                <div>Your Post</div>
             </div>
         </div>
     )

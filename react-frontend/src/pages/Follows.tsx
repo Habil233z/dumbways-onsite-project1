@@ -75,12 +75,14 @@ export default function Follow() {
     return (
     <>
         <div className="h-screen flex bg-gray-100 flex-col  w-full items-center dark:bg-gray-950">
-            <div className="bg-white h-15 w-full flex dark:bg-gray-900">
-                <div id="followingButtonHead" className="h-full w-full border-b-2 border-gray-900 border-r-2 border-l-2 flex items-center justify-center hover:bg-gray-200 active:bg-gray-300 dark:hover:bg-gray-800 dark:active:bg-gray-700" onClick={handleFollowing}>
-                    <h1 className="text-3xl">Following</h1>
-                </div>
-                <div id="followerButtonHead" className="h-full w-full border-b-2 border-gray-900 border-l-2 border-r-2 flex items-center justify-center hover:bg-gray-200 active:bg-gray-300 dark:hover:bg-gray-800 dark:active:bg-gray-700" onClick={handleFollower}>
-                    <h1 className="text-3xl">Follower</h1>
+            <div className="flex w-full ">
+                <div className="bg-gray-100 h-10 w-60 flex dark:bg-gray-950 mt-4 ml-4">
+                    <div id="followingButtonHead" className=" mr-4 h-full w-full border-2 border-gray-500 flex rounded-4xl items-center justify-center hover:bg-gray-200 active:bg-gray-300 dark:hover:bg-gray-800 dark:active:bg-gray-700" onClick={handleFollowing}>
+                        <h1 className="text-xl">Following</h1>
+                    </div>
+                    <div id="followerButtonHead" className="h-full w-full border-2 border-gray-500 rounded-4xl flex items-center justify-center hover:bg-gray-200 active:bg-gray-300 dark:hover:bg-gray-800 dark:active:bg-gray-700" onClick={handleFollower}>
+                        <h1 className="text-xl">Follower</h1>
+                    </div>
                 </div>
             </div>
             <div className="dark:bg-gray-950 bg-gray-100 h-full w-full overflow-auto">

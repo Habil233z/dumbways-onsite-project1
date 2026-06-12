@@ -18,9 +18,9 @@ export default function EditProfile() {
     const [bio, setBio] = useState("")
     
     function handlePhotoChange(e: any) {
-        const photo: any = URL.createObjectURL(e.target.files[0])
+        const photo: string = URL.createObjectURL(e.target.files[0])
         setNewPhoto(e.target.files[0])
-        setPhoto_profile(photo as any)
+        setPhoto_profile(photo)
     }
 
     const navigate = useNavigate()

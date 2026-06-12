@@ -100,7 +100,7 @@ export default function PostCard() {
 
         <div className="flex flex-col w-full items-center">
   
-        <div className="overflow-y-scroll w-[60%] bg-gray-100 flex flex-col items-center rounded-4xl pb-40 dark:bg-gray-950">
+        <div className="overflow-y-scroll w-[70%] bg-gray-100 flex flex-col items-center rounded-4xl pb-40 dark:bg-gray-950">
         {post.map((item) => {
             return (
                 <div className="w-full items-center justify-center" key={item.id}>

@@ -64,9 +64,9 @@ export default function Search() {
 
     return (
         <div className="h-screen flex bg-gray-100 flex-col w-full dark:bg-gray-950">
-            <div className="h-16 mb-10 flex justify-center items-center">
-                <input type="text" className="bg-gray-100 h-10 w-[70%] pl-6 border border-gray-800 dark:bg-gray-700" placeholder="Search User" onChange={e => setInput(e.target.value)}/>
-                <Button className="h-10" onClick={handleFind}>Find</Button>
+            <div className="h-21 border-b border-r border-gray-600 flex justify-center items-center bg-white dark:bg-gray-950 dark:border-gray-800">
+                <input type="text" className="rounded-4xl bg-gray-100 h-10 w-[70%] pl-6 border border-gray-800 dark:bg-gray-700" placeholder="Search User" onChange={e => setInput(e.target.value)}/>
+                <Button className="h-10 ml-2" onClick={handleFind}>Find</Button>
             </div>
             <div className="flex flex-col w-full h-full items-center">
             <div className="bg-gray-100 w-[90%] rounded-4xl dark:bg-gray-950">

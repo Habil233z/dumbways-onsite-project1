@@ -20,10 +20,11 @@ export default function Post() {
 
     return (
         <div className="h-screen w-full flex">
-            <div className="h-screen w-full flex justify-center bg-gray-100 overflow-y-scroll dark:bg-gray-950">
+            <div className="h-screen w-full flex flex-col items-center bg-gray-100 overflow-y-scroll dark:bg-gray-950">
+                <CreatePost/>
                 <PostCard />
             </div>
-            <CreatePost/>
+           
         </div>
     )
 }

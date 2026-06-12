@@ -16,7 +16,7 @@ import EditProfile from './pages/EditProfile'
 function App() {
   return (
     <BrowserRouter>
-    <Header />
+
     {!localStorage.getItem("token") && 
       <Routes>
         <Route path='/login' element={<Login/>}/>
