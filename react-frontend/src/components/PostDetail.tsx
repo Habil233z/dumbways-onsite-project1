@@ -11,10 +11,11 @@ export default function PostDetail() {
     const [mainLike, setMainLike] = useState([])
     const [content, setContent] = useState("")
     const [selectedFile, setSelectedFile] = useState(null)
+    const [followedUsers, setFollowedUsers] = useState([])
+    const [userId, setUserId] = useState(0)
 
     const token = localStorage.getItem("token")||null
     const headers = {"Authorization" : `Bearer ${token}`}
-    const [userId, setUserId] = useState(0)
     const {id} = useParams()
 
     async function getMainPost() {
@@ -92,13 +93,37 @@ export default function PostDetail() {
             }   
         } catch (error) {
             return window.alert("Not authenticated")
-        }
+        }}
+
+    async function setFollowButton() {
+        const response = await axios.get("http://localhost:3000/follow/getFollowing", {headers})
+        const followersAlreadyFollow = response.data.data.userFollowed
+        const thatPerson = followersAlreadyFollow.map((request) => request.id)
+        setFollowedUsers(thatPerson)
     }
+
+    const handleUnFollow = async (e, mainThread) => {
+        e.preventDefault()
+        try {
+            await axios.post("http://localhost:3000/follow/unFollow", {id: mainThread.creator_id} ,{headers})
+            setFollowButton()
+        } catch (error) {
+            console.log(error)
+        }}
+
+    const handleFollow = async (e, mainThread) => {
+        e.preventDefault()
+        try {
+            await axios.post("http://localhost:3000/follow/follow", {id: mainThread.creator_id} ,{headers})
+            setFollowButton()
+        } catch (error) {
+            console.log(error)
+        }}
 
     useEffect(() => {
         getMainPost()
+        setFollowButton()
         getPostReply()
-        getRepliesLikes()
         setTimeout(() => {
             getRepliesLikes()
         }, 100)
@@ -128,9 +153,15 @@ export default function PostDetail() {
                             <img src={mainThread.image} alt="Fail to load image" className=""/>    
                         </div>}
                     </div>
-                    <div className="flex flex-row-reverse items-end h-full pr-8">
-                        <div className="mb-5 ml-4" id={"likeCount"}>{mainLike.length}</div>
-                        <svg viewBox="0 0 24 24" width="30" height="30" id={"like"+ mainThread.id} onClick={(e) => {e.stopPropagation(); handleLike(e, mainThread.id)}}  className="mb-4 fill-gray-700 hover:fill-red-500 active:fill-red-900"><path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"/></svg>
+                    <div className="flex flex-col items-end h-full pr-8">
+                         <div className="mt-6">
+                            {followedUsers.includes(mainThread.creator_id) && mainThread.creator_id !== userId &&  <Button className="h-10" id={"unfollowBtn" + mainThread.creator_id} onClick={(e) => handleUnFollow(e, mainThread)}>Unfollow</Button>}
+                            {!followedUsers.includes(mainThread.creator_id) && mainThread.creator_id !== userId && <Button className="h-10" id={"followBtn" + mainThread.creator_id} onClick={(e) => handleFollow(e, mainThread)}>Follow</Button>}
+                        </div>
+                        <div className="flex flex-row-reverse h-full items-end">
+                            <div className="mb-5 ml-4" id={"likeCount"}>{mainLike.length}</div>
+                            <svg viewBox="0 0 24 24" width="30" height="30" id={"like"+ mainThread.id} onClick={(e) => {e.stopPropagation(); handleLike(e, mainThread.id)}}  className="mb-4 fill-gray-700 hover:fill-red-500 active:fill-red-900"><path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"/></svg>
+                        </div>
                     </div>
                 </div>
                 <div className="w-[80%] flex items-center justify-center mt-2">
@@ -154,16 +185,27 @@ export default function PostDetail() {
                         <img src={reply.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
                         </div>
                     </div>
-                    <div  className="w-full ml-5">
-                        <h1 className="font-medium text-2xl">{reply.created_by}</h1>
-                        <p className="wrap-break-word">{reply.content}</p>
-                        {reply.image !== "http://localhost:3000/uploads/" && 
-                        <div className="">
-                            <img className="max-h-50" src={reply.image} alt="Fail to load image" onClick={(e) => {e.stopPropagation()}}/>    
-                        </div>}
-                        <div className="flex mt-8 flex-row-reverse">
-                            <div className="flex justify-center items-center mr-2 ml-5" id={"likeCount"+ reply.id}>{repliesLikes.filter(count => count.replie_id === reply.id).length}</div>
-                            <svg viewBox="0 0 24 24" width="30" height="30" id={"likeReply"+ reply.id} onClick={(e) => {e.stopPropagation(); handleLikeReply(e, reply.id)}} className="fill-gray-700 hover:fill-red-500 active:fill-red-900"><path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"/></svg>
+                    <div  className="w-full ml-5 flex">
+                        <div className="w-full">
+                            <h1 className="mt-2">{reply.created_at}</h1>
+                            <h1 className="font-medium text-2xl">{reply.created_by}</h1>
+                            <p className="wrap-break-word">{reply.content}</p>
+                            {reply.image !== "http://localhost:3000/uploads/" && 
+                            <div className="">
+                                <img className="max-h-50" src={reply.image} alt="Fail to load image" onClick={(e) => {e.stopPropagation()}}/>    
+                            </div>}
+                        </div>
+                        <div>
+                            <div className="flex flex-col items-end h-full ">
+                                <div className="">
+                                {followedUsers.includes(reply.creator_id) && reply.creator_id !== userId &&  <Button className="h-10" id={"unfollowBtn" + reply.creator_id} onClick={(e) => handleUnFollow(e, reply)}>Unfollow</Button>}
+                                {!followedUsers.includes(reply.creator_id) && reply.creator_id !== userId && <Button className="h-10" id={"followBtn" + reply.creator_id} onClick={(e) => handleFollow(e, reply)}>Follow</Button>}
+                                </div>
+                            <div className="flex items-end h-full flex-row-reverse">
+                                <div className="flex justify-center items-center mr-2 ml-5" id={"likeCount"+ reply.id}>{repliesLikes.filter(count => count.replie_id === reply.id).length}</div>
+                                <svg viewBox="0 0 24 24" width="30" height="30" id={"likeReply"+ reply.id} onClick={(e) => {e.stopPropagation(); handleLikeReply(e, reply.id)}} className="fill-gray-700 hover:fill-red-500 active:fill-red-900"><path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"/></svg>
+                            </div>
+                            </div>
                         </div>
                     </div>
                 </div>

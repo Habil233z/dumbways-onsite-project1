@@ -20,6 +20,7 @@ export default function UserProfile() {
     document.getElementById("followsSideHeader")?.classList.remove("bg-gray-600")
     document.getElementById("SideProfile")?.classList.add("hidden")
     document.getElementById("profilePadding")?.classList.remove("hidden")
+    document.body.style.overflow = "hidden"
 
     return (
         <div className="h-screen flex bg-gray-100 flex-col w-full items-center dark:bg-gray-950">
