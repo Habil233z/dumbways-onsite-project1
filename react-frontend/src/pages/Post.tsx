@@ -151,10 +151,10 @@ export default function Post() {
                                                 <DialogTrigger className="w-full hover:bg-gray-100">Edit</DialogTrigger>
                                                 <DialogContent>
                                                     <DialogHeader>
-                                                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                                                    <DialogTitle>Edit your post:</DialogTitle>
                                                     <DialogDescription>
-                                                        This action cannot be undone. This will permanently delete your account
-                                                        and remove your data from our servers.
+                                                        <input type="text" />
+                                                        <input type="file" />
                                                     </DialogDescription>
                                                     </DialogHeader>
                                                 </DialogContent>

@@ -87,7 +87,7 @@ export default function UserProfile() {
                         <Button className="h-10 w-25 bg-blue-700 hover:bg-blue-800 active:bg-blue-900"><Link to="/editProfile" className="text-gray-300">Edit Profile</Link></Button>
                     </div>
                 </div>
-                <p>{profile.bio}</p>
+                <p className="flex w-full">{profile.bio}</p>
                 <p className="mt-10">Created at: {profile.created_at}</p>
             </div>
             <div className="h-screen w-[60%] flex flex-col items-center">
@@ -133,8 +133,8 @@ export default function UserProfile() {
                                     </div>
                                 </div>
                             </div>
-                            </Link>
-                            </div>
+                        </Link>
+                    </div>
                     )})}
                 </div>
             </div>

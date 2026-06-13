@@ -91,16 +91,25 @@ export const editProfile = async (req: Request, res: Response) => {
     try {
         const {username, full_name, bio} = await req.body
         const photo = req.file ? req.file.filename : ""
-        const photo_profile = "http://localhost:3000/uploads/" + photo
-        const editedProfile = await prisma.users.update({
+        const preparedPhoto = "http://localhost:3000/uploads/" + photo
+        let photo_profile = preparedPhoto
+        if (preparedPhoto === "http://localhost:3000/uploads/") {
+            await prisma.users.update({
+            where: {email: decoded.email},
+            data: {
+                username,
+                full_name,
+                bio
+        }})} else {
+            await prisma.users.update({
             where: {email: decoded.email},
             data: {
                 username,
                 full_name,
                 bio,
                 photo_profile
-            }
-        })
+        }})} 
+        
         const user = await prisma.users.findUnique({where: {email: decoded.email}});
         const identity = {id:user.id, username: user.username, full_name: user.full_name, photo_profile: user.photo_profile, email: user.email}
         const token = jwt.sign({id:user.id, username: user.username, full_name: user.full_name, photo_profile: user.photo_profile, email: user.email}, process.env.SECRET_KEY as string, {

@@ -32,7 +32,7 @@ export default function EditProfile() {
             const response = await axios.post("http://localhost:3000/editProfile", {username, full_name, bio, file: newPhoto}, {headers: {"Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`}})
             localStorage.setItem("token", response.data.data.token)
             dispatch(setProfile(response.data.data.identity))
-            navigate("/")
+            window.location.href="/"
         } catch (error) {
             console.log(error)
         }}
@@ -42,7 +42,6 @@ export default function EditProfile() {
         setUsername(profileRedux.username)
         setFull_name(profileRedux.full_name)
         setBio(profileRedux.bio)
-        
         document.getElementById("SideProfile")?.classList.add("hidden")
     }, [profileRedux])
     
@@ -58,7 +57,7 @@ export default function EditProfile() {
 
     return (
         <div className="h-screen w-full bg-gray-100 flex justify-center items-center dark:bg-gray-950">
-            <div className="w-[80%] pb-10 bg-white border-2 flex flex-col items-center dark:bg-gray-900">
+            <div className="w-[80%] pb-10 bg-white border-2 flex flex-col items-center dark:bg-gray-900 rounded-4xl">
                 <form className="h-full w-full flex flex-col justify-center items-center dark:text-gray-300">
                 <h1 className="text-center font-medium text-4xl mt-8">Edit Your Profile:</h1>
                 <div className="w-full flex justify-center">
