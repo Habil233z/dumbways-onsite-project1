@@ -96,14 +96,12 @@ export default function Post() {
 
     useEffect(() => {
         getPost()
-        document.getElementById("postSideHeader")?.classList.add("bg-gray-600")
-        document.getElementById("profilePadding")?.classList.add("hidden")
         setTimeout(() => {
         setFollowButton()
         mapLikes()
         }, 10)
     }, [])
-
+    document.getElementById("postSideHeader")?.classList.add("bg-gray-600")
     document.getElementById("profilePadding")?.classList.add("hidden")
     document.getElementById("profileSideHeader")?.classList.remove("bg-gray-600")
     document.getElementById("searchSideHeader")?.classList.remove("bg-gray-600")
