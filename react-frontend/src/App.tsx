@@ -3,7 +3,6 @@ import './App.css'
 import Profile from './pages/Profile'
 import Register from './pages/Register'
 import Login from './pages/Login'
-import Post from './pages/Post'
 import PostDetail from './pages/PostDetail'
 import Search from './pages/Search'
 import SideHeader from './components/SideHeader'
@@ -12,6 +11,7 @@ import Follows from './pages/Follows'
 import Header from './components/Header'
 import ProfilePadding from './components/ProfilePadding'
 import EditProfile from './pages/EditProfile'
+import Post from './pages/Post'
 
 function App() {
   return (

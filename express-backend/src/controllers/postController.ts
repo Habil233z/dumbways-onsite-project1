@@ -13,8 +13,7 @@ export const GetPost = async (req: Request, res: Response) => {
             })
     } catch (error) {
         console.log(error)
-    }
-}
+}}
 
 export const CreatePost = async (req: Request, res: Response) => {
     const decoded = req.user
@@ -37,8 +36,7 @@ export const CreatePost = async (req: Request, res: Response) => {
         })
     } catch (error) {
         console.log(error)
-    }
-}
+}}
 
 export const GetPostReply = async (req: Request, res: Response) => {
     const decoded = req.user
@@ -53,8 +51,7 @@ export const GetPostReply = async (req: Request, res: Response) => {
         })
     } catch (error) {
         console.log(error)
-    }
-}
+}}
 
 export const GetPostById = async (req: Request, res: Response) => {
     const decoded = req.user
@@ -69,8 +66,7 @@ export const GetPostById = async (req: Request, res: Response) => {
         })
     } catch (error) {
         console.log(error)
-    }
-}
+}}
 
 export const CreateReply = async (req: Request, res: Response) => {
     const decoded = req.user
@@ -95,8 +91,7 @@ export const CreateReply = async (req: Request, res: Response) => {
         })
     } catch (error) {
         console.log(error)
-    }
-}
+}}
 
 export const getUserPost = async (req: Request, res: Response) => {
     const decoded = req.user
@@ -109,19 +104,30 @@ export const getUserPost = async (req: Request, res: Response) => {
         })
     } catch (error) {
         console.log(error)
-    }
-}
+}}
 
 export const deletePost = async (req: Request, res: Response) => {
     const decoded = req.user
     const {id} = req.body
     try {
-        const deletePost = await prisma.threads.delete({where: {id: id}})
+        const deletePost = await prisma.threads.delete({where: {id: id, creator_id: decoded.id}})
         return res.status(201).json({
             message: "Post deleted successfully",
             data: {decoded}
         })
     } catch (error) {
         console.log(error)
-    }
-}
+}}
+
+export const deletePostReply = async (req: Request, res: Response) => {
+    const decoded = req.user
+    const {id} = req.body
+    try {
+        const deletePostReply = await prisma.replies.delete({where: {id: id, creator_id: decoded.id}})
+        return res.status(201).json({
+            message: "Post deleted successfully",
+            data: {decoded}
+        })
+    } catch (error) {
+        console.log(error)
+}}

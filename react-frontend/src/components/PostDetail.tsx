@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { Button } from "./ui/button"
 import type { Follow, Likes, Post, Replies, RepliesLike } from "@/types"
+import { DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenu } from "./ui/dropdown-menu"
 
 export default function PostDetail() {
     const [repliesLikes, setRepliesLikes] = useState<Likes[]>([])
@@ -121,6 +122,16 @@ export default function PostDetail() {
             console.log(error)
         }}
 
+        const handleDelete = async (e: any, id: number) => {
+        const confirmation = window.confirm("Are you sure you want to delete this reply?")
+        if (confirmation) {
+            await axios.post("http://localhost:3000/post/deleteReply", {id} , {headers})
+            console.log("Delete Confirmed")
+            getPostReply()
+        } else (
+            console.log("Delete Canceled")
+    )}
+
     useEffect(() => {
         getMainPost()
         setFollowButton()
@@ -132,8 +143,8 @@ export default function PostDetail() {
 
     return (
     <div className="h-screen w-full flex flex-col items-center">
-        <div className="w-full flex">
-        <Link to="/post"><div className="h-15 w-20 bg-gray-200 rounded-br-4xl dark:bg-gray-900 flex justify-center items-center"><svg viewBox="0 0 24 24" width="30" height="30"><path className="dark:fill-gray-400" d="M19,11H9l3.29-3.29a1,1,0,0,0,0-1.42,1,1,0,0,0-1.41,0l-4.29,4.3A2,2,0,0,0,6,12H6a2,2,0,0,0,.59,1.4l4.29,4.3a1,1,0,1,0,1.41-1.42L9,13H19a1,1,0,0,0,0-2Z"/></svg></div></Link>
+        <div className="fixed right-[78%] top-2">
+        <Link to="/post"><div className="h-15 w-15 bg-gray-200 rounded-4xl dark:bg-gray-900 flex justify-center items-center"><svg viewBox="0 0 24 24" width="30" height="30"><path className="dark:fill-gray-400" d="M19,11H9l3.29-3.29a1,1,0,0,0,0-1.42,1,1,0,0,0-1.41,0l-4.29,4.3A2,2,0,0,0,6,12H6a2,2,0,0,0,.59,1.4l4.29,4.3a1,1,0,1,0,1.41-1.42L9,13H19a1,1,0,0,0,0-2Z"/></svg></div></Link>
         </div>
     <div className="pt-10 pb-20 w-[60%]">
         <div className="flex flex-col items-center">
@@ -181,9 +192,13 @@ export default function PostDetail() {
         {postReply.map ((reply) => {
                 return (
                 <div className="w-[80%] min-h-40 bg-white m-5 p-5 flex border-2 border-gray-900 rounded-4xl dark:bg-gray-900" key={reply.id}>
-                    <div className="flex">
-                            <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center">
-                        <img src={reply.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
+                    <div className="flex flex-col items-center">
+                        <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center">
+                            <img src={reply.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
+                        </div>
+                        <div className="mt-2">    
+                            {followedUsers.includes(reply.creator_id as any) && reply.creator_id !== userId &&  <Button className="h-10" id={"unfollowBtn" + reply.creator_id} onClick={(e) => handleUnFollow(e, reply)}>Unfollow</Button>}
+                            {!followedUsers.includes(reply.creator_id as any) && reply.creator_id !== userId && <Button className="h-10" id={"followBtn" + reply.creator_id} onClick={(e) => handleFollow(e, reply)}>Follow</Button>}
                         </div>
                     </div>
                     <div  className="w-full ml-5 flex">
@@ -192,21 +207,26 @@ export default function PostDetail() {
                             <h1 className="font-medium text-2xl">{reply.created_by}</h1>
                             <p className="wrap-break-word">{reply.content}</p>
                             {reply.image !== "http://localhost:3000/uploads/" && 
-                            <div className="">
+                            <div className="pb-10">
                                 <img className="max-h-50" src={reply.image} alt="Fail to load image" onClick={(e) => {e.stopPropagation()}}/>    
                             </div>}
                         </div>
-                        <div>
-                            <div className="flex flex-col items-end h-full ">
-                                <div className="">
-                                {followedUsers.includes(reply.creator_id as any) && reply.creator_id !== userId &&  <Button className="h-10" id={"unfollowBtn" + reply.creator_id} onClick={(e) => handleUnFollow(e, reply)}>Unfollow</Button>}
-                                {!followedUsers.includes(reply.creator_id as any) && reply.creator_id !== userId && <Button className="h-10" id={"followBtn" + reply.creator_id} onClick={(e) => handleFollow(e, reply)}>Follow</Button>}
-                                </div>
-                            <div className="flex items-end h-full flex-row-reverse">
-                                <div className="flex justify-center items-center mr-2 ml-5" id={"likeCount"+ reply.id}>{repliesLikes.filter((count: Likes) => count.replie_id === reply.id).length}</div>
-                                <svg viewBox="0 0 24 24" width="30" height="30" id={"likeReply"+ reply.id} onClick={(e) => {e.stopPropagation(); handleLikeReply(reply.id)}} className="fill-gray-700 hover:fill-red-500 active:fill-red-900"><path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"/></svg>
-                            </div>
-                            </div>
+                    </div>
+                    <div className="flex flex-col h-full items-end">
+                        {reply.creator_id === userId && 
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger >
+                                        <div className=" h-8 flex items-center rounded-4xl" onClick={(e) => {e.preventDefault()}}><svg viewBox="0 0 512 512" width="20" height="20"><g><circle cx="256" cy="42.667" r="42.667"/><circle cx="256" cy="256" r="42.667"/><circle cx="256" cy="469.333" r="42.667"/></g></svg></div>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent>
+                                        <DropdownMenuItem onClick={(e) => {e.stopPropagation()}}>Edit</DropdownMenuItem>
+                                        <DropdownMenuItem onClick={(e) => {e.stopPropagation(); handleDelete(e, reply.id)}}>Delete</DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>}
+                        {reply.creator_id !== userId && <div className="h-8"></div>}
+                        <div className="flex items-end h-full flex-row-reverse mt-4">
+                            <div className="flex justify-center items-center mr-2 ml-5" id={"likeCount"+ reply.id}>{repliesLikes.filter((count: Likes) => count.replie_id === reply.id).length}</div>
+                            <svg viewBox="0 0 24 24" width="30" height="30" id={"likeReply"+ reply.id} onClick={(e) => {e.stopPropagation(); handleLikeReply(reply.id)}} className="fill-gray-700 hover:fill-red-500 active:fill-red-900"><path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"/></svg>
                         </div>
                     </div>
                 </div>
