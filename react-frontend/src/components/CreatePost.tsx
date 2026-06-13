@@ -39,7 +39,7 @@ export default function CreatePost() {
             <div className="flex items-center justify-center mt-7">
                 <div className="flex"> 
                     <div className="flex flex-col justify-center">
-                    <textarea onChange={(e: any) => setContent(e.target.value)} className="mb-2 pl-5 pr-5 min-h-8 resize-y overflow-hidden field-sizing-content w-150 rounded-4xl mr-4 bg-white border border-gray-500 dark:bg-gray-900"></textarea>
+                    <textarea onChange={(e: any) => setContent(e.target.value)} className="mb-2 pl-5 pr-5 min-h-8 resize-y overflow-hidden field-sizing-content w-150 rounded-4xl mr-4 bg-white border border-gray-500 dark:bg-gray-700"></textarea>
                     {selectedFile !== null && 
                     <div>
                         <img src={image} alt="Fail to load image" className="" onClick={(e) => {e.stopPropagation()}}/>    

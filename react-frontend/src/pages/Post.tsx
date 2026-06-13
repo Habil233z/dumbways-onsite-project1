@@ -61,10 +61,9 @@ export default function Post() {
             getPost()
         }}
 
-    const handleDelete = async (e: any, id: number) => {
-            await axios.post("http://localhost:3000/post/delete", {id} , {headers})
-            console.log("Delete Confirmed")
-            getPost()
+    const handleDelete = async (id: number) => {
+        await axios.post("http://localhost:3000/post/delete", {id} , {headers})
+        getPost()
     }
 
     async function setFollowButton() {
@@ -144,31 +143,31 @@ export default function Post() {
                                     {item.creator_id === userId && 
                                     <DropdownMenu>
                                         <DropdownMenuTrigger >
-                                            <div className=" h-8 flex items-center rounded-4xl" onClick={(e) => {e.preventDefault()}}><svg viewBox="0 0 512 512" width="20" height="20"><g><circle cx="256" cy="42.667" r="42.667"/><circle cx="256" cy="256" r="42.667"/><circle cx="256" cy="469.333" r="42.667"/></g></svg></div>
+                                            <div className=" h-8 flex items-center rounded-4xl" onClick={(e) => {e.preventDefault()}}><svg className="dark:fill-gray-200" viewBox="0 0 512 512" width="20" height="20"><g><circle cx="256" cy="42.667" r="42.667"/><circle cx="256" cy="256" r="42.667"/><circle cx="256" cy="469.333" r="42.667"/></g></svg></div>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent onClick={(e) => {e.stopPropagation()}}>
                                             <Dialog>
-                                                <DialogTrigger className="w-full hover:bg-gray-100">Edit</DialogTrigger>
+                                                <DialogTrigger className="w-full hover:bg-gray-100 dark:hover:bg-gray-800">Edit</DialogTrigger>
                                                 <DialogContent>
                                                     <DialogHeader>
-                                                    <DialogTitle>Edit your post:</DialogTitle>
+                                                    <DialogTitle className="text-2xl">Edit your post:</DialogTitle>
                                                     <DialogDescription>
-                                                        <input type="text" />
+                                                        <textarea className="w-full text-gray-800 bg-gray-100 border-gray-400 border-2"></textarea>
                                                         <input type="file" />
                                                     </DialogDescription>
                                                     </DialogHeader>
                                                 </DialogContent>
                                                 </Dialog>
                                             <Dialog>
-                                                <DialogTrigger className="w-full hover:bg-gray-100">Delete</DialogTrigger>
+                                                <DialogTrigger className="w-full hover:bg-gray-100 dark:hover:bg-gray-800">Delete</DialogTrigger>
                                                 <DialogContent>
                                                     <DialogHeader>
                                                     <DialogTitle>Are you absolutely sure?</DialogTitle>
-                                                    <DialogDescription>
+                                                    <DialogDescription className="mt-5 mb-5">
                                                         This action cannot be undone. This will permanently delete your post
                                                         and remove it from our servers.   
                                                     </DialogDescription>
-                                                    <Button onClick={(e) => {handleDelete(e, item.id)}}>Yes</Button>
+                                                    <Button onClick={() => {handleDelete(item.id)}}>Yes</Button>
                                                     </DialogHeader>
                                                 </DialogContent>
                                                 </Dialog>

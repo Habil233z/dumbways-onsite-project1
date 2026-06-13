@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { Button } from "../components/ui/button"
 import type { Follow, Likes, Post, Replies, RepliesLike } from "@/types"
 import { DropdownMenuTrigger, DropdownMenuContent,  DropdownMenu } from "../components/ui/dropdown-menu"
@@ -11,6 +11,7 @@ export default function PostDetail() {
         window.location.href = "/login"
     }
 
+    const navigate = useNavigate()
     const [repliesLikes, setRepliesLikes] = useState<Likes[]>([])
     const [postReply, setPostReply] = useState<Replies[]>([])
 
@@ -127,10 +128,14 @@ export default function PostDetail() {
             console.log(error)
         }}
 
-        const handleDelete = async (e: any, id: number) => {
+        const handleDelete = async (id: number) => {
             await axios.post("http://localhost:3000/post/deleteReply", {id} , {headers})
-            console.log("Delete Confirmed")
             getPostReply()
+        }
+
+        const handleDeleteMainThread = async (id: number) => {
+            await axios.post("http://localhost:3000/post/delete", {id} , {headers})
+            navigate("/post")
         }
 
     useEffect(() => {
@@ -161,9 +166,13 @@ export default function PostDetail() {
                     <div className="flex flex-col items-center">
                             <div className="w-full flex bg-white border border-gray-900 rounded-4xl dark:bg-gray-900">
                                 <div className="min-h-50 w-30 mt-3 ml-3">
-                                    <div className="flex">
-                                    <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950 mt-2 ml-2">
+                                    <div className="flex flex-col items-center mr-4">
+                                    <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950 mt-1 ">
                                         <img src={mainThread.creator_photo_profile} className="object-none h-full" ></img>
+                                    </div>
+                                    <div className="mt-4">
+                                        {followedUsers.includes(mainThread.creator_id as any) && mainThread.creator_id !== userId &&  <Button className="h-10" id={"unfollowBtn" + mainThread.creator_id} onClick={(e) => handleUnFollow(e, mainThread)}>Unfollow</Button>}
+                                        {!followedUsers.includes(mainThread.creator_id as any) && mainThread.creator_id !== userId && <Button className="h-10" id={"followBtn" + mainThread.creator_id} onClick={(e) => handleFollow(e, mainThread)}>Follow</Button>}
                                     </div>
                                 </div>
                                 </div>
@@ -176,27 +185,54 @@ export default function PostDetail() {
                                         <img src={mainThread.image} alt="Fail to load image" className=""/>    
                                     </div>}
                                 </div>
-                                <div className="flex flex-col items-end min-h-50 pr-8 flex-1">
-                                    <div className="mt-6">
-                                        {followedUsers.includes(mainThread.creator_id as any) && mainThread.creator_id !== userId &&  <Button className="h-10" id={"unfollowBtn" + mainThread.creator_id} onClick={(e) => handleUnFollow(e, mainThread)}>Unfollow</Button>}
-                                        {!followedUsers.includes(mainThread.creator_id as any) && mainThread.creator_id !== userId && <Button className="h-10" id={"followBtn" + mainThread.creator_id} onClick={(e) => handleFollow(e, mainThread)}>Follow</Button>}
-                                    </div>
+                                <div className="flex flex-col items-end min-h-50 pr-8 flex-1 mt-5">
+                                    {mainThread.creator_id === userId && 
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger >
+                                            <div className=" h-8 flex items-center rounded-4xl" onClick={(e) => {e.preventDefault()}}><svg className="dark:fill-gray-200" viewBox="0 0 512 512" width="20" height="20"><g><circle cx="256" cy="42.667" r="42.667"/><circle cx="256" cy="256" r="42.667"/><circle cx="256" cy="469.333" r="42.667"/></g></svg></div>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent onClick={(e) => {e.stopPropagation()}}>
+                                            <Dialog>
+                                                <DialogTrigger className="w-full hover:bg-gray-100 dark:hover:bg-gray-800">Edit</DialogTrigger>
+                                                <DialogContent>
+                                                    <DialogHeader>
+                                                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                                                    <DialogDescription>
+                                                        This action cannot be undone. This will permanently delete your account
+                                                        and remove your data from our servers.
+                                                    </DialogDescription>
+                                                    </DialogHeader>
+                                                </DialogContent>
+                                                </Dialog>
+                                            <Dialog>
+                                                <DialogTrigger className="w-full hover:bg-gray-100 dark:hover:bg-gray-800">Delete</DialogTrigger>
+                                                <DialogContent>
+                                                    <DialogHeader>
+                                                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                                                    <DialogDescription className="mt-5 mb-5">
+                                                        This action cannot be undone. This will permanently delete your post
+                                                        and remove it from our servers.   
+                                                    </DialogDescription>
+                                                    <Button onClick={() => {handleDeleteMainThread(mainThread.id)}}>Yes</Button>
+                                                    </DialogHeader>
+                                                </DialogContent>
+                                                </Dialog>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>}
                                     <div className="flex flex-row-reverse h-full items-end">
                                         <div className="mb-5 ml-4" id={"likeCount"}>{mainLike.length}</div>
                                         <svg viewBox="0 0 24 24" width="30" height="30" id={"like"+ mainThread.id} onClick={(e) => {e.stopPropagation(); handleLike(e, mainThread.id)}}  className="mb-4 fill-gray-700 hover:fill-red-500 active:fill-red-900"><path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"/></svg>
                                     </div>
                                 </div>
                             </div>
-                            <div className="w-[80%] flex items-center justify-center mt-2">
-                                <input type="text" className="bg-gray-100 w-[70%] h-10 border-2 border-gray-900 dark:bg-gray-700 pl-5" onChange={e => setContent(e.target.value)}/>
-                                <div className="flex justify-center items-center w-10 h-10 bg-gray-400 mr-5 border-2 border-l-0 border-gray-900 hover:bg-gray-600 active:bg-gray-900">
+                            <div className="w-full flex items-center justify-center mt-2">
+                                <input type="text" className="bg-gray-100 w-[80%] h-12 border-2 border-gray-900 dark:bg-gray-700 pl-5 mr-4 rounded-4xl" onChange={e => setContent(e.target.value)}/>
+                                <div className="flex justify-center items-center w-12 h-12 bg-blue-700 dark:bg-blue-800 mr-2 border-2 border-l-0 border-gray-900 hover:bg-blue-800 active:bg-blue-900 rounded-xl dark:hover:bg-blue-900 dark:active:bg-blue-950">
                                     <label>
-                                    <svg width="20" height="20" viewBox="0 0 24 24">
-                                        <path d="m13,20.5c0,.276-.224.5-.5.5H4.5c-2.481,0-4.5-2.019-4.5-4.5V4.5C0,2.019,2.019,0,4.5,0h12c2.481,0,4.5,2.019,4.5,4.5v8c0,.276-.224.5-.5.5s-.5-.224-.5-.5V4.5c0-1.93-1.57-3.5-3.5-3.5H4.5c-1.93,0-3.5,1.57-3.5,3.5v8.336l3.811-3.811c1.322-1.322,3.628-1.322,4.95,0l7.094,7.122c.195.195.194.512,0,.707-.098.097-.226.146-.353.146-.128,0-.256-.049-.354-.147l-7.094-7.121c-.943-.943-2.591-.944-3.535,0L1,14.25v2.25c0,1.93,1.57,3.5,3.5,3.5h8c.276,0,.5.224.5.5Zm4-15c0,1.379-1.122,2.5-2.5,2.5s-2.5-1.121-2.5-2.5,1.122-2.5,2.5-2.5,2.5,1.121,2.5,2.5Zm-1,0c0-.827-.673-1.5-1.5-1.5s-1.5.673-1.5,1.5.673,1.5,1.5,1.5,1.5-.673,1.5-1.5Zm7.5,13.5h-3.5v-3.5c0-.276-.224-.5-.5-.5s-.5.224-.5.5v3.5h-3.5c-.276,0-.5.224-.5.5s.224.5.5.5h3.5v3.5c0,.276.224.5.5.5s.5-.224.5-.5v-3.5h3.5c.276,0,.5-.224.5-.5s-.224-.5-.5-.5Z"/>
-                                    </svg>
+                                    <svg height="30" width="30" viewBox="0 0 24 24"><path d="m12,21c0,.553-.448,1-1,1h-6c-2.757,0-5-2.243-5-5V5C0,2.243,2.243,0,5,0h12c2.757,0,5,2.243,5,5v6c0,.553-.448,1-1,1s-1-.447-1-1v-6c0-1.654-1.346-3-3-3H5c-1.654,0-3,1.346-3,3v6.959l2.808-2.808c1.532-1.533,4.025-1.533,5.558,0l5.341,5.341c.391.391.391,1.023,0,1.414-.195.195-.451.293-.707.293s-.512-.098-.707-.293l-5.341-5.341c-.752-.751-1.976-.752-2.73,0l-4.222,4.222v2.213c0,1.654,1.346,3,3,3h6c.552,0,1,.447,1,1ZM15,3.5c1.654,0,3,1.346,3,3s-1.346,3-3,3-3-1.346-3-3,1.346-3,3-3Zm0,2c-.551,0-1,.448-1,1s.449,1,1,1,1-.448,1-1-.449-1-1-1Zm8,12.5h-3v-3c0-.553-.448-1-1-1s-1,.447-1,1v3h-3c-.552,0-1,.447-1,1s.448,1,1,1h3v3c0,.553.448,1,1,1s1-.447,1-1v-3h3c.552,0,1-.447,1-1s-.448-1-1-1Z"/></svg>
                                     <input type="file" accept="image/*" className="hidden" onChange={(e: any) => setSelectedFile(e.target.files[0])}/></label>
                                 </div>
-                                <Button className="bg-gray-950 text-gray-300 h-10 dark:bg-gray-800 dark:hover:bg-gray-900 dark:active:bg-gray-700" onClick={handleSubmit}>Post</Button>
+                                <Button className="bg-gray-950 text-gray-300 h-12 dark:bg-gray-800 dark:hover:bg-gray-900 dark:active:bg-gray-700" onClick={handleSubmit}>Post</Button>
                             </div>
                         </div>
                     <div className="h-full flex flex-col items-center">
@@ -227,11 +263,11 @@ export default function PostDetail() {
                                     {reply.creator_id === userId && 
                                     <DropdownMenu>
                                         <DropdownMenuTrigger >
-                                            <div className=" h-8 flex items-center rounded-4xl" onClick={(e) => {e.preventDefault()}}><svg viewBox="0 0 512 512" width="20" height="20"><g><circle cx="256" cy="42.667" r="42.667"/><circle cx="256" cy="256" r="42.667"/><circle cx="256" cy="469.333" r="42.667"/></g></svg></div>
+                                            <div className=" h-8 flex items-center rounded-4xl" onClick={(e) => {e.preventDefault()}}><svg className="dark:fill-gray-200" viewBox="0 0 512 512" width="20" height="20"><g><circle cx="256" cy="42.667" r="42.667"/><circle cx="256" cy="256" r="42.667"/><circle cx="256" cy="469.333" r="42.667"/></g></svg></div>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent onClick={(e) => {e.stopPropagation()}}>
                                             <Dialog>
-                                                <DialogTrigger className="w-full hover:bg-gray-100">Edit</DialogTrigger>
+                                                <DialogTrigger className="w-full hover:bg-gray-100 dark:hover:bg-gray-800">Edit</DialogTrigger>
                                                 <DialogContent>
                                                     <DialogHeader>
                                                     <DialogTitle>Are you absolutely sure?</DialogTitle>
@@ -243,11 +279,11 @@ export default function PostDetail() {
                                                 </DialogContent>
                                                 </Dialog>
                                             <Dialog>
-                                                <DialogTrigger className="w-full hover:bg-gray-100">Delete</DialogTrigger>
+                                                <DialogTrigger className="w-full hover:bg-gray-100 dark:hover:bg-gray-800">Delete</DialogTrigger>
                                                 <DialogContent>
                                                     <DialogHeader>
                                                     <DialogTitle>Are you absolutely sure?</DialogTitle>
-                                                    <DialogDescription>
+                                                    <DialogDescription className="mt-5 mb-5">
                                                         This action cannot be undone. This will permanently delete your post
                                                         and remove it from our servers.   
                                                     </DialogDescription>
