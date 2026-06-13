@@ -20,7 +20,7 @@ model Users{
   photo_profile String @unique
   bio String
   created_at DateTime? @default(now())
-  updated_at DateTime?
+  updated_at DateTime? @updatedAt
   following Following[] @relation("userFollowing")
   follower Following[] @relation("userFollower")
   threads_created Threads[] @relation("UserThreadsCreated")
@@ -58,7 +58,7 @@ model Threads{
   created_by String
   creator Users? @relation("CreatorId", fields: [creator_id], references: [id], onDelete: Cascade)
   creator_id Int
-  updated_at DateTime?
+  updated_at DateTime? @updatedAt
   thread_updated Users? @relation("UserThreadsUpdated", fields: [updated_by], references: [username], onDelete: Cascade)
   updated_by String?
   likes Likes[] @relation("ThreadsToLikesId")
@@ -89,7 +89,7 @@ model Replies{
   creator_photo_profile String?
   creator Users @relation("replyCreatorId", fields: [creator_id], references: [id], onDelete: Cascade)
   creator_id Int
-  updated_at DateTime?
+  updated_at DateTime? @updatedAt
   updaterName Users? @relation("UpdaterName", fields: [updated_by], references: [username], onDelete: Cascade)
   updated_by String?
   likesReplies LikesReplies[] @relation("RepliesToLikesRepliesId")
