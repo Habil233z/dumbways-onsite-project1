@@ -77,9 +77,9 @@ export default function EditProfile() {
                             <h1 className="text-2xl mt-5">Bio</h1>
                         </div>
                         <div className="dark:text-gray-800">
-                            <input className="text-2xl bg-gray-300 w-full mt-5 pl-2" type="text" value={username} onChange={e => setUsername(e.target.value)}/>
-                            <input className="text-2xl bg-gray-300 w-full mt-5 pl-2" type="text" value={full_name} onChange={e => setFull_name(e.target.value)}/>
-                            <input className="text-2xl bg-gray-300 w-full h-50 mt-5 pl-2" type="text" value={bio} onChange={e => setBio(e.target.value)}/>
+                            <input className="border-2 border-gray-400 text-2xl bg-gray-300 w-full mt-5 pl-2" type="text" value={username} onChange={e => setUsername(e.target.value)}/>
+                            <input className="border-2 border-gray-400 text-2xl bg-gray-300 w-full mt-5 pl-2" type="text" value={full_name} onChange={e => setFull_name(e.target.value)}/>
+                            <input className="border-2 border-gray-400 text-2xl bg-gray-300 w-full h-50 mt-5 pl-2" type="text" value={bio} onChange={e => setBio(e.target.value)}/>
                         </div>
                     </div>
                     <div className="flex items-center justify-center">

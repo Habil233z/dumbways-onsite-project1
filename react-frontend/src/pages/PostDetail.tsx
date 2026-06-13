@@ -3,7 +3,8 @@ import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { Button } from "../components/ui/button"
 import type { Follow, Likes, Post, Replies, RepliesLike } from "@/types"
-import { DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenu } from "../components/ui/dropdown-menu"
+import { DropdownMenuTrigger, DropdownMenuContent,  DropdownMenu } from "../components/ui/dropdown-menu"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
 export default function PostDetail() {
     if (!localStorage.getItem("token")) {
@@ -127,14 +128,10 @@ export default function PostDetail() {
         }}
 
         const handleDelete = async (e: any, id: number) => {
-        const confirmation = window.confirm("Are you sure you want to delete this reply?")
-        if (confirmation) {
             await axios.post("http://localhost:3000/post/deleteReply", {id} , {headers})
             console.log("Delete Confirmed")
             getPostReply()
-        } else (
-            console.log("Delete Canceled")
-    )}
+        }
 
     useEffect(() => {
         getMainPost()
@@ -228,15 +225,38 @@ export default function PostDetail() {
                                 </div>
                                 <div className="flex flex-col h-full items-end">
                                     {reply.creator_id === userId && 
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger >
-                                                    <div className=" h-8 flex items-center rounded-4xl" onClick={(e) => {e.preventDefault()}}><svg viewBox="0 0 512 512" width="20" height="20"><g><circle cx="256" cy="42.667" r="42.667"/><circle cx="256" cy="256" r="42.667"/><circle cx="256" cy="469.333" r="42.667"/></g></svg></div>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent>
-                                                    <DropdownMenuItem onClick={(e) => {e.stopPropagation()}}>Edit</DropdownMenuItem>
-                                                    <DropdownMenuItem onClick={(e) => {e.stopPropagation(); handleDelete(e, reply.id)}}>Delete</DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>}
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger >
+                                            <div className=" h-8 flex items-center rounded-4xl" onClick={(e) => {e.preventDefault()}}><svg viewBox="0 0 512 512" width="20" height="20"><g><circle cx="256" cy="42.667" r="42.667"/><circle cx="256" cy="256" r="42.667"/><circle cx="256" cy="469.333" r="42.667"/></g></svg></div>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent onClick={(e) => {e.stopPropagation()}}>
+                                            <Dialog>
+                                                <DialogTrigger className="w-full hover:bg-gray-100">Edit</DialogTrigger>
+                                                <DialogContent>
+                                                    <DialogHeader>
+                                                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                                                    <DialogDescription>
+                                                        This action cannot be undone. This will permanently delete your account
+                                                        and remove your data from our servers.
+                                                    </DialogDescription>
+                                                    </DialogHeader>
+                                                </DialogContent>
+                                                </Dialog>
+                                            <Dialog>
+                                                <DialogTrigger className="w-full hover:bg-gray-100">Delete</DialogTrigger>
+                                                <DialogContent>
+                                                    <DialogHeader>
+                                                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                                                    <DialogDescription>
+                                                        This action cannot be undone. This will permanently delete your post
+                                                        and remove it from our servers.   
+                                                    </DialogDescription>
+                                                    <Button onClick={(e) => {handleDelete(e, reply.id)}}>Yes</Button>
+                                                    </DialogHeader>
+                                                </DialogContent>
+                                                </Dialog>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>}
                                     {reply.creator_id !== userId && <div className="h-8"></div>}
                                     <div className="flex items-end h-full flex-row-reverse mt-4">
                                         <div className="flex justify-center items-center mr-2 ml-5" id={"likeCount"+ reply.id}>{repliesLikes.filter((count: Likes) => count.replie_id === reply.id).length}</div>
