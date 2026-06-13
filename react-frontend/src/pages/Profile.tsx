@@ -98,7 +98,7 @@ export default function UserProfile() {
                     {userPost.map((item) => {
                         return (
                             <div className="w-full items-center justify-center" key={item.id}>
-                            <Link to={`/postDetail/${item.id}`}>
+                            <Link to={`/post/${item.id}`}>
                             <div className="w-100% min-h-40 bg-white flex border border-gray-900 rounded-4xl m-5 shadow-xl dark:bg-gray-900">
                                 <div className="flex">
                                         <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950 mt-5 ml-5">

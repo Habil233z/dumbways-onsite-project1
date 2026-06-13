@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
 import type { Post, Likes, Replies, Follow } from "@/types"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
 
 export default function PostCard() {
     const [errorStatus, setErrorStatus] = useState<boolean>(false)
@@ -54,6 +55,17 @@ export default function PostCard() {
             getPost()
         }}
 
+    const handleDelete = async (e: any, id: number) => {
+        const confirmation = window.confirm("Are you sure you want to delete this post?")
+        if (confirmation) {
+            await axios.post("http://localhost:3000/post/delete", {id} , {headers})
+            console.log("Delete Confirmed")
+            getPost()
+        } else (
+            console.log("Delete Canceled")
+        )
+    }
+
     async function setFollowButton() {
         const response = await axios.get("http://localhost:3000/follow/getFollowing", {headers})
         const followersAlreadyFollow = response.data.data.userFollowed
@@ -102,11 +114,15 @@ export default function PostCard() {
         {post.map((item) => {
             return (
                 <div className="w-full items-center justify-center" key={item.id}>
-                <Link to={`/postDetail/${item.id}`}>
+                <Link to={`/post/${item.id}`}>
                 <div className="w-100% min-h-40 bg-white flex border border-gray-900 rounded-4xl m-5 shadow-xl dark:bg-gray-900">
-                    <div className="flex">
-                            <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950 mt-5 ml-5">
-                        <img src={item.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
+                    <div className="flex flex-col items-center">
+                        <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950 mt-5 ml-5">
+                            <img src={item.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
+                        </div>
+                        <div className="mt-2 ml-5">
+                            {followedUsers.includes(item.creator_id as any) && item.creator_id !== userId &&  <Button className="h-10 dark:bg-gray-800 text-gray-200" id={"unfollowBtn" + item.id} onClick={(e) => handleUnFollow(e, item.id)}>Unfollow</Button>}
+                            {!followedUsers.includes(item.creator_id as any) && item.creator_id !== userId && <Button className="h-10 dark:bg-gray-800 text-gray-200" id={"followBtn" + item.id} onClick={(e) => handleFollow(e, item.id)}>Follow</Button>}
                         </div>
                     </div>
                     <div  className="w-full ml-5">
@@ -115,11 +131,17 @@ export default function PostCard() {
                                 <h1 className="mt-2">{item.created_at}</h1>
                                 <h1 className="font-medium text-2xl">{item.created_by}</h1>
                             </div>
-                            <div className="w-full flex flex-row-reverse mt-5 mr-5">
-                                <div>
-                                {followedUsers.includes(item.creator_id as any) && item.creator_id !== userId &&  <Button className="h-10" id={"unfollowBtn" + item.id} onClick={(e) => handleUnFollow(e, item.id)}>Unfollow</Button>}
-                                {!followedUsers.includes(item.creator_id as any) && item.creator_id !== userId && <Button className="h-10" id={"followBtn" + item.id} onClick={(e) => handleFollow(e, item.id)}>Follow</Button>}
-                                </div>
+                            <div className="w-full flex flex-row-reverse mt-2 mr-5">
+                                {item.creator_id === userId && 
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger >
+                                        <div className=" h-8 flex items-center rounded-4xl" onClick={(e) => {e.preventDefault()}}><svg viewBox="0 0 512 512" width="20" height="20"><g><circle cx="256" cy="42.667" r="42.667"/><circle cx="256" cy="256" r="42.667"/><circle cx="256" cy="469.333" r="42.667"/></g></svg></div>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent>
+                                        <DropdownMenuItem onClick={(e) => {e.stopPropagation()}}>Edit</DropdownMenuItem>
+                                        <DropdownMenuItem onClick={(e) => {e.stopPropagation(); handleDelete(e, item.id)}}>Delete</DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>}
                             </div>
                         </div>
                         <p className="wrap-break-word">{item.content}</p>

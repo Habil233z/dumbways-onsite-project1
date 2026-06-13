@@ -18,7 +18,7 @@ export const GetPost = async (req: Request, res: Response) => {
 
 export const CreatePost = async (req: Request, res: Response) => {
     const decoded = req.user
-    const {content} = await req.body
+    const {content} = req.body
     try {
         const photo = req.file ? req.file.filename : ""
         const image = "http://localhost:3000/uploads/" + photo
@@ -74,7 +74,7 @@ export const GetPostById = async (req: Request, res: Response) => {
 
 export const CreateReply = async (req: Request, res: Response) => {
     const decoded = req.user
-    const {content, thread_id} = await req.body
+    const {content, thread_id} = req.body
     const threadId: number = Number(thread_id)
     try {
         const photo = req.file ? req.file.filename : ""
@@ -106,6 +106,20 @@ export const getUserPost = async (req: Request, res: Response) => {
         return res.status(200).json({
             message: "Get personal status success",
             data: {userPost, decoded, replies}
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const deletePost = async (req: Request, res: Response) => {
+    const decoded = req.user
+    const {id} = req.body
+    try {
+        const deletePost = await prisma.threads.delete({where: {id: id}})
+        return res.status(201).json({
+            message: "Post deleted successfully",
+            data: {decoded}
         })
     } catch (error) {
         console.log(error)

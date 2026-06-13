@@ -30,7 +30,7 @@ function App() {
           <Route path='/search' element={<Search/>}/>
           <Route path='/follows' element={<Follows/>}/>
           <Route path='/post' element={<Post/>}/>
-          <Route path='/postDetail/:id' element={<PostDetail/>}/>
+          <Route path='/post/:id' element={<PostDetail/>}/>
           <Route path='/editProfile' element={<EditProfile/>}/>
         </Routes>
       <SideProfile />
