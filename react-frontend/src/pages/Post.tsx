@@ -134,7 +134,7 @@ export default function Post() {
     async function submitEdit(id: number) {
         await axios.put("http://localhost:3000/post/edit", {content: editPostContent, file: editPostNewImage, id}, {headers: {"Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`}})
         getPost()
-        }
+    }
 
     useEffect(() => {
         getPost()
@@ -216,7 +216,7 @@ export default function Post() {
                                                     <DialogDescription>
                                                         <div className="flex">
                                                         <textarea className="rounded-2xl pl-3 pr-3 w-full text-gray-800 bg-gray-100 border-gray-400 border-2" value={editPostContent} onChange={e => setEditPostContent(e.target.value)}></textarea>
-                                                        <DialogTrigger><Button className="h-12 ml-3" onClick={() => {submitEdit(item.id), getPost()}}>Edit Post</Button></DialogTrigger>
+                                                        <DialogTrigger><Button className="h-12 ml-3" onClick={() => {submitEdit(item.id)}}>Edit Post</Button></DialogTrigger>
                                                         </div>
                                                         {editPostImage !== "http://localhost:3000/uploads/" && 
                                                          <label className="max-w-full flex justify-center mt-4">
@@ -235,7 +235,7 @@ export default function Post() {
                                                     </DialogDescription>
                                                     </DialogHeader>
                                                 </DialogContent>
-                                                </Dialog>
+                                            </Dialog>
                                             <Dialog>
                                                 <DialogTrigger className="w-full hover:bg-gray-100 dark:hover:bg-gray-800">Delete</DialogTrigger>
                                                 <DialogContent className="w-70">
@@ -248,7 +248,7 @@ export default function Post() {
                                                     <Button onClick={() => {handleDelete(item.id)}}>Yes</Button>
                                                     </DialogHeader>
                                                 </DialogContent>
-                                                </Dialog>
+                                            </Dialog>
                                         </DropdownMenuContent>
                                     </DropdownMenu>}
                                 </div>
