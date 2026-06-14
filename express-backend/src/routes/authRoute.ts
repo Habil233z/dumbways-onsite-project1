@@ -9,6 +9,6 @@ const router = Router()
 router.post("/register", upload.single("file"), Register)
 router.post("/login", Login)
 router.get("/getProfile", authentication, getProfile)
-router.post("/editProfile", authentication, upload.single("file"), editProfile)
+router.put("/editProfile", authentication, upload.single("file"), editProfile)
 
 export default router

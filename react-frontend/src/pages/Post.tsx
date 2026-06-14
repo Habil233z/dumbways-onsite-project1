@@ -1,15 +1,41 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import type { Post, Likes, Replies, Follow } from "@/types"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../components/ui/dropdown-menu"
 import CreatePost from "@/components/CreatePost"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
 export default function Post() {
     if (!localStorage.getItem("token")) {
         window.location.href = "/"
+    }
+    const [content, setContent] = useState("")
+    const [selectedFile, setSelectedFile] = useState<File | null>(null)
+    const [image, setImage] = useState<string>("")
+
+    function handleSelectImage(e: any) {
+        const photo: string = URL.createObjectURL(e.target.files[0])
+        setSelectedFile(e.target.files[0])
+        setImage(photo)
+    }
+
+    const handleSubmit = async (e: any) => {
+        e.preventDefault
+        if (content === "") {
+            return window.alert("Post must have a text")
+        }
+        try {
+            if (selectedFile === null) {
+                await axios.post("http://localhost:3000/post/create", {content}, {headers: {Authorization: `Bearer ${token}`}})
+                
+            }
+                await axios.post("http://localhost:3000/post/create", {content, file:selectedFile}, {headers: {"Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`}})
+
+        } catch (error) {
+            return window.alert("Not authenticated")
+        }
     }
 
     const [errorStatus, setErrorStatus] = useState<boolean>(false)
@@ -21,6 +47,10 @@ export default function Post() {
     const token = localStorage.getItem("token")||null
     const headers = {"Authorization" : `Bearer ${token}`}
     const [userId, setUserId] = useState(0)
+
+    const [editPostContent, setEditPostContent] = useState("")
+    const [editPostImage, setEditPostImage] = useState("")
+    const [editPostNewImage, setEditPostNewImage] = useState<File | null>(null)
 
     async function getPost() {
         try {
@@ -90,6 +120,22 @@ export default function Post() {
             console.log(error)
     }}
 
+    function setEditPost(content: string, image: string) {
+        setEditPostContent(content)
+        setEditPostImage(image)
+    }
+
+    function handlePhotoChange(e: any) {
+        const photo: string = URL.createObjectURL(e.target.files[0])
+        setEditPostNewImage(e.target.files[0])
+        setEditPostImage(photo)
+    }
+
+    async function submitEdit(id: number) {
+        await axios.put("http://localhost:3000/post/edit", {content: editPostContent, file: editPostNewImage, id}, {headers: {"Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`}})
+        getPost()
+        }
+
     useEffect(() => {
         getPost()
         setTimeout(() => {
@@ -106,9 +152,9 @@ export default function Post() {
     document.body.style.overflow = "hidden"
 
     return (
-    <div className="h-screen w-full flex">
+    <div className="h-screen w-full flex flex-col">
+        <CreatePost/>
         <div className="h-screen w-full flex flex-col items-center bg-gray-100 overflow-y-scroll dark:bg-gray-950">
-            <CreatePost/>
             {errorStatus && 
                 <div className="w-full h-screen flex items-center justify-center">
                     <div className="w-120 h-40 flex items-center justify-center bg-gray-600 border-4 border-gray-950">
@@ -147,20 +193,36 @@ export default function Post() {
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent onClick={(e) => {e.stopPropagation()}}>
                                             <Dialog>
-                                                <DialogTrigger className="w-full hover:bg-gray-100 dark:hover:bg-gray-800">Edit</DialogTrigger>
-                                                <DialogContent>
+                                                <DialogTrigger className="w-full hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => setEditPost(item.content, item.image)}>Edit</DialogTrigger>
+                                                <DialogContent className="w-200">
                                                     <DialogHeader>
                                                     <DialogTitle className="text-2xl">Edit your post:</DialogTitle>
                                                     <DialogDescription>
-                                                        <textarea className="w-full text-gray-800 bg-gray-100 border-gray-400 border-2"></textarea>
-                                                        <input type="file" />
+                                                        <div className="flex">
+                                                        <textarea className="rounded-2xl pl-3 pr-3 w-full text-gray-800 bg-gray-100 border-gray-400 border-2" value={editPostContent} onChange={e => setEditPostContent(e.target.value)}></textarea>
+                                                        <DialogTrigger><Button className="h-12 ml-3" onClick={() => {submitEdit(item.id), getPost()}}>Edit Post</Button></DialogTrigger>
+                                                        </div>
+                                                        {editPostImage !== "http://localhost:3000/uploads/" && 
+                                                         <label className="max-w-full flex justify-center mt-4">
+                                                            <img src={editPostImage} className="" alt="No image selected"></img>
+                                                            <input type="file" className="hidden" onChange={e => handlePhotoChange(e)}/>
+                                                        </label>
+                                                        }
+                                                        {editPostImage === "http://localhost:3000/uploads/" && 
+                                                        <div className="w-full flex justify-center mt-4">
+                                                            <label className="max-w-full flex justify-center">
+                                                                <div className="bg-blue-800 h-10 w-10 rounded-xl flex justify-center items-center">
+                                                                    <svg height="30" width="30" viewBox="0 0 24 24"><path d="m12,21c0,.553-.448,1-1,1h-6c-2.757,0-5-2.243-5-5V5C0,2.243,2.243,0,5,0h12c2.757,0,5,2.243,5,5v6c0,.553-.448,1-1,1s-1-.447-1-1v-6c0-1.654-1.346-3-3-3H5c-1.654,0-3,1.346-3,3v6.959l2.808-2.808c1.532-1.533,4.025-1.533,5.558,0l5.341,5.341c.391.391.391,1.023,0,1.414-.195.195-.451.293-.707.293s-.512-.098-.707-.293l-5.341-5.341c-.752-.751-1.976-.752-2.73,0l-4.222,4.222v2.213c0,1.654,1.346,3,3,3h6c.552,0,1,.447,1,1ZM15,3.5c1.654,0,3,1.346,3,3s-1.346,3-3,3-3-1.346-3-3,1.346-3,3-3Zm0,2c-.551,0-1,.448-1,1s.449,1,1,1,1-.448,1-1-.449-1-1-1Zm8,12.5h-3v-3c0-.553-.448-1-1-1s-1,.447-1,1v3h-3c-.552,0-1,.447-1,1s.448,1,1,1h3v3c0,.553.448,1,1,1s1-.447,1-1v-3h3c.552,0,1-.447,1-1s-.448-1-1-1Z"/></svg><input type="file" className="hidden" onChange={e => handlePhotoChange(e)}/>
+                                                                </div> 
+                                                            </label>
+                                                        </div>}
                                                     </DialogDescription>
                                                     </DialogHeader>
                                                 </DialogContent>
                                                 </Dialog>
                                             <Dialog>
                                                 <DialogTrigger className="w-full hover:bg-gray-100 dark:hover:bg-gray-800">Delete</DialogTrigger>
-                                                <DialogContent>
+                                                <DialogContent className="w-70">
                                                     <DialogHeader>
                                                     <DialogTitle>Are you absolutely sure?</DialogTitle>
                                                     <DialogDescription className="mt-5 mb-5">

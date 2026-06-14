@@ -22,11 +22,9 @@ export default function CreatePost() {
             const token = localStorage.getItem("token")||null
             if (selectedFile === null) {
                 await axios.post("http://localhost:3000/post/create", {content}, {headers: {Authorization: `Bearer ${token}`}})
-                window.alert("Post created")
                 return window.location.href = "/post"
             }
                 await axios.post("http://localhost:3000/post/create", {content, file:selectedFile}, {headers: {"Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`}})
-                window.alert("Post created")
                 return window.location.href = "/post"
             
         } catch (error) {
@@ -35,7 +33,7 @@ export default function CreatePost() {
     }
 
     return (
-        <div className="h-screen w-full bg-gray-100 dark:bg-gray-950 dark:border-gray-700 flex justify-center" id="createPost">
+        <div className="w-full bg-gray-100 dark:bg-gray-950 dark:border-gray-700 flex justify-center" id="createPost">
             <div className="flex items-center justify-center mt-7">
                 <div className="flex"> 
                     <div className="flex flex-col justify-center">

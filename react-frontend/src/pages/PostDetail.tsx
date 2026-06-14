@@ -206,7 +206,7 @@ export default function PostDetail() {
                                                 </Dialog>
                                             <Dialog>
                                                 <DialogTrigger className="w-full hover:bg-gray-100 dark:hover:bg-gray-800">Delete</DialogTrigger>
-                                                <DialogContent>
+                                                <DialogContent className="w-70">
                                                     <DialogHeader>
                                                     <DialogTitle>Are you absolutely sure?</DialogTitle>
                                                     <DialogDescription className="mt-5 mb-5">
@@ -280,14 +280,14 @@ export default function PostDetail() {
                                                 </Dialog>
                                             <Dialog>
                                                 <DialogTrigger className="w-full hover:bg-gray-100 dark:hover:bg-gray-800">Delete</DialogTrigger>
-                                                <DialogContent>
+                                                <DialogContent className="w-70">
                                                     <DialogHeader>
                                                     <DialogTitle>Are you absolutely sure?</DialogTitle>
                                                     <DialogDescription className="mt-5 mb-5">
                                                         This action cannot be undone. This will permanently delete your post
                                                         and remove it from our servers.   
                                                     </DialogDescription>
-                                                    <Button onClick={(e) => {handleDelete(e, reply.id)}}>Yes</Button>
+                                                    <Button onClick={() => {handleDelete(reply.id)}}>Yes</Button>
                                                     </DialogHeader>
                                                 </DialogContent>
                                                 </Dialog>

@@ -4,12 +4,13 @@ import type { User } from "@/types"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
 
 export default function EditProfile() {
     if (!localStorage.getItem("token")) {
         window.location.href = "/"
     }
+    const dispatch = useDispatch()
+
     const profileRedux = useSelector((state: any)=> state.profile) as User
     const [photo_profile, setPhoto_profile] = useState<string>("")
     const [newPhoto, setNewPhoto] = useState(null)
@@ -23,13 +24,11 @@ export default function EditProfile() {
         setPhoto_profile(photo)
     }
 
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
     async function handleSubmit(e: any) {
         e.preventDefault()
         const token = localStorage.getItem("token")
         try {
-            const response = await axios.post("http://localhost:3000/editProfile", {username, full_name, bio, file: newPhoto}, {headers: {"Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`}})
+            const response = await axios.put("http://localhost:3000/editProfile", {username, full_name, bio, file: newPhoto}, {headers: {"Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`}})
             localStorage.setItem("token", response.data.data.token)
             dispatch(setProfile(response.data.data.identity))
             window.location.href="/"

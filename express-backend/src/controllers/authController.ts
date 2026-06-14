@@ -92,7 +92,6 @@ export const editProfile = async (req: Request, res: Response) => {
         const {username, full_name, bio} = await req.body
         const photo = req.file ? req.file.filename : ""
         const preparedPhoto = "http://localhost:3000/uploads/" + photo
-        let photo_profile = preparedPhoto
         if (preparedPhoto === "http://localhost:3000/uploads/") {
             await prisma.users.update({
             where: {email: decoded.email},
@@ -107,7 +106,7 @@ export const editProfile = async (req: Request, res: Response) => {
                 username,
                 full_name,
                 bio,
-                photo_profile
+                photo_profile: preparedPhoto
         }})} 
         
         const user = await prisma.users.findUnique({where: {email: decoded.email}});

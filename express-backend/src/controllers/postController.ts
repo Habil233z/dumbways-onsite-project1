@@ -131,3 +131,28 @@ export const deletePostReply = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
 }}
+
+export const EditPost = async (req: Request, res: Response) => {
+    const decoded = req.user
+    const {content, id} = req.body
+    const threadId: number = Number(id)
+    const imageName = req.file ? req.file.filename : ""
+    const preparedImage = "http://localhost:3000/uploads/" + imageName
+    try {
+        if (preparedImage === "http://localhost:3000/uploads/") {
+            const editedPost = await prisma.threads.update({
+            where: {id: threadId, creator_id: decoded.id}, 
+            data: {content: content}
+        })} else {
+            const editedPost = await prisma.threads.update({
+            where: {id: threadId, creator_id: decoded.id}, 
+            data: {content: content, image: preparedImage}
+        })
+        }
+        return res.status(201).json({
+            message: "data edited successfully"
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
