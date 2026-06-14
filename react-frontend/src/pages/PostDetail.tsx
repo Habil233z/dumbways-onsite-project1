@@ -26,6 +26,10 @@ export default function PostDetail() {
     const [editPostImage, setEditPostImage] = useState("")
     const [editPostNewImage, setEditPostNewImage] = useState<File | null>(null)
 
+    const [editReplyContent, setEditReplyContent] = useState("")
+    const [editReplyImage, setEditReplyImage] = useState("")
+    const [editReplyNewImage, setEditReplyNewImage] = useState<File | null>(null)
+
     const token = localStorage.getItem("token")||null
     const headers = {"Authorization" : `Bearer ${token}`}
     const {id} = useParams()
@@ -132,7 +136,7 @@ export default function PostDetail() {
             console.log(error)
         }}
 
-        const handleDelete = async (id: number) => {
+        const handleDeleteReply = async (id: number) => {
             await axios.post("http://localhost:3000/post/deleteReply", {id} , {headers})
             getPostReply()
         }
@@ -156,6 +160,22 @@ export default function PostDetail() {
         async function submitEdit(id: number) {
         await axios.put("http://localhost:3000/post/edit", {content: editPostContent, file: editPostNewImage, id}, {headers: {"Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`}})
         getMainPost()
+        }
+        
+        function setEditReply(content: string, image: string) {
+        setEditReplyContent(content)
+        setEditReplyImage(image)
+        }
+
+        function handleReplyPhotoChange(e: any) {
+        const photo: string = URL.createObjectURL(e.target.files[0])
+        setEditReplyNewImage(e.target.files[0])
+        setEditReplyImage(photo)
+        }
+
+        async function submitEditReply(id: number) {
+        await axios.put("http://localhost:3000/post/editReply", {content: editReplyContent, file: editReplyNewImage, id}, {headers: {"Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`}})
+        getPostReply()
         }
 
     useEffect(() => {
@@ -303,17 +323,33 @@ export default function PostDetail() {
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent onClick={(e) => {e.stopPropagation()}}>
                                             <Dialog>
-                                                <DialogTrigger className="w-full hover:bg-gray-100 dark:hover:bg-gray-800">Edit</DialogTrigger>
-                                                <DialogContent>
+                                                <DialogTrigger className="w-full hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => setEditReply(reply.content, reply.image)}>Edit</DialogTrigger>
+                                                <DialogContent className="w-200">
                                                     <DialogHeader>
-                                                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                                                    <DialogTitle className="text-2xl">Edit your post:</DialogTitle>
                                                     <DialogDescription>
-                                                        This action cannot be undone. This will permanently delete your account
-                                                        and remove your data from our servers.
+                                                        <div className="flex">
+                                                        <textarea className="rounded-2xl pl-3 pr-3 w-full text-gray-800 bg-gray-100 border-gray-400 border-2" value={editReplyContent} onChange={e => setEditReplyContent(e.target.value)}></textarea>
+                                                        <DialogTrigger><Button className="h-12 ml-3" onClick={() => {submitEditReply(reply.id)}}>Edit Post</Button></DialogTrigger>
+                                                        </div>
+                                                        {editReplyImage !== "http://localhost:3000/uploads/" && 
+                                                         <label className="max-w-full flex justify-center mt-4">
+                                                            <img src={editReplyImage} className="" alt="No image selected"></img>
+                                                            <input type="file" className="hidden" onChange={e => handleReplyPhotoChange(e)}/>
+                                                        </label>
+                                                        }
+                                                        {editReplyImage === "http://localhost:3000/uploads/" && 
+                                                        <div className="w-full flex justify-center mt-4">
+                                                            <label className="max-w-full flex justify-center">
+                                                                <div className="bg-blue-800 h-10 w-10 rounded-xl flex justify-center items-center">
+                                                                    <svg height="30" width="30" viewBox="0 0 24 24"><path d="m12,21c0,.553-.448,1-1,1h-6c-2.757,0-5-2.243-5-5V5C0,2.243,2.243,0,5,0h12c2.757,0,5,2.243,5,5v6c0,.553-.448,1-1,1s-1-.447-1-1v-6c0-1.654-1.346-3-3-3H5c-1.654,0-3,1.346-3,3v6.959l2.808-2.808c1.532-1.533,4.025-1.533,5.558,0l5.341,5.341c.391.391.391,1.023,0,1.414-.195.195-.451.293-.707.293s-.512-.098-.707-.293l-5.341-5.341c-.752-.751-1.976-.752-2.73,0l-4.222,4.222v2.213c0,1.654,1.346,3,3,3h6c.552,0,1,.447,1,1ZM15,3.5c1.654,0,3,1.346,3,3s-1.346,3-3,3-3-1.346-3-3,1.346-3,3-3Zm0,2c-.551,0-1,.448-1,1s.449,1,1,1,1-.448,1-1-.449-1-1-1Zm8,12.5h-3v-3c0-.553-.448-1-1-1s-1,.447-1,1v3h-3c-.552,0-1,.447-1,1s.448,1,1,1h3v3c0,.553.448,1,1,1s1-.447,1-1v-3h3c.552,0,1-.447,1-1s-.448-1-1-1Z"/></svg><input type="file" className="hidden" onChange={e => handleReplyPhotoChange(e)}/>
+                                                                </div> 
+                                                            </label>
+                                                        </div>}
                                                     </DialogDescription>
                                                     </DialogHeader>
                                                 </DialogContent>
-                                                </Dialog>
+                                            </Dialog>
                                             <Dialog>
                                                 <DialogTrigger className="w-full hover:bg-gray-100 dark:hover:bg-gray-800">Delete</DialogTrigger>
                                                 <DialogContent className="w-70">
@@ -323,10 +359,10 @@ export default function PostDetail() {
                                                         This action cannot be undone. This will permanently delete your post
                                                         and remove it from our servers.   
                                                     </DialogDescription>
-                                                    <Button onClick={() => {handleDelete(reply.id)}}>Yes</Button>
+                                                    <Button onClick={() => {handleDeleteReply(reply.id)}}>Yes</Button>
                                                     </DialogHeader>
                                                 </DialogContent>
-                                                </Dialog>
+                                            </Dialog>
                                         </DropdownMenuContent>
                                     </DropdownMenu>}
                                     {reply.creator_id !== userId && <div className="h-8"></div>}

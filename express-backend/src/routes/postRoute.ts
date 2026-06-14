@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { CreatePost, CreateReply, getUserPost, GetPost, GetPostById, GetPostReply, deletePost, deletePostReply, EditPost } from "../controllers/postController";
+import { CreatePost, CreateReply, getUserPost, GetPost, GetPostById, GetPostReply, deletePost, deletePostReply, EditPost, EditReply } from "../controllers/postController";
 import { authentication } from "../middlewares/authMiddleware";
 import { upload } from "../lib/multer";
 
@@ -14,5 +14,6 @@ router.get("/getUserPost", authentication, getUserPost)
 router.post("/delete", authentication, deletePost)
 router.post("/deleteReply", authentication, deletePostReply)
 router.put("/edit", upload.single("file"), authentication, EditPost)
+router.put("/editReply", upload.single("file"), authentication, EditReply)
 
 export default router

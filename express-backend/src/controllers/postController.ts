@@ -156,3 +156,28 @@ export const EditPost = async (req: Request, res: Response) => {
         console.log(error)
     }
 }
+
+export const EditReply = async (req: Request, res: Response) => {
+    const decoded = req.user
+    const {content, id} = req.body
+    const replyId: number = Number(id)
+    const imageName = req.file ? req.file.filename : ""
+    const preparedImage = "http://localhost:3000/uploads/" + imageName
+    try {
+        if (preparedImage === "http://localhost:3000/uploads/") {
+            await prisma.replies.update({
+            where: {id: replyId, creator_id: decoded.id}, 
+            data: {content: content}
+        })} else {
+            await prisma.replies.update({
+            where: {id: replyId, creator_id: decoded.id}, 
+            data: {content: content, image: preparedImage}
+        })
+        }
+        return res.status(201).json({
+            message: "data edited successfully"
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
