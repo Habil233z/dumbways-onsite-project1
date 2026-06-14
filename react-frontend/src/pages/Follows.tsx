@@ -76,7 +76,7 @@ export default function Follow() {
     <>
         <div className="h-screen flex bg-gray-100 flex-col  w-full items-center dark:bg-gray-950">
             <div className="flex w-full ">
-                <div className="bg-gray-100 h-10 w-60 flex dark:bg-gray-950 mt-4 ml-4">
+                <div className="bg-gray-100 h-10 w-full flex justify-center dark:bg-gray-950 mt-4 ml-4">
                     <div id="followingButtonHead" className=" mr-4 h-full w-full border-2 border-gray-500 flex rounded-4xl items-center justify-center hover:bg-gray-200 active:bg-gray-300 dark:hover:bg-gray-800 dark:active:bg-gray-700" onClick={handleFollowing}>
                         <h1 className="text-xl">Following</h1>
                     </div>
