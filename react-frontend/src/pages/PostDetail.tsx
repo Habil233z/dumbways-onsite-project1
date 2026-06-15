@@ -296,7 +296,7 @@ export default function PostDetail() {
                     <div className="h-full flex flex-col items-center">
                     {postReply.map ((reply) => {
                             return (
-                            <div className="w-[80%] min-h-40 bg-white m-5 p-5 flex border-2 border-gray-900 rounded-4xl dark:bg-gray-900" key={reply.id}>
+                            <div className="w-[80%] min-h-40 bg-white m-5 p-5 flex border-2 border-gray-400 dark:border-0 rounded-4xl dark:bg-gray-900" key={reply.id}>
                                 <div className="flex flex-col items-center">
                                     <Link to={`/user/${reply.creator_id}`}>
                                     <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center">

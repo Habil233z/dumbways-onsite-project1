@@ -181,7 +181,7 @@ export default function OtherUser() {
 
     return (
         <div className="h-screen flex bg-gray-100 flex-col w-full items-center dark:bg-gray-950 overflow-y-auto">
-            <div className="w-[80%] border-gray-800 border-2 min-h-100 bg-white justify-center items-center mt-20 flex flex-col rounded-2xl pl-10 pr-10 shadow-4xl dark:bg-gray-900">
+            <div className="w-[80%] border-gray-400 dark:border-0 border-2 min-h-100 bg-white justify-center items-center mt-20 flex flex-col rounded-2xl pl-10 pr-10 shadow-4xl dark:bg-gray-900">
                 <div className="flex w-full">
                     <div className="w-full">
                         <div className="rounded-[50%] w-40 h-40 overflow-hidden flex justify-center items-center border-2 border-gray-950">
@@ -209,7 +209,7 @@ export default function OtherUser() {
                         return (
                             <div className="w-full items-center justify-center" key={item.id}>
                             <Link to={`/post/${item.id}`}>
-                            <div className="w-100% min-h-40 bg-white flex border border-gray-900 rounded-4xl m-5 shadow-xl dark:bg-gray-900">
+                            <div className="w-100% min-h-40 bg-white flex border border-gray-400 dark:border-0 rounded-4xl m-5 shadow-xl dark:bg-gray-900">
                                 <div className="flex">
                                         <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950 mt-5 ml-5">
                                     <img src={item.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
@@ -306,7 +306,7 @@ export default function OtherUser() {
                         return (
                             <div className="w-full items-center justify-center" key={item.id}>
                             <Link to={`/post/${item.thread_id}`}>
-                            <div className="min-h-40 bg-white flex border border-gray-900 rounded-4xl m-5 shadow-xl dark:bg-gray-900">
+                            <div className="min-h-40 bg-white flex border border-gray-400 dark:border-0 rounded-4xl m-5 shadow-xl dark:bg-gray-900">
                                 <div className="flex">
                                         <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950 mt-5 ml-5">
                                     <img src={item.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>

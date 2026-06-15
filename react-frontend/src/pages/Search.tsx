@@ -79,7 +79,7 @@ export default function Search() {
                 {searchedUser.map((user) => {
                     return (
                     <Link to={`/user/${user.id}`}>
-                    <div className="w-100% min-h-40 bg-white m-5 p-5 flex border-2 border-gray-900 rounded-4xl shadow-2xl dark:bg-gray-900" key={user.id} id={user.id as any}>
+                    <div className="min-h-40 bg-white m-5 p-5 flex border-2 border-gray-400 dark:border-0 rounded-4xl shadow-2xl dark:bg-gray-900" key={user.id} id={user.id as any}>
                     <div className="flex">
                             <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border border-gray-800">
                         <img src={user.photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>

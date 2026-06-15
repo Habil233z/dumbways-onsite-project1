@@ -39,7 +39,7 @@ export default function SideProfile() {
 
     return (
         <div className="w-[33%] bg-gray-100 flex flex-col pr-15 dark:bg-gray-950" id="SideProfile">
-            <div className="mt-20 ml-20 h-100 w-90 bg-white border-gray-950 border-2 flex flex-col items-center rounded-4xl dark:bg-gray-900" onClick={handleClick}>
+            <div className="mt-20 ml-20 h-100 w-90 bg-white border-gray-400 dark:border-0 border-2 flex flex-col items-center rounded-4xl dark:bg-gray-900" onClick={handleClick}>
                 <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center items-center mt-10 border-2 border-gray-950">
                     <img src={profile.photo_profile} className="object-none h-full"></img>
                 </div>
@@ -59,7 +59,7 @@ export default function SideProfile() {
                     <Link to={`/user/${user.id}`}>
                     <div className="w-90 mt-2 min-h-20 bg-white flex border-2 border-gray-400 dark:border-gray-800 rounded-4xl shadow-2xl dark:bg-gray-900" key={user.id} id={user.id as any}>
                     <div className="flex">
-                            <div className="rounded-[50%] mt-2 ml-2 w-20 h-20 overflow-hidden flex justify-center border border-gray-800">
+                            <div className="rounded-[50%] mt-2 ml-2 w-20 h-20 overflow-hidden flex justify-center border border-gray-800 mb-2">
                         <img src={user.photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
                         </div>
                     </div>
