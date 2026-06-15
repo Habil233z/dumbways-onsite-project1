@@ -50,7 +50,7 @@ export default function SideProfile() {
                     <p className="mt-20">Created At: {profile.created_at}</p>
                 </div>
             </div>
-            <div className="w-90 h-70 flex overflow-y-scroll mt-4 bg-white ml-20 rounded-4xl border border-gray-400">
+            <div className="w-90 h-70 flex overflow-y-scroll mt-4 bg-white dark:bg-gray-900 dark:border-gray-800 ml-20 rounded-4xl border border-gray-400">
                 <div className=" w-full min-h-40 rounded-4xl flex flex-col items-center">
                     <h1 className="mt-4 pb-2 text-2xl font-medium w-full text-center">Recomended User</h1>
                     <div>

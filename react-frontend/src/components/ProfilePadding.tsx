@@ -29,7 +29,7 @@ export default function ProfilePadding() {
                     {recomendedUser.map((user) => {
                     return (
                     <Link to={`/user/${user.id}`}>
-                    <div className="w-90 mt-2 min-h-40 bg-white flex border-2 border-gray-400 dark:border-gray-800 rounded-4xl shadow-2xl dark:bg-gray-900" key={user.id} id={user.id as any}>
+                    <div className="w-90 mt-2 min-h-25 bg-white flex border-2 border-gray-400 dark:border-gray-800 rounded-4xl shadow-2xl dark:bg-gray-900" key={user.id} id={user.id as any}>
                     <div className="flex">
                             <div className="rounded-[50%] mt-2 ml-2 w-20 h-20 overflow-hidden flex justify-center border border-gray-800">
                         <img src={user.photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
@@ -38,9 +38,8 @@ export default function ProfilePadding() {
                     <div className="w-full ml-5 flex flex-col">
                         <div>
                             <h1 className="font-medium text-4xl">{user.username}</h1>
-                            <p>{user.full_name}</p>
-                            <p>{user.email}</p>
-                            <p className="mt-2">{user.bio}</p>
+                            <p className="font-bold">{user.email}</p>
+                            <p>{user.bio}</p>
                         </div>
                     </div>
                         
