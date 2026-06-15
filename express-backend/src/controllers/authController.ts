@@ -121,3 +121,15 @@ export const editProfile = async (req: Request, res: Response) => {
         console.log(error)
     }
 }
+
+export const DeleteAccount= async (req: Request, res: Response) => {
+    const decoded = req.user
+    try {
+        await prisma.users.delete({where: {id: decoded.id}})
+        return res.status(204).json({
+            message: "Account has been deleted successfully"
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}

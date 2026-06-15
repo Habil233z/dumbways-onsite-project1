@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { setProfile } from "@/slices_redux/profileSlice"
 import type { User } from "@/types"
 import axios from "axios"
@@ -35,6 +36,17 @@ export default function EditProfile() {
         } catch (error) {
             console.log(error)
         }}
+
+    async function handleDeleteAccount() {
+        const token = localStorage.getItem("token")
+        try {
+            await axios.delete("http://localhost:3000/deleteAccount", {headers: {Authorization: `Bearer ${token}`}})
+            localStorage.removeItem("token")
+            window.location.href="/login"
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     useEffect(() => {
         setPhoto_profile(profileRedux.photo_profile)
@@ -83,6 +95,20 @@ export default function EditProfile() {
                     <div className="flex items-center justify-center">
                         <Button type="submit" className="mt-8 bg-gray-950 text-gray-300 dark:bg-gray-950 dark:hover:bg-gray-700 dark:active:bg-gray-800" onClick={e => handleSubmit(e)}>Submit</Button>
                     </div>
+                    <Dialog>
+                    <DialogTrigger className="h-8 w-35 bg-red-700 hover:bg-red-600 active:bg-red-500 dark:bg-red-800 text-gray-300 dark:hover:bg-red-600 dark:active:bg-red-500 rounded-4xl">Delete Account</DialogTrigger>
+                    <DialogContent className="w-80">
+                        <DialogHeader>
+                        <DialogTitle>Are you absolutely sure?</DialogTitle>
+                        <DialogDescription>
+                            This action cannot be undone. This will permanently delete your account
+                            and remove your data from our servers.
+                            <Button className="mt-5" onClick={handleDeleteAccount}>I am sure</Button>
+                        </DialogDescription>
+                        </DialogHeader>
+                    </DialogContent>
+                    </Dialog>
+                        
                     </div>
                 </form>   
             </div>
