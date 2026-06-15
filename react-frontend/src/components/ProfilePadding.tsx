@@ -23,7 +23,7 @@ export default function ProfilePadding() {
 
     return (
         <div className="w-[35%] bg-gray-100 flex justify-center pr-15 dark:bg-gray-950" id="profilePadding">
-            <div className="w-full h-full flex justify-center items-center">
+            <div className="ml-20 w-full h-full flex justify-center items-center">
                 <div className="bg-white w-100 h-150 rounded-4xl border border-gray-400 flex flex-col items-center dark:bg-gray-900 dark:border-gray-800">
                     <h1 className="mt-4 pb-2 text-2xl font-medium w-full text-center border-b border-gray-400 dark:border-gray-800">Recomended User</h1>
                     {recomendedUser.map((user) => {
