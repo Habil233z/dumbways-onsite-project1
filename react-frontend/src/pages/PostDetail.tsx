@@ -207,9 +207,11 @@ export default function PostDetail() {
                             <div className="w-full flex bg-white border border-gray-900 rounded-4xl dark:bg-gray-900">
                                 <div className="min-h-50 w-30 mt-3 ml-3">
                                     <div className="flex flex-col items-center mr-4">
+                                    <Link to={`/user/${mainThread.creator_id}`}>
                                     <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950 mt-1 ">
                                         <img src={mainThread.creator_photo_profile} className="object-none h-full" ></img>
                                     </div>
+                                    </Link>
                                     <div className="mt-4">
                                         {followedUsers.includes(mainThread.creator_id as any) && mainThread.creator_id !== userId &&  <Button className="h-10" id={"unfollowBtn" + mainThread.creator_id} onClick={(e) => handleUnFollow(e, mainThread)}>Unfollow</Button>}
                                         {!followedUsers.includes(mainThread.creator_id as any) && mainThread.creator_id !== userId && <Button className="h-10" id={"followBtn" + mainThread.creator_id} onClick={(e) => handleFollow(e, mainThread)}>Follow</Button>}
@@ -296,9 +298,11 @@ export default function PostDetail() {
                             return (
                             <div className="w-[80%] min-h-40 bg-white m-5 p-5 flex border-2 border-gray-900 rounded-4xl dark:bg-gray-900" key={reply.id}>
                                 <div className="flex flex-col items-center">
+                                    <Link to={`/user/${reply.creator_id}`}>
                                     <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center">
                                         <img src={reply.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
                                     </div>
+                                    </Link>
                                     <div className="mt-2">    
                                         {followedUsers.includes(reply.creator_id as any) && reply.creator_id !== userId &&  <Button className="h-10" id={"unfollowBtn" + reply.creator_id} onClick={(e) => handleUnFollow(e, reply)}>Unfollow</Button>}
                                         {!followedUsers.includes(reply.creator_id as any) && reply.creator_id !== userId && <Button className="h-10" id={"followBtn" + reply.creator_id} onClick={(e) => handleFollow(e, reply)}>Follow</Button>}

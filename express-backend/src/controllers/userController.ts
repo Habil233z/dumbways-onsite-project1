@@ -32,16 +32,17 @@ export const findUserProfile = async (req: Request, res: Response) => {
     }
 }
 
-export const getOtherUserPost = async (req: Request, res: Response) => {
+export const getOtherUserPostAndReply = async (req: Request, res: Response) => {
     const decoded = req.user
     const {id} = req.params
     const userId: number = Number(id)
     try {
         const userPost = await prisma.threads.findMany({where: {creator_id: userId}, orderBy: {created_at: "asc"}})
         const replies = await prisma.replies.findMany({orderBy : {thread_id: "asc"}})
+        const userReply = await prisma.replies.findMany({where: {creator_id: userId}, orderBy: {created_at: "asc"}})
         return res.status(200).json({
             message: "Get personal status success",
-            data: {userPost, replies}
+            data: {userPost, replies, userReply}
         })
     } catch (error) {
         console.log(error)

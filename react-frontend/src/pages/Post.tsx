@@ -187,9 +187,11 @@ export default function Post() {
                     <Link to={`/post/${item.id}`}>
                     <div className="w-100% min-h-40 bg-white flex border border-gray-900 rounded-4xl m-5 shadow-xl dark:bg-gray-900">
                         <div className="flex flex-col items-center">
+                            <Link to={`/user/${item.creator_id}`}>
                             <div className="rounded-[50%] w-20 h-20 overflow-hidden flex justify-center border-2 border-gray-950 mt-5 ml-5">
                                 <img src={item.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
                             </div>
+                            </Link>
                             <div className="mt-2 ml-5">
                                 {followedUsers.includes(item.creator_id as any) && item.creator_id !== userId &&  <Button className="h-10 dark:bg-gray-800 text-gray-200" id={"unfollowBtn" + item.creator_id} onClick={(e) => handleUnFollow(e, item.creator_id)}>Unfollow</Button>}
                                 {!followedUsers.includes(item.creator_id as any) && item.creator_id !== userId && <Button className="h-10 dark:bg-gray-800 text-gray-200" id={"followBtn" + item.creator_id} onClick={(e) => handleFollow(e, item.creator_id)}>Follow</Button>}
