@@ -10,9 +10,8 @@ export const findUser = async (req: Request, res: Response) => {
             message: "Find user success",
             data: {searchedUser, decoded}
         })
-
     } catch (error) {
-        
+      console.log(error)  
     }
 }
 
@@ -47,3 +46,16 @@ export const getOtherUserPostAndReply = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
 }}
+
+export const recomendedUser = async (req: Request, res: Response) => {
+    const decoded = req.user
+    try {
+        const user = await prisma.users.findMany({omit: {password: true} ,orderBy:{created_at: "asc"}})
+        return res.status(200).json({
+            message: "Find user success",
+            data: {user, decoded}
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
