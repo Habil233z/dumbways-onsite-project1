@@ -45,7 +45,7 @@ export default function Login() {
                 <h2 className="text-center mt-8 text-4xl mb-5 text-gray-950 font-medium dark:text-gray-300">Login to SociNet</h2>
                 <form className="ml-5 mr-5">
                     <input type="text" placeholder="Email or Username" className="h-10 bg-gray-200 w-full border-2 border-gray-600 pl-4 mb-5 dark:text-gray-950 dark:bg-gray-500" onChange={e => setEmailOrUsername(e.target.value)}/>
-                    <input type="text" placeholder="Password" className="h-10 bg-gray-200 w-full border-2 border-gray-600 pl-4 mb-5 dark:text-gray-950 dark:bg-gray-500" onChange={e => setPassword(e.target.value)}/>
+                    <input type="password" placeholder="Password" className="h-10 bg-gray-200 w-full border-2 border-gray-600 pl-4 mb-5 dark:text-gray-950 dark:bg-gray-500" onChange={e => setPassword(e.target.value)} />
                     <div className="flex items-center justify-center">
                     <Button onClick={handleClick} className="bg-gray-800 text-gray-300 w-20 h-10 dark:bg-gray-950 dark:hover:bg-gray-700 dark:active:bg-gray-800">Submit</Button>
                     </div>

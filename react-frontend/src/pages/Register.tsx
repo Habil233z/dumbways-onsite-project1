@@ -74,7 +74,7 @@ export default function Register() {
                         </div>
                         </div>
                         <input type="text" placeholder="Email" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5 dark:text-gray-950 dark:bg-gray-500" onChange={e => setEmail(e.target.value)}/>
-                        <input type="text" placeholder="Password" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5 dark:text-gray-950 dark:bg-gray-500" onChange={e => setPassword(e.target.value)}/>
+                        <input type="password" placeholder="Password" className="h-10 bg-gray-300 w-full border-2 border-gray-600 pl-5 dark:text-gray-950 dark:bg-gray-500" onChange={e => setPassword(e.target.value)}/>
                         <input type="text" placeholder="Your bio" className="h-10 bg-gray-300 max-w-full border-2 border-gray-600 pl-5 min-h-50 text-wrap dark:text-gray-950 dark:bg-gray-500" value={bio} onChange={e => setBio(e.target.value)}/>
                         <div className="flex items-center justify-center">
                         <Button type="submit" onClick={handleClick} className="bg-gray-950 text-gray-300 dark:bg-gray-950 dark:hover:bg-gray-700 dark:active:bg-gray-800">Submit</Button>
