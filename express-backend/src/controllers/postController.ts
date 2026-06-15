@@ -99,9 +99,10 @@ export const getUserPost = async (req: Request, res: Response) => {
         const userPost = await prisma.threads.findMany({where: {creator_id: decoded.id}, orderBy: {created_at: "asc"}})
         const userReply = await prisma.replies.findMany({where: {creator_id: decoded.id}, orderBy: {created_at: "asc"}})
         const replies = await prisma.replies.findMany({orderBy : {thread_id: "asc"}})
+        const likesReply = await prisma.likesReplies.findMany({orderBy : {replie_id: "asc"}})
         return res.status(200).json({
             message: "Get personal status success",
-            data: {userPost, userReply, decoded, replies}
+            data: {userPost, userReply, decoded, replies, likesReply}
         })
     } catch (error) {
         console.log(error)
