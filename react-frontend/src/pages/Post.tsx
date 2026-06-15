@@ -28,9 +28,13 @@ export default function Post() {
         try {
             if (selectedFile === null) {
                 await axios.post("http://localhost:3000/post/create", {content}, {headers: {Authorization: `Bearer ${token}`}})
+                setSelectedFile(null)
+                setContent("")
                 getPost()
             } else {
                 await axios.post("http://localhost:3000/post/create", {content, file:selectedFile}, {headers: {"Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`}})
+                setSelectedFile(null)
+                setContent("")
                 getPost()
             }
         } catch (error) {
@@ -157,7 +161,7 @@ export default function Post() {
             <div className="flex items-center justify-center mt-7">
                 <div className="flex"> 
                     <div className="flex flex-col justify-center">
-                    <textarea onChange={(e: any) => setContent(e.target.value)} className="mb-2 pl-5 pr-5 min-h-8 resize-y overflow-hidden field-sizing-content w-150 rounded-4xl mr-4 bg-white border border-gray-500 dark:bg-gray-700"></textarea>
+                    <textarea onChange={(e: any) => setContent(e.target.value)} value={content} className="mb-2 pl-5 pr-5 min-h-8 resize-y overflow-hidden field-sizing-content w-150 rounded-4xl mr-4 bg-white border border-gray-500 dark:bg-gray-700"></textarea>
                     {selectedFile !== null && 
                     <div className="">
                         <img src={image} alt="Fail to load image" className="max-h-80" onClick={(e) => {e.stopPropagation()}}/>    

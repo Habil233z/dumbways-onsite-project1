@@ -108,10 +108,14 @@ export default function PostDetail() {
             const token = localStorage.getItem("token")||null
             if (selectedFile === null) {
                 await axios.post("http://localhost:3000/post/createReply", {content, thread_id: mainThread.id}, {headers})
+                setSelectedFile(null)
+                setContent("")
                 getPostReply()
             } 
             if (selectedFile !== null) {
                 await axios.post("http://localhost:3000/post/createReply", {content, file:selectedFile, thread_id: mainThread.id}, {headers: {"Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`}})
+                setSelectedFile(null)
+                setContent("")
                 getPostReply()
             }   
         } catch (error) {
@@ -292,7 +296,7 @@ export default function PostDetail() {
                             </div>
                             <div className="w-full flex items-center justify-center mt-2">
                                 <div className="flex flex-col w-[80%]">
-                                    <textarea className="bg-gray-100 w-full h-12 border-2 border-gray-900 dark:bg-gray-700 pl-5 mr-4 rounded-4xl" onChange={e => setContent(e.target.value)}/>
+                                    <textarea className="bg-gray-100 w-full h-12 border-2 border-gray-900 dark:bg-gray-700 pl-5 mr-4 rounded-4xl" value={content} onChange={e => setContent(e.target.value)}/>
                                         {selectedFile !== null && 
                                         <div>
                                             <img src={replyImage} alt="Fail to load image" className="" onClick={(e) => {e.stopPropagation()}}/>    
