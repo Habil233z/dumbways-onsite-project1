@@ -152,7 +152,7 @@ export default function UserProfile() {
 
     return (
         <div className="h-screen flex bg-gray-100 flex-col w-full items-center dark:bg-gray-950 overflow-y-auto">
-            <div className="w-[80%] border-gray-400 dark:border-0 border-2 min-h-100 bg-white justify-center items-center mt-20 flex flex-col rounded-2xl pl-10 pr-10 shadow-4xl dark:bg-gray-900">
+            <div className="w-[80%] border-gray-400 dark:border-0 border-2 min-h-100 bg-[linear-gradient(to_bottom,var(--color-blue-900)_30%,var(--color-white)_70%)] dark:bg-[linear-gradient(to_bottom,var(--color-blue-950)_30%,var(--color-gray-900)_70%)] justify-center items-center mt-20 flex flex-col rounded-2xl pl-10 pr-10 shadow-4xl dark:bg-gray-900">
                 <div className="flex w-full">
                     <div className="w-full">
                         <div className="rounded-[50%] w-40 h-40 overflow-hidden flex justify-center items-center border-2 border-gray-950">
