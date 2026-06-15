@@ -25,12 +25,19 @@ export default function Register() {
         window.location.href="/post"
     }
 
+    function handleSelectPhoto(e: any) {
+        const photo: string = URL.createObjectURL(e.target.files[0])
+        setSelectedFile(e.target.files[0])
+        setSelectedPhoto(photo)
+    }
+
     const [username, setUsername] = useState("")
     const [full_name, setFull_name] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [bio, setBio] = useState("")
     const [selectedFile, setSelectedFile] = useState(null)
+    const [selectedPhoto, setSelectedPhoto] = useState("")
 
     useEffect(() => {
         document.body.style.overflow = "hidden"
@@ -50,17 +57,18 @@ export default function Register() {
                         <div className="flex items-center">
                             {!selectedFile && 
                             <>
-                            <h3 className="mr-4 text-gray-800">Select your profile picture</h3>
+                            <h3 className="mr-4 text-gray-800 dark:text-gray-300">Select your profile picture</h3>
                             <div className="flex justify-center items-center w-20 h-10 bg-gray-600 border-2 border-gray-900 rounded-xl hover:bg-gray-700 active:bg-gray-900 dark:bg-gray-950 dark:hover:bg-gray-700 dark:active:bg-gray-800">
-                                <label className="text-gray-200">Image<input type="file" accept="image/*" className="hidden" onChange={(e: any) => setSelectedFile(e.target.files[0])}/></label>
+                                <label className="text-gray-200">Image<input type="file" accept="image/*" className="hidden" onChange={(e: any) => handleSelectPhoto(e)}/></label>
                             </div>
                             </>}
                             {selectedFile && 
                             <>
                             <h3 className="mr-4 text-gray-800">Picture Selected</h3>
-                            <div className="flex justify-center items-center w-20 h-10 bg-gray-800 border-2 border-gray-900 rounded-xl hover:bg-gray-700 active:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-gray-950">
-                                <label className="text-gray-200">Image<input type="file" accept="image/*" className="hidden" onChange={(e: any) => setSelectedFile(e.target.files[0])}/></label>
-                            </div>
+                            <label className="h-30 w-30">
+                                <img src={selectedPhoto} className="object-fill h-full"></img>
+                                <input type="file" className="hidden" onChange={(e: any) => handleSelectPhoto(e)}/>
+                            </label>
                             </>}
                             
                         </div>

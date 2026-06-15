@@ -191,8 +191,8 @@ export default function Post() {
                                 <img src={item.creator_photo_profile} className="object-none h-full" onClick={(e) => {e.stopPropagation()}}></img>
                             </div>
                             <div className="mt-2 ml-5">
-                                {followedUsers.includes(item.creator_id as any) && item.creator_id !== userId &&  <Button className="h-10 dark:bg-gray-800 text-gray-200" id={"unfollowBtn" + item.id} onClick={(e) => handleUnFollow(e, item.id)}>Unfollow</Button>}
-                                {!followedUsers.includes(item.creator_id as any) && item.creator_id !== userId && <Button className="h-10 dark:bg-gray-800 text-gray-200" id={"followBtn" + item.id} onClick={(e) => handleFollow(e, item.id)}>Follow</Button>}
+                                {followedUsers.includes(item.creator_id as any) && item.creator_id !== userId &&  <Button className="h-10 dark:bg-gray-800 text-gray-200" id={"unfollowBtn" + item.creator_id} onClick={(e) => handleUnFollow(e, item.creator_id)}>Unfollow</Button>}
+                                {!followedUsers.includes(item.creator_id as any) && item.creator_id !== userId && <Button className="h-10 dark:bg-gray-800 text-gray-200" id={"followBtn" + item.creator_id} onClick={(e) => handleFollow(e, item.creator_id)}>Follow</Button>}
                             </div>
                         </div>
                         <div  className="w-full ml-5">

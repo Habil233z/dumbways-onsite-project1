@@ -11,6 +11,7 @@ import Follows from './pages/Follows'
 import ProfilePadding from './components/ProfilePadding'
 import EditProfile from './pages/EditProfile'
 import Post from './pages/Post'
+import OtherUser from './pages/OtherUser'
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path='/post' element={<Post/>}/>
           <Route path='/post/:id' element={<PostDetail/>}/>
           <Route path='/editProfile' element={<EditProfile/>}/>
+          <Route path='/user/:id' element={<OtherUser/>}/>
         </Routes>
       <SideProfile />
       <ProfilePadding />
