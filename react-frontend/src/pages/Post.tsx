@@ -159,8 +159,8 @@ export default function Post() {
                     <div className="flex flex-col justify-center">
                     <textarea onChange={(e: any) => setContent(e.target.value)} className="mb-2 pl-5 pr-5 min-h-8 resize-y overflow-hidden field-sizing-content w-150 rounded-4xl mr-4 bg-white border border-gray-500 dark:bg-gray-700"></textarea>
                     {selectedFile !== null && 
-                    <div>
-                        <img src={image} alt="Fail to load image" className="" onClick={(e) => {e.stopPropagation()}}/>    
+                    <div className="">
+                        <img src={image} alt="Fail to load image" className="max-h-80" onClick={(e) => {e.stopPropagation()}}/>    
                     </div>}
                     </div>
                     <div className="flex justify-center items-center w-12 h-12 bg-blue-700 border-2 border-gray-900 rounded-xl hover:bg-blue-800 hover:fill-gray-200 active:bg-blue-900 dark:bg-blue-800 dark:hover:bg-blue-700 dark:active:bg-blue-900">

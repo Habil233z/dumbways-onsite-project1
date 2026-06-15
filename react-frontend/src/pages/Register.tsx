@@ -64,7 +64,7 @@ export default function Register() {
                             </>}
                             {selectedFile && 
                             <>
-                            <h3 className="mr-4 text-gray-800">Picture Selected</h3>
+                            <h3 className="mr-4 text-gray-800 dark:text-gray-300">Picture Selected</h3>
                             <label className="h-30 w-30">
                                 <img src={selectedPhoto} className="object-fill h-full"></img>
                                 <input type="file" className="hidden" onChange={(e: any) => handleSelectPhoto(e)}/>
