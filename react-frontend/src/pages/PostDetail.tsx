@@ -21,6 +21,7 @@ export default function PostDetail() {
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
     const [followedUsers, setFollowedUsers] = useState<Follow[]>([])
     const [userId, setUserId] = useState<number>(0)
+    const [replyImage, setReplyImage] = useState("")
 
     const [editPostContent, setEditPostContent] = useState("")
     const [editPostImage, setEditPostImage] = useState("")
@@ -92,6 +93,12 @@ export default function PostDetail() {
             await axios.post("http://localhost:3000/like/replyAdd", {replie_id:id} ,{headers})
             getPostReply()
         }}
+
+    function handleReplyPhoto(e: any) {
+        const photo: string = URL.createObjectURL(e.target.files[0])
+        setSelectedFile(e.target.files[0])
+        setReplyImage(photo)
+    }
 
     const handleSubmit = async () => {
         if (content === "") {
@@ -284,11 +291,17 @@ export default function PostDetail() {
                                 </div>
                             </div>
                             <div className="w-full flex items-center justify-center mt-2">
-                                <textarea className="bg-gray-100 w-[80%] h-12 border-2 border-gray-900 dark:bg-gray-700 pl-5 mr-4 rounded-4xl" onChange={e => setContent(e.target.value)}/>
+                                <div className="flex flex-col w-[80%]">
+                                    <textarea className="bg-gray-100 w-full h-12 border-2 border-gray-900 dark:bg-gray-700 pl-5 mr-4 rounded-4xl" onChange={e => setContent(e.target.value)}/>
+                                        {selectedFile !== null && 
+                                        <div>
+                                            <img src={replyImage} alt="Fail to load image" className="" onClick={(e) => {e.stopPropagation()}}/>    
+                                        </div>}
+                                </div>
                                 <div className="flex justify-center items-center w-12 h-12 bg-blue-700 dark:bg-blue-800 mr-2 border-2 border-l-0 border-gray-900 hover:bg-blue-800 active:bg-blue-900 rounded-xl dark:hover:bg-blue-900 dark:active:bg-blue-950">
                                     <label>
                                     <svg height="30" width="30" viewBox="0 0 24 24"><path d="m12,21c0,.553-.448,1-1,1h-6c-2.757,0-5-2.243-5-5V5C0,2.243,2.243,0,5,0h12c2.757,0,5,2.243,5,5v6c0,.553-.448,1-1,1s-1-.447-1-1v-6c0-1.654-1.346-3-3-3H5c-1.654,0-3,1.346-3,3v6.959l2.808-2.808c1.532-1.533,4.025-1.533,5.558,0l5.341,5.341c.391.391.391,1.023,0,1.414-.195.195-.451.293-.707.293s-.512-.098-.707-.293l-5.341-5.341c-.752-.751-1.976-.752-2.73,0l-4.222,4.222v2.213c0,1.654,1.346,3,3,3h6c.552,0,1,.447,1,1ZM15,3.5c1.654,0,3,1.346,3,3s-1.346,3-3,3-3-1.346-3-3,1.346-3,3-3Zm0,2c-.551,0-1,.448-1,1s.449,1,1,1,1-.448,1-1-.449-1-1-1Zm8,12.5h-3v-3c0-.553-.448-1-1-1s-1,.447-1,1v3h-3c-.552,0-1,.447-1,1s.448,1,1,1h3v3c0,.553.448,1,1,1s1-.447,1-1v-3h3c.552,0,1-.447,1-1s-.448-1-1-1Z"/></svg>
-                                    <input type="file" accept="image/*" className="hidden" onChange={(e: any) => setSelectedFile(e.target.files[0])}/></label>
+                                    <input type="file" accept="image/*" className="hidden" onChange={(e: any) => handleReplyPhoto(e)}/></label>
                                 </div>
                                 <Button className="bg-gray-950 text-gray-300 h-12 dark:bg-gray-800 dark:hover:bg-gray-900 dark:active:bg-gray-700" onClick={handleSubmit}>Post</Button>
                             </div>
