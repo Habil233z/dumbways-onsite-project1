@@ -10,9 +10,15 @@ const router = Router()
  * @openapi
  * /register: 
  *  post: 
- *   tag:
- *   - Register
- *   description: Response
+ *   tags:
+ *   - Auth
+ *   description: Create account and login it automaticaly. Will need all input inside form fill out to access it.
+ *   requestBody: 
+ *     required: true
+ *     contents: 
+ *       application/json:
+ *         schema:
+ *           $ref: '#/components/schemas/RegisterUser'
  *   responses: 
  * 200: 
  * description: test
@@ -24,8 +30,8 @@ router.post("/login", Login)
  * @openapi
  * /getProfile: 
  *  get: 
- *   tag:
- *   - GetProfile
+ *   tags:
+ *   - Auth
  *   description: Response
  *   responses: 
  * 200: 
