@@ -3,7 +3,7 @@ import type { Request, Response} from "express"
 
 export const AddLike = async (req:Request, res:Response) => {
     try {
-        const decoded = await req.user
+        const decoded: any = await req.user
         const user_id = decoded.id
         const created_by= decoded.username
         const {thread_id} = req.body
@@ -29,7 +29,7 @@ export const AddLike = async (req:Request, res:Response) => {
 
 export const RemoveLike = async (req:Request, res:Response) => {
     try {
-        const decoded = req.user
+        const decoded: any = req.user
         const user_id = decoded.id
         const created_by= decoded.username
         const {thread_id} = req.body
@@ -50,7 +50,7 @@ export const RemoveLike = async (req:Request, res:Response) => {
 
 export const AddLikeReply = async (req:Request, res:Response) => {
     try {
-        const decoded = await req.user
+        const decoded: any = await req.user
         const user_id = decoded.id
         const created_by= decoded.username
         const {replie_id} = req.body
@@ -76,7 +76,7 @@ export const AddLikeReply = async (req:Request, res:Response) => {
 
 export const RemoveLikeReply = async (req:Request, res:Response) => {
     try {
-        const decoded = req.user
+        const decoded: any = req.user
         const user_id = decoded.id
         const created_by= decoded.username
         const {replie_id} = req.body

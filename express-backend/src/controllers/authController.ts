@@ -21,7 +21,7 @@ export const Register = async (req:Request, res:Response) => {
             }
         })
         const user = await prisma.users.findFirst({where: {OR: [{email: email}, {username: username}]}});
-        const token = jwt.sign({id:user.id, username: user.username, full_name: user.full_name ,photo_profile: user.photo_profile, email: user.email}, process.env.SECRET_KEY as string, {
+        const token = jwt.sign({id:user?.id, username: user?.username, full_name: user?.full_name ,photo_profile: user?.photo_profile, email: user?.email}, process.env.SECRET_KEY as string, {
         expiresIn: '2 days'})
         return (
             res.status(201).json({
@@ -65,7 +65,7 @@ export const Login = async (req:Request, res:Response) => {
 }
 
 export const getProfile = async (req: Request, res: Response) => {
-    const decoded = req.user
+    const decoded: any = req.user
     try {
         const data = await prisma.users.findUnique({where: {id: decoded.id}})
         const profile = {
@@ -87,7 +87,7 @@ export const getProfile = async (req: Request, res: Response) => {
 }
 
 export const editProfile = async (req: Request, res: Response) => {
-    const decoded = req.user
+    const decoded: any = req.user
     try {
         const {username, full_name, bio} = await req.body
         const photo = req.file ? req.file.filename : ""
@@ -110,8 +110,8 @@ export const editProfile = async (req: Request, res: Response) => {
         }})} 
         
         const user = await prisma.users.findUnique({where: {email: decoded.email}});
-        const identity = {id:user.id, username: user.username, full_name: user.full_name, photo_profile: user.photo_profile, email: user.email}
-        const token = jwt.sign({id:user.id, username: user.username, full_name: user.full_name, photo_profile: user.photo_profile, email: user.email}, process.env.SECRET_KEY as string, {
+        const identity = {id:user?.id, username: user?.username, full_name: user?.full_name, photo_profile: user?.photo_profile, email: user?.email}
+        const token = jwt.sign({id:user?.id, username: user?.username, full_name: user?.full_name, photo_profile: user?.photo_profile, email: user?.email}, process.env.SECRET_KEY as string, {
         expiresIn: '2 days'});
         return res.status(201).json({
             message: "Profile successfully updated",
@@ -123,7 +123,7 @@ export const editProfile = async (req: Request, res: Response) => {
 }
 
 export const DeleteAccount= async (req: Request, res: Response) => {
-    const decoded = req.user
+    const decoded: any = req.user
     try {
         await prisma.users.delete({where: {id: decoded.id}})
         return res.status(204).json({

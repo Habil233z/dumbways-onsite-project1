@@ -16,7 +16,7 @@ export const GetPost = async (req: Request, res: Response) => {
 }}
 
 export const CreatePost = async (req: Request, res: Response) => {
-    const decoded = req.user
+    const decoded: any = req.user
     const {content} = req.body
     try {
         const photo = req.file ? req.file.filename : ""
@@ -69,7 +69,7 @@ export const GetPostById = async (req: Request, res: Response) => {
 }}
 
 export const CreateReply = async (req: Request, res: Response) => {
-    const decoded = req.user
+    const decoded: any = req.user
     const {content, thread_id} = req.body
     const threadId: number = Number(thread_id)
     try {
@@ -94,7 +94,7 @@ export const CreateReply = async (req: Request, res: Response) => {
 }}
 
 export const getUserPost = async (req: Request, res: Response) => {
-    const decoded = req.user
+    const decoded: any = req.user
     try {
         const userPost = await prisma.threads.findMany({where: {creator_id: decoded.id}, orderBy: {created_at: "asc"}})
         const userReply = await prisma.replies.findMany({where: {creator_id: decoded.id}, orderBy: {created_at: "asc"}})
@@ -109,7 +109,7 @@ export const getUserPost = async (req: Request, res: Response) => {
 }}
 
 export const deletePost = async (req: Request, res: Response) => {
-    const decoded = req.user
+    const decoded: any = req.user
     const {id} = req.body
     try {
         const deletePost = await prisma.threads.delete({where: {id: id, creator_id: decoded.id}})
@@ -122,7 +122,7 @@ export const deletePost = async (req: Request, res: Response) => {
 }}
 
 export const deletePostReply = async (req: Request, res: Response) => {
-    const decoded = req.user
+    const decoded: any = req.user
     const {id} = req.body
     try {
         const deletePostReply = await prisma.replies.delete({where: {id: id, creator_id: decoded.id}})
@@ -135,7 +135,7 @@ export const deletePostReply = async (req: Request, res: Response) => {
 }}
 
 export const EditPost = async (req: Request, res: Response) => {
-    const decoded = req.user
+    const decoded: any = req.user
     const {content, id} = req.body
     const threadId: number = Number(id)
     const imageName = req.file ? req.file.filename : ""
@@ -160,7 +160,7 @@ export const EditPost = async (req: Request, res: Response) => {
 }
 
 export const EditReply = async (req: Request, res: Response) => {
-    const decoded = req.user
+    const decoded: any = req.user
     const {content, id} = req.body
     const replyId: number = Number(id)
     const imageName = req.file ? req.file.filename : ""
