@@ -1,5 +1,7 @@
 import { prisma } from "../lib/prisma"
 import type { Request, Response} from "express"
+import fs from "fs"
+import path from "path"
 
 export const GetPost = async (req: Request, res: Response) => {
     const decoded = req.user
@@ -125,7 +127,15 @@ export const deletePostReply = async (req: Request, res: Response) => {
     const decoded: any = req.user
     const {id} = req.body
     try {
-        const deletePostReply = await prisma.replies.delete({where: {id: id, creator_id: decoded.id}})
+        const deletePostReply: any = await prisma.replies.findUnique({where: {id: id, creator_id: decoded.id}})
+        const deleteImage: string = deletePostReply.image?.replaceAll("http://localhost:3000/uploads/", "")
+        const imagePath = path.join(__dirname, "../../public/uploads", deleteImage)
+        fs.unlink(imagePath, (err) => {
+            if (err) {
+                console.log(err)
+            }
+        })
+        const deletedPostReply = await prisma.replies.delete({where: {id: id, creator_id: decoded.id}})
         return res.status(201).json({
             message: "Post deleted successfully",
             data: {decoded}
