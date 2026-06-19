@@ -2,7 +2,7 @@ import type { Request, Response} from "express"
 import { prisma } from "../lib/prisma";
 
 export const getFollowing = async (req: Request, res: Response) => {
-    const decoded = req.user
+    const decoded: any = req.user
     try {
         const following = await prisma.following.findMany({where: {follower_id: decoded.id}})
         const followings = following.map((request) => request.following_id)
@@ -18,7 +18,7 @@ export const getFollowing = async (req: Request, res: Response) => {
 }
 
 export const getFollower = async (req: Request, res: Response) => {
-    const decoded = req.user
+    const decoded: any = req.user
     try {
         const follower = await prisma.following.findMany({where: {following_id: decoded.id}})
         const followers = follower.map((request) => request.follower_id)
@@ -34,7 +34,7 @@ export const getFollower = async (req: Request, res: Response) => {
 }
 
 export const unFollow = async (req: Request, res: Response) => {
-    const decoded = req.user
+    const decoded: any = req.user
     const {id} = req.body
     try {
         const unfollow = await prisma.following.deleteMany({where: {follower_id: decoded.id, following_id: id}})
@@ -47,7 +47,7 @@ export const unFollow = async (req: Request, res: Response) => {
 }
 
 export const follow = async (req: Request, res: Response) => {
-    const decoded = req.user
+    const decoded: any = req.user
     const {id} = req.body
     try {
         const follow = await prisma.following.create({

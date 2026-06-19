@@ -22,7 +22,7 @@ export const totalUserLikesAndPost = async (req:Request, res:Response) => {
 export const topPost = async (req:Request, res:Response) => {
     const decoded: any = req.user
     try {
-        const topPost = await prisma.threads.findMany({where: {creator_id: decoded.id}, include: {_count: {select: {likes: true}}}, orderBy: {likes: {_count: "desc"}}, take: 5})
+        const topPost = await prisma.threads.findMany({where: {creator_id: decoded.id}, include: {_count: {select: {likes: true}}}, orderBy: {likes: {_count: "desc"}}, take: 15})
         return res.status(200).json({
             message: "Success",
             data: {topPost}
@@ -35,7 +35,7 @@ export const topPost = async (req:Request, res:Response) => {
 export const latestFollower = async (req:Request, res:Response) => {
     const decoded:any = req.user
     try {
-        const latestFollower = await prisma.following.findMany({where: {following_id: decoded.id}, orderBy: {create_at: "desc"}, include: {follower: true}, take: 5})
+        const latestFollower = await prisma.following.findMany({where: {following_id: decoded.id}, orderBy: {create_at: "desc"}, include: {follower: true}, take: 15})
         return res.status(200).json({
             message: "Success",
             data: {latestFollower}
