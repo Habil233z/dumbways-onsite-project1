@@ -22,7 +22,7 @@ export const totalUserLikesAndPost = async (req:Request, res:Response) => {
 export const topPost = async (req:Request, res:Response) => {
     const decoded: any = req.user
     try {
-        const topPost = await prisma.threads.findMany({where: {creator_id: decoded.id}, include: {_count: {select: {likes: true}}}, orderBy: {likes: {_count: "desc"}}, take: 15})
+        const topPost = await prisma.threads.findMany({where: {creator_id: decoded.id}, include: {_count: {select: {likes: true, replies:true}}}, orderBy: {likes: {_count: "desc"}}, take: 15})
         return res.status(200).json({
             message: "Success",
             data: {topPost}
