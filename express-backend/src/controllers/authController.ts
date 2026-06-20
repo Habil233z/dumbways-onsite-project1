@@ -78,7 +78,7 @@ export const getProfile = async (req: Request, res: Response) => {
             created_at: data?.created_at
         }
         return res.status(200).json({
-            message: "GetPostReply Success",
+            message: "Get Profile Success",
             data: {profile}
         })
     } catch (error) {
