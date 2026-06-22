@@ -32,13 +32,17 @@ export const topPost = async (req:Request, res:Response) => {
     }
 }
 
-export const latestFollower = async (req:Request, res:Response) => {
+export const latestActivities = async (req:Request, res:Response) => {
     const decoded:any = req.user
     try {
-        const latestFollower = await prisma.following.findMany({where: {following_id: decoded.id}, orderBy: {create_at: "desc"}, include: {follower: true}, take: 15})
+        const latestFollowers = await prisma.following.findMany({where: {following_id: decoded.id}, orderBy: {create_at: "desc"}, include: {follower: {omit: {password:true}}}, take: 15})
+        const latestLikes = await prisma.likes.findMany({where: {}})
+        const latestReply = await prisma.threads.findMany({where: {creator_id: decoded.id},select: {replies: {select: {replierName: true}}}, orderBy: {created_at: "desc"}})
+
+        
         return res.status(200).json({
             message: "Success",
-            data: {latestFollower}
+            data: {latestFollowers, latestLikes: latestLikes, latestReply}
         })
     } catch (error) {
         console.log(error)
