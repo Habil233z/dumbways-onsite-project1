@@ -36,13 +36,17 @@ export const latestActivities = async (req:Request, res:Response) => {
     const decoded:any = req.user
     try {
         const latestFollowers = await prisma.following.findMany({where: {following_id: decoded.id}, orderBy: {create_at: "desc"}, include: {follower: {omit: {password:true}}}, take: 15})
-        const latestLikes = await prisma.likes.findMany({where: {}})
+        const latestLikes = await prisma.threads.findMany({where: {creator_id: decoded.id},select: {likes: {select: {user_likes: true}}}, orderBy: {created_at: "desc"}})
         const latestReply = await prisma.threads.findMany({where: {creator_id: decoded.id},select: {replies: {select: {replierName: true}}}, orderBy: {created_at: "desc"}})
 
-        
+        const [followers, likes, replies] = ([latestFollowers, latestLikes, latestReply])
+
+        const formatedLikes = likes.map(user => ({
+            
+        }))
         return res.status(200).json({
             message: "Success",
-            data: {latestFollowers, latestLikes: latestLikes, latestReply}
+            data: {latestFollowers, latestLikes, latestReply}
         })
     } catch (error) {
         console.log(error)
